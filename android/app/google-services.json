@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722406363702",
+    "project_id": "task-groove",
+    "storage_bucket": "task-groove.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722406363702:android:587b36936b814985173e97",
+        "android_client_info": {
+          "package_name": "com.example.task_groove"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIN3b34JXKr2j8nKJAr93vrlIZt9MIwzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
