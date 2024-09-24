@@ -57,6 +57,51 @@ class AuthRepository {
     }
   }
 
+// Login User with Email and Password
+  Future<UserModel> login(
+      {required String email, required String password}) async {
+    try {
+// Sign in the User with FirebaseAuth
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      // Retrieve user data from Firestore
+      var userDoc = await firestore
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .get();
+
+      if (!userDoc.exists) {
+        throw const CustomError(
+          code: "UserNotFound",
+          message: "User Not Found",
+          // plugin: "Firebase_FireStore",
+        );
+      }
+
+      // Map the data to a UserModel
+
+      UserModel user = UserModel(
+        name: userDoc['name'],
+        email: userDoc['email'],
+        userID: userDoc['userID'],
+        profilePicsUrl: userDoc['profilePicsUrl'],
+      );
+
+      //Save user to shared preferences
+      await _saveUserToPrefs(user);
+
+      return user;
+    } catch (e) {
+      log('Error logging in user $e');
+      throw CustomError(
+        code: "LoginError",
+        message: e.toString(),
+        plugin: "Firebase_Auth",
+      );
+    }
+  }
+
   // Upload profile image to Firebase Storage
   Future<String> _uploadProfileImage(File profileImage) async {
     try {
