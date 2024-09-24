@@ -48,6 +48,12 @@ class ForgotpasswordCubit extends Cubit<ForgotpasswordState> {
           ),
         ),
       );
+      // Optionally, you can also show an error toast message
+      ToastService.sendScaffoldAlert(
+        msg: "Failed to send reset password email: ${e.toString()}",
+        toastStatus: "ERROR",
+        context: context,
+      );
     }
   }
 }

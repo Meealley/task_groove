@@ -104,6 +104,19 @@ class AuthRepository {
 // Forgot password method
   Future<void> forgotPassword({required String email}) async {
     try {
+// Check if user exists in Firestore
+      var userDoc = await firestore
+          .collection("users")
+          .where("email", isEqualTo: email)
+          .get();
+
+      if (userDoc.docs.isEmpty) {
+        throw const CustomError(
+          code: "UserNotFound",
+          message: "No user found with this email address.",
+        );
+      }
+
       // Send password reset email
       await auth.sendPasswordResetEmail(email: email);
       log("Password reset email sent to $email");
