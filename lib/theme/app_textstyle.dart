@@ -24,6 +24,12 @@ class AppTextStyles {
       color: Colors.black,
     ),
   );
+  static final TextStyle bodyTextLg = GoogleFonts.manrope(
+    textStyle: const TextStyle(
+      fontSize: 22,
+      color: Colors.black,
+    ),
+  );
   static final TextStyle bodyTextBold = GoogleFonts.manrope(
     textStyle: const TextStyle(
       fontSize: 16,
@@ -39,6 +45,13 @@ class AppTextStyles {
     textStyle: const TextStyle(
       fontSize: 14,
       color: Colors.red,
+    ),
+  );
+  static final TextStyle bodySmallUnderline = GoogleFonts.manrope(
+    textStyle: const TextStyle(
+      fontSize: 14,
+      color: AppColors.primary,
+      decoration: TextDecoration.underline,
     ),
   );
   static final TextStyle buttonTextWhite = GoogleFonts.manrope(

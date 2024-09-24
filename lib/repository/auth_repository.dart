@@ -80,7 +80,6 @@ class AuthRepository {
       }
 
       // Map the data to a UserModel
-
       UserModel user = UserModel(
         name: userDoc['name'],
         email: userDoc['email'],
@@ -96,6 +95,22 @@ class AuthRepository {
       log('Error logging in user $e');
       throw CustomError(
         code: "LoginError",
+        message: e.toString(),
+        plugin: "Firebase_Auth",
+      );
+    }
+  }
+
+// Forgot password method
+  Future<void> forgotPassword({required String email}) async {
+    try {
+      // Send password reset email
+      await auth.sendPasswordResetEmail(email: email);
+      log("Password reset email sent to $email");
+    } catch (e) {
+      log("Error in forgotPassword: $e");
+      throw CustomError(
+        code: "ForgotPasswordError",
         message: e.toString(),
         plugin: "Firebase_Auth",
       );

@@ -1,16 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
-
-// import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_groove/models/signup_status.dart';
 import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/routes/pages.dart';
-// import 'package:task_groove/repository/image_services.dart';
 import 'package:task_groove/utils/custom_error.dart';
 import 'package:task_groove/utils/toast_message_services.dart';
 
@@ -82,7 +78,7 @@ class SignupCubit extends Cubit<SignupState> {
       );
       // Navigate to sign-up or login screen after successful sign-out
       context.go(
-        Pages.signup,
+        Pages.login,
       ); // Make sure 'Pages.signup' is the correct path for your login/signup page
 
       log("User logged out successfully");

@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
@@ -8,10 +6,12 @@ class CustomTextField extends StatelessWidget {
   final String? labelText;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
-  final bool obscureText;
   final String? errorText;
   final TextInputType textInputType;
   final TextEditingController textEditingController;
+  final bool obscureText; // Add this for password visibility control
+  final Widget? suffixIcon; // Add this for the visibility toggle button
+
   const CustomTextField({
     super.key,
     this.labelText,
@@ -20,7 +20,8 @@ class CustomTextField extends StatelessWidget {
     this.errorText,
     required this.textInputType,
     required this.textEditingController,
-    this.obscureText = false,
+    this.obscureText = false, // Default value is false for non-password fields
+    this.suffixIcon, // Optional, used for visibility toggle
   });
 
   @override
@@ -28,11 +29,12 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       keyboardType: textInputType,
       controller: textEditingController,
-      style: obscureText ? AppTextStyles.heading : AppTextStyles.bodySmall,
+      style:
+          obscureText ? const TextStyle(fontSize: 27) : AppTextStyles.bodySmall,
       validator: validator,
       onSaved: onSaved,
+      obscureText: obscureText, // Use the passed obscureText value
       cursorHeight: 23,
-      obscureText: obscureText,
       decoration: InputDecoration(
         errorText: errorText,
         errorStyle: AppTextStyles.errorTextMessage,
@@ -45,9 +47,7 @@ class CustomTextField extends StatelessWidget {
         ),
         border: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(
-              10,
-            ),
+            Radius.circular(10),
           ),
           borderSide: BorderSide(
             color: AppColors.backgroundDark,
@@ -55,14 +55,13 @@ class CustomTextField extends StatelessWidget {
         ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(
-              10,
-            ),
+            Radius.circular(10),
           ),
           borderSide: BorderSide(
             color: AppColors.backgroundDark,
           ),
         ),
+        suffixIcon: suffixIcon, // Set the suffix icon for toggling visibility
       ),
     );
   }

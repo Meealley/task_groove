@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/forgotpassword/forgotpassword_cubit.dart';
+import 'package:task_groove/cubits/login/login_cubit.dart';
 import 'package:task_groove/cubits/signup/signup_cubit.dart';
 import 'package:task_groove/firebase_options.dart';
 import 'package:task_groove/repository/auth_repository.dart';
@@ -25,8 +27,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignupCubit(authRepository: authRepository),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SignupCubit>(
+          create: (context) => SignupCubit(authRepository: authRepository),
+        ),
+        BlocProvider<LoginCubit>(
+          create: (context) => LoginCubit(authRepository: authRepository),
+        ),
+        BlocProvider<ForgotpasswordCubit>(
+          create: (context) =>
+              ForgotpasswordCubit(authRepository: authRepository),
+        ),
+      ],
       child: Sizer(
         builder: (context, _, __) {
           return MaterialApp.router(
