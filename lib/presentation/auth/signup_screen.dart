@@ -90,6 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
           toastStatus: "ERROR",
           context: context,
         );
+        _loadWithProgress = false;
       }
       context.read<SignupCubit>().signup(
             name: _name!,
