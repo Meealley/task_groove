@@ -25,6 +25,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   late TextEditingController _emailController;
 
   String? _email;
+  bool _loadWithProgress = false;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       if (form == null || !form.validate()) return;
 
       form.save();
+      _loadWithProgress = !_loadWithProgress;
 
       print(' email: $_email');
       context
@@ -63,6 +65,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           context.go('/login');
         } else if (state.forgotPasswordStatus == ForgotPasswordStatus.error) {
           errorDialog(context, state.error);
+          _loadWithProgress = false;
         }
       },
       builder: (context, state) {
@@ -116,6 +119,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         SizedBox(height: 2.h),
                         SizedBox(height: 5.h),
                         ButtonPress(
+                          loadWithProgress: _loadWithProgress,
                           backgroundColor: state.forgotPasswordStatus ==
                                   ForgotPasswordStatus.loading
                               ? AppColors.backgroundLoading

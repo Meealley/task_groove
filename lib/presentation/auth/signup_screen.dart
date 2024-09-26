@@ -34,6 +34,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   String? _name, _email, _password;
   File? _selectedImage; // For storing the selected image
+  bool _obscureText = true;
+  bool _loadWithProgress = false;
 
   @override
   void initState() {
@@ -79,6 +81,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
       form.save();
 
+      _loadWithProgress = !_loadWithProgress;
       print('name: $_name, email: $_email, password: $_password');
 
       if (_selectedImage == null) {
@@ -103,9 +106,10 @@ class _SignupScreenState extends State<SignupScreen> {
     return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state.signUpStatus == SignUpStatus.success) {
-          context.go('/home');
+          context.go('/');
         } else if (state.signUpStatus == SignUpStatus.error) {
           errorDialog(context, state.error);
+          _loadWithProgress = false;
         }
       },
       builder: (context, state) {
@@ -123,11 +127,11 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 2.h),
-                  Text(
-                    "Create your account",
-                    style: AppTextStyles.bodyText,
-                  ),
+                  // SizedBox(height: 2.h),
+                  // Text(
+                  //   "Create your account",
+                  //   style: AppTextStyles.bodyText,
+                  // ),
                   SizedBox(height: 3.h),
                   Form(
                     key: _formKey,
@@ -144,6 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             radius: 7.h,
                             backgroundColor: Colors.black,
                             child: CircleAvatar(
+                              backgroundColor: AppColors.backgroundDark,
                               radius: 7.h - 2,
                               backgroundImage: _selectedImage != null
                                   ? FileImage(_selectedImage!)
@@ -158,7 +163,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: 4.h),
                         CustomTextField(
                           labelText: "Enter your name",
                           textInputType: TextInputType.name,
@@ -199,6 +204,20 @@ class _SignupScreenState extends State<SignupScreen> {
                           labelText: "Enter your Password",
                           textInputType: TextInputType.name,
                           textEditingController: _passwordController,
+                          obscureText: _obscureText,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText =
+                                    !_obscureText; // Toggle visibility
+                              });
+                            },
+                          ),
                           validator: (String? value) {
                             if (value == null || value.trim().isEmpty) {
                               return "Password is required";
@@ -217,6 +236,20 @@ class _SignupScreenState extends State<SignupScreen> {
                           labelText: "Confirm Password",
                           textInputType: TextInputType.name,
                           textEditingController: _confirmPasswordController,
+                          obscureText: _obscureText,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText =
+                                    !_obscureText; // Toggle visibility
+                              });
+                            },
+                          ),
                           validator: (String? value) {
                             if (_passwordController.text != value) {
                               return "Password does not match 👀";
@@ -226,6 +259,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         SizedBox(height: 5.h),
                         ButtonPress(
+                          loadWithProgress: _loadWithProgress,
                           backgroundColor:
                               state.signUpStatus == SignUpStatus.loading
                                   ? AppColors.backgroundLoading

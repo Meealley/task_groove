@@ -30,6 +30,12 @@ class AppTextStyles {
       color: Colors.black,
     ),
   );
+  static final TextStyle bodyGrey = GoogleFonts.manrope(
+    textStyle: const TextStyle(
+      fontSize: 13,
+      color: Color.fromARGB(255, 136, 134, 134),
+    ),
+  );
   static final TextStyle bodyTextBold = GoogleFonts.manrope(
     textStyle: const TextStyle(
       fontSize: 16,

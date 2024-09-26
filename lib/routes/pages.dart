@@ -1,5 +1,5 @@
 class Pages {
-  static const initial = '/';
+  static const bottomNavbar = '/';
   static const home = '/home';
   static const signup = '/signup';
   static const login = '/login';

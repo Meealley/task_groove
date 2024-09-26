@@ -1,9 +1,11 @@
 // import 'dart:js';
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_groove/presentation/auth/forgot_password_screen.dart';
 import 'package:task_groove/presentation/auth/login_screen.dart';
 import 'package:task_groove/presentation/auth/signup_screen.dart';
+import 'package:task_groove/presentation/bottom_navbar/bottom_navbar.dart';
 import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/routes/pages.dart';
 
@@ -35,6 +37,13 @@ final GoRouter appRouter =
     name: Pages.forgotPassword,
     builder: (context, state) {
       return const ForgotPasswordScreen();
+    },
+  ),
+  GoRoute(
+    path: Pages.bottomNavbar,
+    name: Pages.bottomNavbar,
+    builder: (context, state) {
+      return const BottomNavigationUserBar();
     },
   ),
 ]);
