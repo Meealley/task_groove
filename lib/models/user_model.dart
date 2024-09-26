@@ -26,15 +26,6 @@ class UserModel extends Equatable {
     );
   }
 
-  // factory UserModel.initialUser() {
-  //   return const UserModel(
-  //     userID: "",
-  //     name: "",
-  //     email: "",
-  //     profilePicsUrl: "",
-  //   );
-  // }
-
   // Create a UserModel object from Firebase User
   factory UserModel.fromFirebaseUser(User user) {
     return UserModel(

@@ -6,6 +6,9 @@ import 'package:task_groove/presentation/auth/login_screen.dart';
 import 'package:task_groove/presentation/auth/signup_screen.dart';
 import 'package:task_groove/presentation/bottom_navbar/bottom_navbar.dart';
 import 'package:task_groove/presentation/home/home_screen.dart';
+import 'package:task_groove/presentation/home/widgets/inbox_screen.dart';
+import 'package:task_groove/presentation/home/widgets/today_screen.dart';
+import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart';
 import 'package:task_groove/routes/pages.dart';
 
 final GoRouter appRouter =
@@ -36,6 +39,27 @@ final GoRouter appRouter =
     name: Pages.forgotPassword,
     builder: (context, state) {
       return const ForgotPasswordScreen();
+    },
+  ),
+  GoRoute(
+    path: Pages.inboxtask,
+    name: Pages.inboxtask,
+    builder: (context, state) {
+      return const InboxScreen();
+    },
+  ),
+  GoRoute(
+    path: Pages.todaytask,
+    name: Pages.todaytask,
+    builder: (context, state) {
+      return const TodayTaskScreen();
+    },
+  ),
+  GoRoute(
+    path: Pages.upcomingtask,
+    name: Pages.upcomingtask,
+    builder: (context, state) {
+      return const UpcomingTaskScreen();
     },
   ),
   GoRoute(

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/signup/signup_cubit.dart';
+import 'package:task_groove/presentation/home/widgets/home_lists_widget.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 import 'package:task_groove/utils/button.dart';
@@ -118,11 +119,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             progressColor: Colors.greenAccent,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
+              SizedBox(
+                height: 4.h,
+              ),
+              const HomeListWidgets(),
               SizedBox(
                 height: 8.h,
               ),
