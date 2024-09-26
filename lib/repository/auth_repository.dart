@@ -185,7 +185,8 @@ class AuthRepository {
   // Sign out method
   Future<void> signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      // await FirebaseAuth.instance.signOut();
+      await auth.signOut();
       await _clearUserFromPrefs(); // Clear stored user data
     } catch (e) {
       log("Error signing out: $e");

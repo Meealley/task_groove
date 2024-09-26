@@ -15,6 +15,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _loadwithProgress = false;
+
+  void _logout() {
+    setState(() {
+      _loadwithProgress = !_loadwithProgress;
+      Future.delayed(const Duration(seconds: 3), () {
+        context.read<SignupCubit>().signOut(context);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,10 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ButtonPress(
                 text: "Logout",
-                loadWithProgress: false,
-                onPressed: () {
-                  context.read<SignupCubit>().signOut(context);
-                },
+                loadWithProgress: _loadwithProgress,
+                onPressed: _logout,
               )
             ],
           ),

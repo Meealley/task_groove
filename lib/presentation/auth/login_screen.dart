@@ -216,7 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : _submit, // Handle form submission
                               text: state.loginStatus == LoginStatus.loading
                                   ? "Loading..."
-                                  : "Register",
+                                  : "Login",
                             ),
                           ],
                         ),
