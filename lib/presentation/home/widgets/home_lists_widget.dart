@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
+import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
@@ -13,6 +16,13 @@ class HomeListWidgets extends StatefulWidget {
 }
 
 class _HomeListWidgetsState extends State<HomeListWidgets> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<TaskListCubit>().fetchTasks();
+  }
+
   final List<Map<String, dynamic>> taskSections = [
     {
       "icon": const FaIcon(
@@ -79,6 +89,17 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
                 sections['title']!,
                 style: AppTextStyles.bodySmall,
               ),
+              trailing: sections['title'] == 'Inbox'
+                  ? BlocBuilder<ActiveTaskCountCubit, ActiveTaskCountState>(
+                      builder: (context, state) {
+                        return Text(
+                          '${state.activeTaskCount}',
+                          style: AppTextStyles.bodySmall,
+                        );
+                      },
+                    )
+                  : null, // No trailing for other sections
+
               onTap: () {
                 context.push(sections['route']!);
               },

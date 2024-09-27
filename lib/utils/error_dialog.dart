@@ -50,6 +50,7 @@ void errorDialog(BuildContext context, CustomError e) {
             ),
             actions: [
               ButtonPress(
+                loadWithProgress: false,
                 text: "OK",
                 onPressed: () => context.pop(),
               )

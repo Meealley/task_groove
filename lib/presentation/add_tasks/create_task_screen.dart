@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:task_groove/constants/constants.dart';
+import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
+import 'package:task_groove/models/task_model.dart';
+import 'package:task_groove/models/tastlist_status.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/theme/appcolors.dart';
+import 'package:task_groove/utils/button.dart';
 import 'package:task_groove/utils/choice_chip.dart';
+import 'package:task_groove/utils/custom_description_field.dart';
 import 'package:task_groove/utils/custom_textfield.dart';
+import 'package:task_groove/utils/error_dialog.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -16,8 +27,14 @@ class CreateTaskScreen extends StatefulWidget {
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
   late TextEditingController _titleController, _descriptionController;
+
+  String? _title, _description;
+  DateTime? _startDate, _stopDate;
+  int _priority = 3;
+
+  bool _loadWithProgress = false;
 
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -91,145 +108,219 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     });
   }
 
+  void _submit() {
+    _autovalidateMode = AutovalidateMode.always;
+    final form = _formKey.currentState;
+
+    if (form == null || !form.validate()) return;
+    form.save();
+
+    _loadWithProgress = !_loadWithProgress;
+    final task = TaskModel(
+      id: uuid.v4(),
+      title: _titleController.text,
+      description: _descriptionController.text,
+      completed: false,
+      priority: _priority,
+      startDateTime: _rangeStart,
+      stopDateTime: _rangeEnd,
+    );
+
+    context.read<TaskListCubit>().addTasks(task);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Create New Task",
-          style: AppTextStyles.bodyText,
+          style: AppTextStyles.bodyTextBold,
         ),
       ),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: ListView(
-          padding: const EdgeInsets.all(15),
-          children: [
-            Form(
-              key: _formKey,
-              autovalidateMode: _autovalidateMode,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Calendar with range selection
-                  TableCalendar(
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: _selectedDate,
-                    calendarFormat: _calendarFormat,
-                    rangeStartDay: _rangeStart,
-                    rangeEndDay: _rangeEnd,
-                    rangeSelectionMode: _rangeSelectionMode,
-                    selectedDayPredicate: (day) {
-                      return isSameDay(_selectedDate, day);
-                    },
-                    onDaySelected: (selectedDay, focusedDay) {
-                      setState(() {
-                        _selectedDate = selectedDay;
-                        _rangeSelectionMode =
-                            RangeSelectionMode.toggledOn; // Reset mode
-                      });
-                    },
-                    onFormatChanged: (format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    },
-                    onRangeSelected: _onRangeSelected,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Task Title",
-                    style: AppTextStyles.bodyGrey,
-                  ),
-                  SizedBox(height: 1.5.h),
-                  CustomTextField(
-                    textInputType: TextInputType.text,
-                    textEditingController: _titleController,
-                  ),
-                  SizedBox(height: 3.h),
-                  Text(
-                    "Description",
-                    style: AppTextStyles.bodyGrey,
-                  ),
-                  SizedBox(height: 1.5.h),
-                  CustomTextField(
-                    textInputType: TextInputType.text,
-                    textEditingController: _descriptionController,
-                  ),
-
-                  SizedBox(
-                    height: 1.5.h,
-                  ),
-                  const PriorityChips(),
-                  const SizedBox(height: 20),
-                  // Selected Date
-                  // Text(
-                  //   'Selected Date: ${_formatDate(_selectedDate)}',
-                  //   style: const TextStyle(fontSize: 18),
-                  // ),
-                  // const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocConsumer<TaskListCubit, TaskListState>(
+        listener: (context, state) {
+          // TODO: implement listener
+          if (state.status == TaskListStatus.success) {
+            context.pushReplacement(Pages.inboxtask);
+          } else if (state.status == TaskListStatus.error) {
+            errorDialog(context, state.error);
+            _loadWithProgress = false;
+          }
+        },
+        builder: (context, state) {
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: ListView(
+              padding: const EdgeInsets.all(15),
+              children: [
+                Form(
+                  key: _formKey,
+                  autovalidateMode: _autovalidateMode,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          _selectTime(context); // Select time
-                        },
-                        child: Text(
-                          'Pick Time',
-                          style: AppTextStyles.bodyText,
+                      // Calendar with range selection
+                      TableCalendar(
+                        calendarStyle: CalendarStyle(
+                          defaultTextStyle: AppTextStyles.bodyText,
                         ),
+                        daysOfWeekStyle: DaysOfWeekStyle(
+                          weekdayStyle: AppTextStyles.bodySmall,
+                        ),
+                        firstDay: DateTime.utc(2010, 10, 16),
+                        lastDay: DateTime.utc(2030, 3, 14),
+                        focusedDay: _selectedDate,
+                        calendarFormat: _calendarFormat,
+                        rangeStartDay: _rangeStart,
+                        rangeEndDay: _rangeEnd,
+                        rangeSelectionMode: _rangeSelectionMode,
+                        selectedDayPredicate: (day) {
+                          return isSameDay(_selectedDate, day);
+                        },
+                        onDaySelected: (selectedDay, focusedDay) {
+                          setState(() {
+                            _selectedDate = selectedDay;
+                            _rangeSelectionMode =
+                                RangeSelectionMode.toggledOn; // Reset mode
+                          });
+                        },
+                        onFormatChanged: (format) {
+                          setState(() {
+                            _calendarFormat = format;
+                          });
+                        },
+                        onRangeSelected: _onRangeSelected,
                       ),
+                      const SizedBox(height: 20),
                       Text(
-                        '🕐 Selected Time: ${_selectedTime.format(context)}',
+                        "Task Title",
                         style: AppTextStyles.bodyText,
                       ),
-                    ],
-                  ),
-                  // const SizedBox(height: 20),
-                  // Display selected time
-                  const SizedBox(height: 20),
-                  // Task Period (Start and End Range)
-                  Text(
-                    "Task Period",
-                    style: AppTextStyles.bodyGrey,
-                  ),
-                  SizedBox(height: 1.5.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                      SizedBox(height: 1.5.h),
+                      CustomTextField(
+                        textInputType: TextInputType.text,
+                        textEditingController: _titleController,
+                        validator: (String? value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Title is required";
+                          }
+
+                          return null;
+                        },
+                        onSaved: (String? value) {
+                          _title = value;
+                        },
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        "Description",
+                        style: AppTextStyles.bodyText,
+                      ),
+                      SizedBox(height: 1.h),
+                      CustomTextField(
+                        textInputType: TextInputType.text,
+                        textEditingController: _descriptionController,
+                        validator: (String? value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Description is required";
+                          }
+
+                          return null;
+                        },
+                        onSaved: (String? value) {
+                          _description = value;
+                        },
+                      ),
+
+                      SizedBox(
+                        height: 1.5.h,
+                      ),
+
+                      PriorityChips(onSelected: (priority) {
+                        setState(() {
+                          _priority = priority;
+                        });
+                      }),
+                      const SizedBox(height: 20),
+
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const FaIcon(FontAwesomeIcons.calendarDay),
-                          SizedBox(width: 5.w),
+                          ElevatedButton(
+                            onPressed: () {
+                              _selectTime(context); // Select time
+                            },
+                            child: Text(
+                              'Pick Time',
+                              style: AppTextStyles.bodyText,
+                            ),
+                          ),
                           Text(
-                            _rangeStart != null
-                                ? _formatDate(_rangeStart)
-                                : 'No start date',
-                            style: AppTextStyles.bodySmall,
-                          )
+                            '🕐 Selected Time: ${_selectedTime.format(context)}',
+                            style: AppTextStyles.bodyText,
+                          ),
                         ],
                       ),
+
+                      const SizedBox(height: 20),
+                      // Task Period (Start and End Range)
+                      Text(
+                        "Task Period",
+                        style: AppTextStyles.bodyGrey,
+                      ),
+                      SizedBox(height: 1.5.h),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const FaIcon(FontAwesomeIcons.calendarDay),
-                          SizedBox(width: 5.w),
-                          Text(
-                            _rangeEnd != null
-                                ? _formatDate(_rangeEnd)
-                                : 'No end date',
-                            style: AppTextStyles.bodySmall,
-                          )
+                          Row(
+                            children: [
+                              const FaIcon(
+                                FontAwesomeIcons.calendarDay,
+                                color: AppColors.backgroundDark,
+                              ),
+                              SizedBox(width: 5.w),
+                              Text(
+                                _rangeStart != null
+                                    ? _formatDate(_rangeStart)
+                                    : 'No start date',
+                                style: AppTextStyles.bodySmall,
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const FaIcon(
+                                FontAwesomeIcons.calendarCheck,
+                                color: Colors.green,
+                              ),
+                              SizedBox(width: 5.w),
+                              Text(
+                                _rangeEnd != null
+                                    ? _formatDate(_rangeEnd)
+                                    : 'No end date',
+                                style: AppTextStyles.bodySmall,
+                              )
+                            ],
+                          ),
                         ],
                       ),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+
+                      ButtonPress(
+                        loadWithProgress: _loadWithProgress,
+                        text: "Add Task",
+                        onPressed: _submit,
+                      )
                     ],
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

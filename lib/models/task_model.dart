@@ -5,9 +5,9 @@ class TaskModel extends Equatable {
   final String title;
   final String description;
   final bool completed;
-  final DateTime? reminder; // To trigger notification
-  final DateTime? startDateTime; // Task start time
-  final DateTime? stopDateTime; // Task stop time
+  final DateTime? reminder;
+  final DateTime? startDateTime;
+  final DateTime? stopDateTime;
   final int priority;
 
   const TaskModel({

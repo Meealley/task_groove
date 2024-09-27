@@ -40,6 +40,7 @@ class TaskListCubit extends Cubit<TaskListState> {
       await taskRepository.addTask(task);
       final updatedTasks = List<TaskModel>.from(state.tasks)..add(task);
       emit(state.copyWith(tasks: updatedTasks, status: TaskListStatus.success));
+      log(updatedTasks.toString());
     } catch (e) {
       emit(state.copyWith(
         status: TaskListStatus.error,

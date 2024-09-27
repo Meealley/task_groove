@@ -123,159 +123,162 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // SizedBox(height: 2.h),
-                  // Text(
-                  //   "Create your account",
-                  //   style: AppTextStyles.bodyText,
-                  // ),
-                  SizedBox(height: 3.h),
-                  Form(
-                    key: _formKey,
-                    autovalidateMode: _autovalidateMode,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            _pickImage(
-                                context); // Trigger image picker on avatar tap
-                          },
-                          child: CircleAvatar(
-                            radius: 7.h,
-                            backgroundColor: Colors.black,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(height: 2.h),
+                    // Text(
+                    //   "Create your account",
+                    //   style: AppTextStyles.bodyText,
+                    // ),
+                    SizedBox(height: 3.h),
+                    Form(
+                      key: _formKey,
+                      autovalidateMode: _autovalidateMode,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              _pickImage(
+                                  context); // Trigger image picker on avatar tap
+                            },
                             child: CircleAvatar(
-                              backgroundColor: AppColors.backgroundDark,
-                              radius: 7.h - 2,
-                              backgroundImage: _selectedImage != null
-                                  ? FileImage(_selectedImage!)
-                                  : null, // Show the selected image
-                              child: _selectedImage == null
-                                  ? Icon(
-                                      Icons.person,
-                                      size: 9.h,
-                                      color: Colors.white,
-                                    )
-                                  : null, // Default icon if no image
+                              radius: 7.h,
+                              backgroundColor: Colors.black,
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.backgroundDark,
+                                radius: 7.h - 2,
+                                backgroundImage: _selectedImage != null
+                                    ? FileImage(_selectedImage!)
+                                    : null, // Show the selected image
+                                child: _selectedImage == null
+                                    ? Icon(
+                                        Icons.person,
+                                        size: 9.h,
+                                        color: Colors.white,
+                                      )
+                                    : null, // Default icon if no image
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 4.h),
-                        CustomTextField(
-                          labelText: "Enter your name",
-                          textInputType: TextInputType.name,
-                          textEditingController: _nameController,
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Name is required";
-                            }
-                            if (value.trim().length < 2) {
-                              return "Name must be at least 2 characters";
-                            }
-                            return null;
-                          },
-                          onSaved: (String? value) {
-                            _name = value;
-                          },
-                        ),
-                        SizedBox(height: 2.h),
-                        CustomTextField(
-                          labelText: "Enter your Email Address",
-                          textInputType: TextInputType.name,
-                          textEditingController: _emailController,
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Email is required";
-                            }
-                            if (!isEmail(value.trim())) {
-                              return "Enter a valid email address";
-                            }
-                            return null;
-                          },
-                          onSaved: (String? value) {
-                            _email = value;
-                          },
-                        ),
-                        SizedBox(height: 2.h),
-                        CustomTextField(
-                          labelText: "Enter your Password",
-                          textInputType: TextInputType.name,
-                          textEditingController: _passwordController,
-                          obscureText: _obscureText,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText =
-                                    !_obscureText; // Toggle visibility
-                              });
+                          SizedBox(height: 4.h),
+                          CustomTextField(
+                            labelText: "Enter your name",
+                            textInputType: TextInputType.name,
+                            textEditingController: _nameController,
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Name is required";
+                              }
+                              if (value.trim().length < 2) {
+                                return "Name must be at least 2 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              _name = value;
                             },
                           ),
-                          validator: (String? value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Password is required";
-                            }
-                            if (value.trim().length < 6) {
-                              return "Password must be at least 6 characters long";
-                            }
-                            return null;
-                          },
-                          onSaved: (String? value) {
-                            _password = value;
-                          },
-                        ),
-                        SizedBox(height: 2.h),
-                        CustomTextField(
-                          labelText: "Confirm Password",
-                          textInputType: TextInputType.name,
-                          textEditingController: _confirmPasswordController,
-                          obscureText: _obscureText,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText =
-                                    !_obscureText; // Toggle visibility
-                              });
+                          SizedBox(height: 2.h),
+                          CustomTextField(
+                            labelText: "Enter your Email Address",
+                            textInputType: TextInputType.name,
+                            textEditingController: _emailController,
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Email is required";
+                              }
+                              if (!isEmail(value.trim())) {
+                                return "Enter a valid email address";
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              _email = value;
                             },
                           ),
-                          validator: (String? value) {
-                            if (_passwordController.text != value) {
-                              return "Password does not match 👀";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 5.h),
-                        ButtonPress(
-                          loadWithProgress: _loadWithProgress,
-                          backgroundColor:
-                              state.signUpStatus == SignUpStatus.loading
-                                  ? AppColors.backgroundLoading
-                                  : AppColors.backgroundDark,
-                          onPressed: state.signUpStatus == SignUpStatus.loading
-                              ? null
-                              : _submit, // Handle form submission
-                          text: state.signUpStatus == SignUpStatus.loading
-                              ? "Loading..."
-                              : "Register",
-                        ),
-                      ],
+                          SizedBox(height: 2.h),
+                          CustomTextField(
+                            labelText: "Enter your Password",
+                            textInputType: TextInputType.name,
+                            textEditingController: _passwordController,
+                            obscureText: _obscureText,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText =
+                                      !_obscureText; // Toggle visibility
+                                });
+                              },
+                            ),
+                            validator: (String? value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Password is required";
+                              }
+                              if (value.trim().length < 6) {
+                                return "Password must be at least 6 characters long";
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              _password = value;
+                            },
+                          ),
+                          SizedBox(height: 2.h),
+                          CustomTextField(
+                            labelText: "Confirm Password",
+                            textInputType: TextInputType.name,
+                            textEditingController: _confirmPasswordController,
+                            obscureText: _obscureText,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText =
+                                      !_obscureText; // Toggle visibility
+                                });
+                              },
+                            ),
+                            validator: (String? value) {
+                              if (_passwordController.text != value) {
+                                return "Password does not match 👀";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 5.h),
+                          ButtonPress(
+                            loadWithProgress: _loadWithProgress,
+                            backgroundColor:
+                                state.signUpStatus == SignUpStatus.loading
+                                    ? AppColors.backgroundLoading
+                                    : AppColors.backgroundDark,
+                            onPressed:
+                                state.signUpStatus == SignUpStatus.loading
+                                    ? null
+                                    : _submit, // Handle form submission
+                            text: state.signUpStatus == SignUpStatus.loading
+                                ? "Loading..."
+                                : "Register",
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

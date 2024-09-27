@@ -56,6 +56,8 @@ dependencies:
   percent_indicator: ^4.2.3
   table_calendar: ^3.0.9
   intl: ^0.18.1
+  hydrated_bloc: ^9.1.5
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:

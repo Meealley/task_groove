@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/task_progress/task_progress_cubit.dart';
 import 'package:task_groove/cubits/forgotpassword/forgotpassword_cubit.dart';
 import 'package:task_groove/cubits/login/login_cubit.dart';
@@ -11,11 +14,18 @@ import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/repository/task_repository.dart';
 import 'package:task_groove/routes/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
   );
 
   runApp(MyApp(
@@ -49,6 +59,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<TaskProgressCubit>(
           create: (context) => TaskProgressCubit(
+            taskListCubit: context.read<TaskListCubit>(),
+          ),
+        ),
+        BlocProvider<ActiveTaskCountCubit>(
+          create: (context) => ActiveTaskCountCubit(
             taskListCubit: context.read<TaskListCubit>(),
           ),
         ),
