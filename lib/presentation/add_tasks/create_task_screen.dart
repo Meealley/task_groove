@@ -1,0 +1,236 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/utils/choice_chip.dart';
+import 'package:task_groove/utils/custom_textfield.dart';
+
+class CreateTaskScreen extends StatefulWidget {
+  const CreateTaskScreen({super.key});
+
+  @override
+  State<CreateTaskScreen> createState() => _CreateTaskScreenState();
+}
+
+class _CreateTaskScreenState extends State<CreateTaskScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+  late TextEditingController _titleController, _descriptionController;
+
+  DateTime _selectedDate = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
+
+  DateTime? _selectedDay;
+  DateTime? _rangeStart;
+  DateTime? _rangeEnd;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
+
+  // Function to format the date
+  String _formatDate(DateTime? date) {
+    if (date == null) {
+      return 'No date selected';
+    }
+    return DateFormat('EEEE d, yyyy').format(date);
+  }
+
+  // Function to pick the time
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            textTheme: TextTheme(
+              bodyMedium:
+                  AppTextStyles.bodyText, // Apply your custom text style here
+            ),
+            timePickerTheme: TimePickerThemeData(
+              // cancelButtonStyle: ButtonStyle(foregroundColor: MaterialStateColor.resolveWith((states) => Colosrs)),
+              hourMinuteTextStyle:
+                  AppTextStyles.bodyText, // Style for hour/minute text
+              dayPeriodTextStyle:
+                  AppTextStyles.bodyText, // Style for AM/PM text
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != _selectedTime) {
+      setState(() {
+        _selectedTime = picked;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
+    setState(() {
+      _rangeStart = start;
+      _rangeEnd = end;
+      _selectedDate = focusedDay;
+      _rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Create New Task",
+          style: AppTextStyles.bodyText,
+        ),
+      ),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListView(
+          padding: const EdgeInsets.all(15),
+          children: [
+            Form(
+              key: _formKey,
+              autovalidateMode: _autovalidateMode,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Calendar with range selection
+                  TableCalendar(
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: _selectedDate,
+                    calendarFormat: _calendarFormat,
+                    rangeStartDay: _rangeStart,
+                    rangeEndDay: _rangeEnd,
+                    rangeSelectionMode: _rangeSelectionMode,
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDate, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      setState(() {
+                        _selectedDate = selectedDay;
+                        _rangeSelectionMode =
+                            RangeSelectionMode.toggledOn; // Reset mode
+                      });
+                    },
+                    onFormatChanged: (format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    },
+                    onRangeSelected: _onRangeSelected,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Task Title",
+                    style: AppTextStyles.bodyGrey,
+                  ),
+                  SizedBox(height: 1.5.h),
+                  CustomTextField(
+                    textInputType: TextInputType.text,
+                    textEditingController: _titleController,
+                  ),
+                  SizedBox(height: 3.h),
+                  Text(
+                    "Description",
+                    style: AppTextStyles.bodyGrey,
+                  ),
+                  SizedBox(height: 1.5.h),
+                  CustomTextField(
+                    textInputType: TextInputType.text,
+                    textEditingController: _descriptionController,
+                  ),
+
+                  SizedBox(
+                    height: 1.5.h,
+                  ),
+                  const PriorityChips(),
+                  const SizedBox(height: 20),
+                  // Selected Date
+                  // Text(
+                  //   'Selected Date: ${_formatDate(_selectedDate)}',
+                  //   style: const TextStyle(fontSize: 18),
+                  // ),
+                  // const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          _selectTime(context); // Select time
+                        },
+                        child: Text(
+                          'Pick Time',
+                          style: AppTextStyles.bodyText,
+                        ),
+                      ),
+                      Text(
+                        '🕐 Selected Time: ${_selectedTime.format(context)}',
+                        style: AppTextStyles.bodyText,
+                      ),
+                    ],
+                  ),
+                  // const SizedBox(height: 20),
+                  // Display selected time
+                  const SizedBox(height: 20),
+                  // Task Period (Start and End Range)
+                  Text(
+                    "Task Period",
+                    style: AppTextStyles.bodyGrey,
+                  ),
+                  SizedBox(height: 1.5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const FaIcon(FontAwesomeIcons.calendarDay),
+                          SizedBox(width: 5.w),
+                          Text(
+                            _rangeStart != null
+                                ? _formatDate(_rangeStart)
+                                : 'No start date',
+                            style: AppTextStyles.bodySmall,
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const FaIcon(FontAwesomeIcons.calendarDay),
+                          SizedBox(width: 5.w),
+                          Text(
+                            _rangeEnd != null
+                                ? _formatDate(_rangeEnd)
+                                : 'No end date',
+                            style: AppTextStyles.bodySmall,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

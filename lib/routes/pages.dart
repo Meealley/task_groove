@@ -7,4 +7,5 @@ class Pages {
   static const inboxtask = '/inboxtask';
   static const todaytask = '/todaytask';
   static const upcomingtask = '/upcomingtask';
+  static const createTask = '/createTask';
 }

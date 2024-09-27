@@ -1,6 +1,7 @@
 // import 'dart:js';
 
 import 'package:go_router/go_router.dart';
+import 'package:task_groove/presentation/add_tasks/create_task_screen.dart';
 import 'package:task_groove/presentation/auth/forgot_password_screen.dart';
 import 'package:task_groove/presentation/auth/login_screen.dart';
 import 'package:task_groove/presentation/auth/signup_screen.dart';
@@ -60,6 +61,13 @@ final GoRouter appRouter =
     name: Pages.upcomingtask,
     builder: (context, state) {
       return const UpcomingTaskScreen();
+    },
+  ),
+  GoRoute(
+    path: Pages.createTask,
+    name: Pages.createTask,
+    builder: (context, state) {
+      return const CreateTaskScreen();
     },
   ),
   GoRoute(

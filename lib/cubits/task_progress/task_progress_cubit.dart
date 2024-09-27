@@ -26,6 +26,14 @@ class TaskProgressCubit extends Cubit<TaskProgressState> {
         // calculate percentage
         final percentCompleted =
             totalTasks > 0 ? (completedTasks / totalTasks) : 0.0;
+
+        emit(
+          state.copyWith(
+            totalTask: totalTasks,
+            completedTask: completedTasks,
+            percentCompleted: percentCompleted,
+          ),
+        );
       },
     );
   }

@@ -15,55 +15,76 @@ class HomeListWidgets extends StatefulWidget {
 class _HomeListWidgetsState extends State<HomeListWidgets> {
   final List<Map<String, dynamic>> taskSections = [
     {
-      "icon": const FaIcon(FontAwesomeIcons.inbox),
+      "icon": const FaIcon(
+        FontAwesomeIcons.inbox,
+        color: Colors.blue,
+      ),
       'title': 'Inbox',
-      'route': Pages.inboxtask
+      'route': Pages.inboxtask,
+// Set the desired color for Inbox icon
     },
     {
-      "icon": const FaIcon(FontAwesomeIcons.calendar),
+      "icon": const FaIcon(
+        FontAwesomeIcons.solidCalendarDays,
+        color: Colors.green,
+      ),
       'title': 'Today',
-      'route': Pages.todaytask
+      'route': Pages.todaytask,
     },
     {
-      "icon": const FaIcon(FontAwesomeIcons.calendarXmark),
+      "icon": const FaIcon(
+        FontAwesomeIcons.calendarXmark,
+        color: Colors.orange,
+      ),
       'title': 'Upcoming',
-      'route': Pages.upcomingtask
+      'route': Pages.upcomingtask,
+      // Set the desired color for Upcoming icon
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
+    return Card(
+      elevation: 5,
+      child: Container(
+        decoration: BoxDecoration(
+          // border: Border.all(
+          //   color: Colors.grey,
+          // ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(
+            10,
+          ),
         ),
-        borderRadius: BorderRadius.circular(
-          10,
-        ),
-      ),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(0),
-        separatorBuilder: (context, index) {
-          return const Divider();
-        },
-        shrinkWrap: true,
-        itemCount: taskSections.length,
-        itemBuilder: (context, index) {
-          final sections = taskSections[index];
+        child: ListView.separated(
+          padding: const EdgeInsets.all(0),
+          separatorBuilder: (context, index) {
+            return const Padding(
+              padding: EdgeInsets.only(
+                left: 50,
+              ),
+              child: Divider(),
+            );
+          },
+          shrinkWrap: true,
+          itemCount: taskSections.length,
+          itemBuilder: (context, index) {
+            final sections = taskSections[index];
 
-          return ListTile(
-            leading: sections['icon'],
-            minVerticalPadding: 0,
-            title: Text(
-              sections['title']!,
-              style: AppTextStyles.bodyText,
-            ),
-            onTap: () {
-              context.push(sections['route']!);
-            },
-          );
-        },
+            return ListTile(
+              // Adjust vertical padding here
+              leading: sections['icon'],
+              minVerticalPadding: 0,
+              title: Text(
+                sections['title']!,
+                style: AppTextStyles.bodySmall,
+              ),
+              onTap: () {
+                context.push(sections['route']!);
+              },
+            );
+          },
+        ),
       ),
     );
   }
