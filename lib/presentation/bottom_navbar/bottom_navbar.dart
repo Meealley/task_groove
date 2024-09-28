@@ -7,6 +7,7 @@ import 'package:task_groove/presentation/bottom_navbar/widgets/bottom_nav_widget
 import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/presentation/profile/profile_screen.dart';
 import 'package:task_groove/presentation/search/search_screen.dart';
+import 'package:task_groove/theme/appcolors.dart';
 
 class BottomNavigationUserBar extends StatefulWidget {
   const BottomNavigationUserBar({super.key});
@@ -41,7 +42,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
           ),
         ),
         // icon: const Icon(Icons.home),
-        activeColorPrimary: Colors.black,
+        activeColorPrimary: AppColors.backgroundDark,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(

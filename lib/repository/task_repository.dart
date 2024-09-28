@@ -15,7 +15,10 @@ class TaskRepository {
     try {
       //Generate a unique task id using uuid
       String taskId = uuid.v4();
-      task = task.copyWith(id: taskId);
+      task = task.copyWith(
+        id: taskId,
+        createdAt: DateTime.now(),
+      );
 
       DocumentReference taskRef = firestore
           .collection("users")
@@ -77,6 +80,7 @@ class TaskRepository {
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
+          .orderBy("createdAt")
           .get();
 
       return snapshot.docs.map((doc) {

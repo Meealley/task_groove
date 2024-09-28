@@ -14,7 +14,7 @@ import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 import 'package:task_groove/utils/button.dart';
 import 'package:task_groove/utils/choice_chip.dart';
-import 'package:task_groove/utils/custom_description_field.dart';
+// import 'package:task_groove/utils/custom_description_field.dart';
 import 'package:task_groove/utils/custom_textfield.dart';
 import 'package:task_groove/utils/error_dialog.dart';
 
@@ -122,6 +122,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       description: _descriptionController.text,
       completed: false,
       priority: _priority,
+      createdAt: DateTime.now(),
       startDateTime: _rangeStart,
       stopDateTime: _rangeEnd,
     );

@@ -14,10 +14,10 @@ class TodayTaskCubit extends Cubit<TodayTaskState> {
   late StreamSubscription taskListSubscription;
   TodayTaskCubit({required this.taskListCubit})
       : super(TodayTaskState.initial()) {
-    _initialize();
+    initialize();
   }
 
-  void _initialize() {
+  void initialize() {
     taskListSubscription =
         taskListCubit.stream.listen((TaskListState taskListState) {
       // Filter tasks list due today;
@@ -40,5 +40,11 @@ class TodayTaskCubit extends Cubit<TodayTaskState> {
       }
       return false;
     }).toList();
+  }
+
+  @override
+  Future<void> close() {
+    taskListSubscription.cancel(); // Cancel the stream subscription
+    return super.close();
   }
 }
