@@ -1,6 +1,7 @@
 // import 'dart:js';
 
 import 'package:go_router/go_router.dart';
+import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/presentation/add_tasks/create_task_screen.dart';
 import 'package:task_groove/presentation/auth/forgot_password_screen.dart';
 import 'package:task_groove/presentation/auth/login_screen.dart';
@@ -8,6 +9,7 @@ import 'package:task_groove/presentation/auth/signup_screen.dart';
 import 'package:task_groove/presentation/bottom_navbar/bottom_navbar.dart';
 import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/presentation/home/widgets/inbox_screen.dart';
+import 'package:task_groove/presentation/home/widgets/task_description.dart';
 import 'package:task_groove/presentation/home/widgets/today_screen.dart';
 import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart';
 import 'package:task_groove/routes/pages.dart';
@@ -77,4 +79,12 @@ final GoRouter appRouter =
       return const BottomNavigationUserBar();
     },
   ),
+  GoRoute(
+    path: Pages.taskDescription,
+    name: Pages.taskDescription,
+    builder: (context, state) {
+      final task = state.extra as TaskModel; // Pass task as extra
+      return TaskDescriptionScreen(task: task);
+    },
+  )
 ]);

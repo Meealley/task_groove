@@ -73,22 +73,23 @@ class _PriorityChipsState extends State<PriorityChips> {
 
         // Low Priority Chip
         ChoiceChip(
-            showCheckmark: false,
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(35.sp)),
-            label: Text(
-              'Low',
-              style: GoogleFonts.manrope(
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                ),
-                color: _selectedPriority == 3 ? Colors.white : Colors.black,
+          showCheckmark: false,
+          padding: EdgeInsets.symmetric(horizontal: 3.w),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35.sp)),
+          label: Text(
+            'Low',
+            style: GoogleFonts.manrope(
+              textStyle: const TextStyle(
+                fontSize: 16,
               ),
+              color: _selectedPriority == 3 ? Colors.white : Colors.black,
             ),
-            selected: _selectedPriority == 3,
-            selectedColor: Colors.green,
-            onSelected: (_) => _updatePriority(3)),
+          ),
+          selected: _selectedPriority == 3,
+          selectedColor: Colors.green,
+          onSelected: (_) => _updatePriority(3),
+        ),
       ],
     );
   }

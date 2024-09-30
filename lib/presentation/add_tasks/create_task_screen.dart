@@ -14,6 +14,7 @@ import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 import 'package:task_groove/utils/button.dart';
 import 'package:task_groove/utils/choice_chip.dart';
+import 'package:task_groove/utils/custom_description_field.dart';
 // import 'package:task_groove/utils/custom_description_field.dart';
 import 'package:task_groove/utils/custom_textfield.dart';
 import 'package:task_groove/utils/error_dialog.dart';
@@ -219,7 +220,22 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         style: AppTextStyles.bodyText,
                       ),
                       SizedBox(height: 1.h),
-                      CustomTextField(
+                      // CustomTextField(
+                      //   textInputType: TextInputType.text,
+                      //   textEditingController: _descriptionController,
+                      //   validator: (String? value) {
+                      //     if (value == null || value.trim().isEmpty) {
+                      //       return "Description is required";
+                      //     }
+
+                      //     return null;
+                      //   },
+                      //   onSaved: (String? value) {
+                      //     _description = value;
+                      //   },
+                      // ),
+
+                      CustomDescriptionTextField(
                         textInputType: TextInputType.text,
                         textEditingController: _descriptionController,
                         validator: (String? value) {
@@ -233,11 +249,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           _description = value;
                         },
                       ),
-
                       SizedBox(
                         height: 1.5.h,
                       ),
-
+                      Text(
+                        "Task Priority",
+                        style: AppTextStyles.bodyText,
+                      ),
+                      SizedBox(
+                        height: 1.h,
+                      ),
                       PriorityChips(onSelected: (priority) {
                         setState(() {
                           _priority = priority;

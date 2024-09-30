@@ -38,6 +38,13 @@ class TodayTaskCubit extends Cubit<TodayTaskState> {
             task.startDateTime!.isBefore(endOfDay) &&
             !task.completed;
       }
+
+      // If only the startDateTime is set, check if it's within today
+      if (task.startDateTime != null && task.stopDateTime == null) {
+        return task.startDateTime!.isAfter(startOfDay) &&
+            task.startDateTime!.isBefore(endOfDay) &&
+            !task.completed;
+      }
       return false;
     }).toList();
   }

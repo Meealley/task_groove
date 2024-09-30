@@ -54,5 +54,16 @@
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>This app needs access to save images to your photo library.</string>
 
+	<!-- Network Permission -->
+	<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key><true/>
+</dict>
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>We need your location to show the nearest network tower.</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>We need your location to show the nearest network tower.</string>
+
+
 </dict>
 </plist>

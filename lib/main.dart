@@ -17,6 +17,7 @@ import 'package:task_groove/routes/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:task_groove/theme/appcolors.dart';
+import 'package:task_groove/utils/network_aware.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,35 +76,37 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: Sizer(
-        builder: (context, _, __) {
-          return MaterialApp.router(
-            theme: ThemeData(
-              colorScheme: ColorScheme(
-                brightness: Brightness.light,
-                primary: AppColors.backgroundDark, // Set the primary color
-                // primaryVariant: Colors.blueAccent, // Set a variant of the primary color
-                secondary: Colors.green, // Set the secondary color
-                // secondaryVariant: Colors.greenAccent, // Set a variant of the secondary color
-                surface:
-                    Colors.grey.shade200, // Set the color for surface elements
-                background: Colors.grey.shade200, // Set the background color
-                error: Colors.red, // Set the error color
-                onPrimary:
-                    Colors.grey.shade200, // Set the text color on primary
-                onSecondary:
-                    Colors.grey.shade200, // Set the text color on secondary
-                onSurface: Colors.black, // Set the text color on surface
-                onBackground:
-                    Colors.grey.shade400, // Set the text color on background
-                onError: Colors.white, // Set the text color on error
+      child: NetworkAwareWidget(
+        child: Sizer(
+          builder: (context, _, __) {
+            return MaterialApp.router(
+              theme: ThemeData(
+                colorScheme: ColorScheme(
+                  brightness: Brightness.light,
+                  primary: AppColors.backgroundDark, // Set the primary color
+
+                  secondary: Colors.green, // Set the secondary color
+
+                  surface: Colors
+                      .grey.shade200, // Set the color for surface elements
+                  background: Colors.grey.shade200, // Set the background color
+                  error: Colors.red, // Set the error color
+                  onPrimary:
+                      Colors.grey.shade200, // Set the text color on primary
+                  onSecondary:
+                      Colors.grey.shade200, // Set the text color on secondary
+                  onSurface: Colors.black, // Set the text color on surface
+                  onBackground:
+                      Colors.grey.shade400, // Set the text color on background
+                  onError: Colors.white, // Set the text color on error
+                ),
               ),
-            ),
-            routerConfig: appRouter,
-            debugShowCheckedModeBanner: false,
-            title: "Task Groove",
-          );
-        },
+              routerConfig: appRouter,
+              debugShowCheckedModeBanner: false,
+              title: "Task Groove",
+            );
+          },
+        ),
       ),
     );
   }

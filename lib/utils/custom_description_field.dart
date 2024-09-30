@@ -28,8 +28,8 @@ class CustomDescriptionTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20.h,
       child: TextField(
+        maxLines: 5,
         keyboardType: textInputType,
         controller: textEditingController,
         style: obscureText

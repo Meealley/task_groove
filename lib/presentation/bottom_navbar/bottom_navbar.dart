@@ -32,7 +32,6 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        // iconSize: 30,
         contentPadding: 10.h,
         icon: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -41,7 +40,6 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
             size: 17.sp,
           ),
         ),
-        // icon: const Icon(Icons.home),
         activeColorPrimary: AppColors.backgroundDark,
         inactiveColorPrimary: Colors.grey,
       ),

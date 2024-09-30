@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/tastlist_status.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/utils/truncate_text.dart';
 
@@ -53,7 +55,7 @@ class _InboxScreenState extends State<InboxScreen> {
       appBar: AppBar(
         title: Text(
           "Inbox",
-          style: AppTextStyles.bodyTextBold,
+          style: AppTextStyles.headingBold,
         ),
       ),
       body: taskListStatus == TaskListStatus.loading
@@ -116,6 +118,15 @@ class _InboxScreenState extends State<InboxScreen> {
                               ),
                             ),
                           ),
+                          onTap: () {
+                            context.pushNamed(
+                              Pages.taskDescription,
+                              pathParameters: {
+                                'id': task.id,
+                              },
+                              extra: task,
+                            );
+                          },
                         ),
                       );
                     },

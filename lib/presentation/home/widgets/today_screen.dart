@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
 import 'package:task_groove/models/tastlist_status.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/models/task_model.dart';
 
@@ -21,6 +23,20 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
     context.read<TodayTaskCubit>().initialize();
   }
 
+  // @override
+  // void dispose() {
+  //   // Dispose of the cubit subscription when the widget is destroyed
+  //   context.read<TodayTaskCubit>().close();
+  //   super.dispose();
+  // }
+
+  // @override
+  // void dispose() {
+  //   // Dispose of the cubit subscription when the widget is destroyed
+  //   context.read<TodayTaskCubit>().close();
+  //   super.dispose();
+  // }
+
   // Toggle task completion status
   void _onTaskCompleted(TaskModel task) {
     final updatedTask = task.copyWith(completed: !task.completed);
@@ -33,7 +49,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
       appBar: AppBar(
         title: Text(
           "Today's Tasks",
-          style: AppTextStyles.bodyText,
+          style: AppTextStyles.headingBold,
         ),
       ),
       body: BlocBuilder<TodayTaskCubit, TodayTaskState>(
@@ -98,6 +114,15 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
                         ),
                       ),
                     ),
+                    onTap: () {
+                      context.pushNamed(
+                        Pages.taskDescription,
+                        pathParameters: {
+                          'id': task.id,
+                        },
+                        extra: task,
+                      );
+                    },
                   ),
                 );
               },

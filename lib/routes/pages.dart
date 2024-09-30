@@ -8,4 +8,5 @@ class Pages {
   static const todaytask = '/todaytask';
   static const upcomingtask = '/upcomingtask';
   static const createTask = '/createTask';
+  static const taskDescription = '/taskDescription/:id';
 }
