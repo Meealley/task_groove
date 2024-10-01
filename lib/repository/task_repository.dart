@@ -3,12 +3,15 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/models/task_model.dart';
+import 'package:task_groove/repository/recent_activity_repository.dart';
 import 'package:task_groove/utils/custom_error.dart';
 
 class TaskRepository {
   // Get user's current uid
 
   String get currentUserId => auth.currentUser!.uid;
+  RecentActivityRepository recentActivityRepository =
+      RecentActivityRepository();
 
   // Add a new task to the current user task
   Future<void> addTask(TaskModel task) async {
@@ -26,6 +29,15 @@ class TaskRepository {
           .collection("tasks")
           .doc(task.id);
       await taskRef.set(task.toMap());
+
+      // Log the activity
+
+      await recentActivityRepository.logActivity(
+        taskID: task.id,
+        action: "You created a task:",
+        taskTitle: task.title,
+        pointsGained: 10,
+      );
     } catch (e) {
       log(e.toString());
       throw CustomError(

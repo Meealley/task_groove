@@ -6,6 +6,7 @@ import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dar
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/utils/calendar_with_date.dart';
 
 class HomeListWidgets extends StatefulWidget {
   const HomeListWidgets({super.key});
@@ -27,23 +28,22 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
       "icon": const FaIcon(
         FontAwesomeIcons.inbox,
         color: Colors.blue,
+        size: 30,
       ),
       'title': 'Inbox',
       'route': Pages.inboxtask,
 // Set the desired color for Inbox icon
     },
     {
-      "icon": const FaIcon(
-        FontAwesomeIcons.solidCalendarDays,
-        color: Colors.green,
-      ),
+      "icon": const CalendarWithDateIcon(),
       'title': 'Today',
       'route': Pages.todaytask,
     },
     {
       "icon": const FaIcon(
-        FontAwesomeIcons.calendarXmark,
+        FontAwesomeIcons.calendarDays,
         color: Colors.orange,
+        size: 30,
       ),
       'title': 'Upcoming',
       'route': Pages.upcomingtask,

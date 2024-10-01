@@ -8,12 +8,19 @@ class UserModel extends Equatable {
   final String email;
   final String userID;
   final String profilePicsUrl;
+  final int loginStreak;
+  final int points;
+  final String? fcmToken;
 
-  const UserModel(
-      {required this.name,
-      required this.email,
-      required this.userID,
-      required this.profilePicsUrl});
+  const UserModel({
+    required this.name,
+    required this.email,
+    required this.userID,
+    required this.profilePicsUrl,
+    required this.loginStreak,
+    required this.points,
+    this.fcmToken,
+  });
 
   factory UserModel.fromDoc(DocumentSnapshot userDoc) {
     final userData = userDoc.data() as Map<String, dynamic>?;
@@ -23,21 +30,28 @@ class UserModel extends Equatable {
       name: userData!['name'],
       email: userData['email'],
       profilePicsUrl: userData['profilePicsUrl'],
+      loginStreak: userData['loginStreak'],
+      points: userData['points'],
+      fcmToken: userData['fcmToken'],
     );
   }
 
   // Create a UserModel object from Firebase User
-  factory UserModel.fromFirebaseUser(User user) {
+  factory UserModel.fromFirebaseUser(User user, String? fcmToken) {
     return UserModel(
       userID: user.uid,
       email: user.email ?? '',
       name: user.displayName ?? '',
       profilePicsUrl: user.photoURL ?? '',
+      loginStreak: 1,
+      points: 0,
+      fcmToken: fcmToken,
     );
   }
 
   @override
-  List<Object> get props => [name, email, userID, profilePicsUrl];
+  List<Object?> get props =>
+      [name, email, userID, profilePicsUrl, loginStreak, points, fcmToken];
 
   @override
   bool get stringify => true;

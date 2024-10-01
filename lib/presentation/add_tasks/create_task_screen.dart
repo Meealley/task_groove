@@ -36,7 +36,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   int _priority = 3;
 
   bool _loadWithProgress = false;
-
+  bool _isReminderSet = false;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
 
@@ -117,16 +117,29 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     form.save();
 
     _loadWithProgress = !_loadWithProgress;
+    DateTime? reminderDateTime;
+    if (_isReminderSet) {
+      // Set reminder for stop date if available, otherwise set for same day
+      DateTime date = _rangeEnd ?? DateTime.now();
+      reminderDateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        _selectedTime.hour,
+        _selectedTime.minute,
+      );
+    }
+
     final task = TaskModel(
-      id: uuid.v4(),
-      title: _titleController.text,
-      description: _descriptionController.text,
-      completed: false,
-      priority: _priority,
-      createdAt: DateTime.now(),
-      startDateTime: _rangeStart,
-      stopDateTime: _rangeEnd,
-    );
+        id: uuid.v4(),
+        title: _titleController.text,
+        description: _descriptionController.text,
+        completed: false,
+        priority: _priority,
+        createdAt: DateTime.now(),
+        startDateTime: _rangeStart,
+        stopDateTime: _rangeEnd,
+        reminder: reminderDateTime);
 
     context.read<TaskListCubit>().addTasks(task);
   }
@@ -220,20 +233,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         style: AppTextStyles.bodyText,
                       ),
                       SizedBox(height: 1.h),
-                      // CustomTextField(
-                      //   textInputType: TextInputType.text,
-                      //   textEditingController: _descriptionController,
-                      //   validator: (String? value) {
-                      //     if (value == null || value.trim().isEmpty) {
-                      //       return "Description is required";
-                      //     }
-
-                      //     return null;
-                      //   },
-                      //   onSaved: (String? value) {
-                      //     _description = value;
-                      //   },
-                      // ),
 
                       CustomDescriptionTextField(
                         textInputType: TextInputType.text,
@@ -283,6 +282,28 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                             style: AppTextStyles.bodyText,
                           ),
                         ],
+                      ),
+
+                      // Add the reminder button below
+// SwitchListTile(
+//   title: Text("Set 30-min Reminder", style: AppTextStyles.bodyText),
+//   value: _isReminderSet,
+//   onChanged: (bool value) {
+//     setState(() {
+//       _isReminderSet = value;
+//     });
+//   },
+// ),
+// Switch for reminder
+                      SwitchListTile(
+                        title:
+                            Text("Set Reminder", style: AppTextStyles.bodyText),
+                        value: _isReminderSet,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _isReminderSet = value;
+                          });
+                        },
                       ),
 
                       const SizedBox(height: 20),
@@ -346,4 +367,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
     );
   }
+}
+
+// Function to format the date
+String _formatDate(DateTime? date) {
+  if (date == null) {
+    return 'No date selected';
+  }
+  return DateFormat('EEEE d, yyyy').format(date);
 }

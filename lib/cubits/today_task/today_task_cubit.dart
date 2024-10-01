@@ -12,16 +12,13 @@ part 'today_task_state.dart';
 class TodayTaskCubit extends Cubit<TodayTaskState> {
   final TaskListCubit taskListCubit;
   late StreamSubscription taskListSubscription;
+
   TodayTaskCubit({required this.taskListCubit})
       : super(TodayTaskState.initial()) {
-    initialize();
-  }
-
-  void initialize() {
+    // Directly subscribe to TaskListCubit stream in the constructor
     taskListSubscription =
         taskListCubit.stream.listen((TaskListState taskListState) {
       // Filter tasks list due today;
-
       final todayTasks = _filterTodayTasks(taskListState.tasks);
       emit(state.copyWith(tasks: todayTasks, isLoading: false));
     });

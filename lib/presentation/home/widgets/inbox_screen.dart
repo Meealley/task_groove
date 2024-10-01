@@ -95,7 +95,7 @@ class _InboxScreenState extends State<InboxScreen> {
                           ),
                           title:
                               Text(task.title, style: AppTextStyles.bodyText),
-                          subtitle: Text(truncateText(task.description, 12),
+                          subtitle: Text(truncateText(task.description, 30),
                               style: AppTextStyles.bodySmall),
                           trailing: Chip(
                             // padding: const EdgeInsets.symmetric(horizontal: 20),
