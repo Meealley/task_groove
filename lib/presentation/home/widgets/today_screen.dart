@@ -8,9 +8,14 @@ import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/models/task_model.dart';
 
-class TodayTaskScreen extends StatelessWidget {
+class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({super.key});
 
+  @override
+  State<TodayTaskScreen> createState() => _TodayTaskScreenState();
+}
+
+class _TodayTaskScreenState extends State<TodayTaskScreen> {
   // Toggle task completion status
   void _onTaskCompleted(BuildContext context, TaskModel task) {
     final updatedTask = task.copyWith(completed: !task.completed);
