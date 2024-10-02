@@ -14,10 +14,6 @@
 //   }
 
 //   // Get the user's name from the current profile
-//   String? getUserName() {
-//     final user = currentUserProfile;
-//     return user?.name;
-//   }
 
 //   // Update last login date and track login streak
 //   Future<void> trackLogin() async {
