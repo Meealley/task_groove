@@ -69,13 +69,11 @@ class PushNotificationRepository {
       "private_key": dotenv.env['PRIVATE_KEY'],
       "client_email": dotenv.env['CLIENT_EMAIL'],
       "client_id": dotenv.env['CLIENT_ID'],
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url":
-          "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url":
-          "https://www.googleapis.com/robot/v1/metadata/x509/task-groove-app%40task-groove.iam.gserviceaccount.com",
-      "universe_domain": "googleapis.com"
+      "auth_uri": dotenv.env['AUTH_URI'],
+      "token_uri": dotenv.env['TOKEN_URI'],
+      "auth_provider_x509_cert_url": dotenv.env['AUTH_PROVIDER_X509_CERT_URL'],
+      "client_x509_cert_url": dotenv.env['CLIENT_X509_CERT_URL'],
+      "universe_domain": dotenv.env['UNIVERSE_DOMAIN'],
     };
     List<String> scopes = [
       'https://www.googleapis.com/auth/firebase.messaging',
