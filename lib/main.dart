@@ -24,7 +24,7 @@ import 'package:task_groove/routes/app_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:task_groove/theme/appcolors.dart';
-import 'package:task_groove/utils/network_aware.dart';
+// import 'package:task_groove/utils/network_aware.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
