@@ -30,7 +30,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await dotenv.load(fileName: ".env");
+
 // Initialize the push notification repository
   PushNotificationRepository pushNotificationRepository =
       PushNotificationRepository();
@@ -63,6 +63,7 @@ void main() async {
         : await getTemporaryDirectory(),
   );
 
+  await dotenv.load(fileName: ".env");
   runApp(MyApp(
     authRepository: AuthRepository(),
   ));
