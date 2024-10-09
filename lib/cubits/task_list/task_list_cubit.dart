@@ -107,31 +107,6 @@ class TaskListCubit extends Cubit<TaskListState> {
     }
   }
 
-// Helper function to schedule task notifications
-  // void _scheduleTaskNotification(TaskModel task) {
-  //   final now = DateTime.now();
-  //   final dueDateTime = task.startDateTime!;
-
-  //   // Schedule notification 30 minutes before due
-  //   final notificationTimeBeforeDue =
-  //       dueDateTime.subtract(const Duration(minutes: 30));
-  //   if (notificationTimeBeforeDue.isAfter(now)) {
-  //     final durationUntilNotificationBeforeDue =
-  //         notificationTimeBeforeDue.difference(now);
-  //     Timer(durationUntilNotificationBeforeDue, () {
-  //       _sendNotification(task, "Task is due in 30 minutes");
-  //     });
-  //   }
-
-  //   // Schedule notification at exact due time
-  //   if (dueDateTime.isAfter(now)) {
-  //     final durationUntilDue = dueDateTime.difference(now);
-  //     Timer(durationUntilDue, () {
-  //       _sendNotification(task, "Task is due now");
-  //     });
-  //   }
-  // }
-
   // Helper function to schedule task notifications
   void _scheduleTaskNotification(TaskModel task) {
     final now = DateTime.now();
@@ -199,16 +174,3 @@ class TaskListCubit extends Cubit<TaskListState> {
     }
   }
 }
-
-
-// if (isReminderSet && _rangeStart != null) {
-//       // Schedule the notification 30 minutes before task start
-//       DateTime reminderTime =
-//           _rangeStart!.subtract(const Duration(minutes: 30));
-//       String? fcmToken = await _notificationRepo.getFcmToken();
-//       _notificationRepo.sendPushNotification(
-//         toToken: fcmToken,
-//         title: "Task Reminder: ${_titleController.text}",
-//         body: "Your task starts at ${DateFormat.jm().format(_rangeStart!)}",
-//       );
-//         }

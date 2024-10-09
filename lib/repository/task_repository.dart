@@ -76,6 +76,13 @@ class TaskRepository {
           .doc(task.id);
 
       await taskRef.delete();
+// Logging the user deleted activities
+      await recentActivityRepository.logActivity(
+        taskID: task.id,
+        action: "You deleted a task:",
+        taskTitle: task.title,
+        pointsGained: 0,
+      );
     } catch (e) {
       log(e.toString());
       throw CustomError(

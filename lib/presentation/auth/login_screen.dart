@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
@@ -119,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             SizedBox(height: 2.h),
                             CustomTextField(
+                              prefixIcon: const Icon(Icons.mail),
                               labelText: "Enter your Email Address",
                               textInputType: TextInputType.emailAddress,
                               textEditingController: _emailController,
@@ -137,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             SizedBox(height: 2.h),
                             CustomTextField(
+                              prefixIcon: const Icon(Icons.lock),
                               labelText: "Enter your Password",
                               textInputType: TextInputType.text,
                               textEditingController: _passwordController,

@@ -64,16 +64,19 @@ class PushNotificationRepository {
   static Future<String> getAccessToken() async {
     final serviceAccountJson = {
       "type": "service_account",
-      "project_id": dotenv.env['PROJECT_ID'],
-      "private_key_id": dotenv.env['PRIVATE_KEY_ID'],
-      "private_key": dotenv.env['PRIVATE_KEY'],
-      "client_email": dotenv.env['CLIENT_EMAIL'],
-      "client_id": dotenv.env['CLIENT_ID'],
-      "auth_uri": dotenv.env['AUTH_URI'],
-      "token_uri": dotenv.env['TOKEN_URI'],
-      "auth_provider_x509_cert_url": dotenv.env['AUTH_PROVIDER_X509_CERT_URL'],
-      "client_x509_cert_url": dotenv.env['CLIENT_X509_CERT_URL'],
-      "universe_domain": dotenv.env['UNIVERSE_DOMAIN'],
+      "project_id": "task-groove",
+      "private_key_id": "f507eab865564c29ccfb54cb49d5afcaa2dd7104",
+      "private_key":
+          "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6Sagi2yTMMB9c\nAOP+jL9vNYVLF3uxvdJ/g14+jY5vQN6G0OyK8qg6DDnWgCsUsFlQ9FSGXjKnFI3r\nd4rDPIVl9U5eYJMcONl490125FKisVcTFz6xBiDtCOlUmMfCY0Xt20em6yHpmQKl\nBOoJyl5bYs3aXDLldBJ4jvU1rhpAQ4E1EOUt92p0YS0tj3LA0GywNHgxWuep+NNj\nmVYTbzPxsPw6gfEzKyvgUzP7PKskShItZVxTyFqVDhICRhJXOZULmZNmjYPUgxQH\nrcyxZs1deFhWQ6OU0FOQ2zkvHwn4UZwEBSOR8CTDZJxTXIYBh4wWVLcswxiTHiIE\nMyJ1NKghAgMBAAECggEAIpdx1sMdsqLO9+0caRSmqZZlIXwDVo56i34P3oq3o7YG\nfD9IZUbI8Tp69PdIyKc0dqFgHrFYM4lQDyTcCgPve27RNho1xvxRebJmWojsRVSr\n6BodZI7QR2OrvC9AjLqVbiUVSYwI+JEWmiDu+pFu8wZGVmFffBcRJPza0LR7IGp3\nRwwij9q6b5R6kA83/8s54N+bz5n/XxzlL4cO7rzIdy11i59niY0v5rnV/9I65E4r\nHhvEkvqNXV1RDcf04EI55X2Lgri56SlcBGHRQ0I8GWl4QuNDvB3UX+teQLQ5Zldd\nKfcvNn0UKT4cxpaMExK5UH6Vl02TIODmzK2DKoQ+PwKBgQDpjV0SZQPDkpPDwpw+\ng50LP74GvbZ+pWNAj7Wt3Rahb0k1kS22EQroyf1c4/13XKQ0Afck7uKIoU3RIxP5\nW3NojsPkXa448uVXw8wv6XeMO3k5exZaynFONa4KXUM0JQVXeOYeAixFYlCRR93N\ne1poUf1wLuQwnIpztTKTvGdeYwKBgQDMMVVmbYBV+xmnjCDyL2VuwMzYcMZaSk2a\nOTndP7Pax7M/y/H0/+KIRvHp3MA722ZPAIIyafRL29GJTtWmlYk6iQbC2wzoHmUB\n7pU/e94k+7hBpyzEMPwA9FCdX7zjiiOVaQDvq3ayuR6aWYsDVjqCtZCsOxJyPC9d\ntO0vu3m0qwKBgCJX1DjRO9V1Z18g7eLPbbdqvyG0ofJLlaW3vCp92UcR2z0SRRuB\ntA35LdWL/QihSdAP/eyjaBJZTd0UAGrphLX6UFnzYJwlM45NT2g4N4kacb//FpFx\nNWofwKDrh+dSDlAHiicdgK8PPvOuErKVkfzHGbJ2Yr23NzC+k1pgGP8rAoGBAKEv\n2HBQxFwbKbc/QMqta26wN4QsEgg4W2YBApKKtNlhhzg3MDrsu9BD4LdxkTYvDWYT\nyrMtPLGdRp0TZEhqBrf0byfmbxvU0nth8OL6TvP22Q7KfuYonOXL9s8kQiGEbG6H\nQzvuqHaQ9310be4mZW3FEf1DbF5M8D8SkaF6ZqqdAoGBANrvLmpWvzZkr4xwLPDZ\n8ruujdfYX08pKy3gvXLKLwva8V3cTx4vuyo/TmOB7M1oe8i+kLXv0lJronQAykaw\nwEgHI77QaYZ+amOlkK15y3z7dXUJVaMGiqsHfuLuK4nTe5fgK7CbwnQf+44671Gi\nAV0vc9bYrIyMdkWn1ZPHUpFP\n-----END PRIVATE KEY-----\n",
+      "client_email": "task-groove@appspot.gserviceaccount.com",
+      "client_id": "112148141238969690751",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url":
+          "https://www.googleapis.com/oauth2/v1/certs",
+      "client_x509_cert_url":
+          "https://www.googleapis.com/robot/v1/metadata/x509/task-groove%40appspot.gserviceaccount.com",
+      "universe_domain": "googleapis.com"
     };
     List<String> scopes = [
       'https://www.googleapis.com/auth/firebase.messaging',

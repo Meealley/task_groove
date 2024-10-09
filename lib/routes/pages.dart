@@ -9,4 +9,5 @@ class Pages {
   static const upcomingtask = '/upcomingtask';
   static const createTask = '/createTask';
   static const taskDescription = '/taskDescription/:id';
+  static const editTask = '/editTask/:id';
 }

@@ -74,7 +74,7 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                               case 'updated':
                                 return Colors
                                     .blue[200]; // Light blue for updated task
-                              case 'deleted':
+                              case 'You deleted a task':
                                 return Colors
                                     .red[200]; // Light red for deleted task
                               case 'pointsIncreased':
@@ -95,8 +95,11 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                                   );
                                 case 'updated':
                                   return const FaIcon(FontAwesomeIcons.pen);
-                                case 'deleted':
-                                  return const FaIcon(FontAwesomeIcons.trash);
+                                case 'You deleted a task':
+                                  return const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  );
                                 case 'pointsIncreased':
                                   return const FaIcon(FontAwesomeIcons.arrowUp);
                                 default:
@@ -117,7 +120,7 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                             width: 6,
                           ),
                           Text(
-                            truncateText(activity.taskTitle, 13),
+                            truncateText(activity.taskTitle, 8),
                             style: AppTextStyles.bodySmall,
                           ),
                         ],

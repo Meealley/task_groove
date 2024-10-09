@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final bool obscureText; // Add this for password visibility control
   final Widget? suffixIcon; // Add this for the visibility toggle button
+  final Widget? prefixIcon;
 
   const CustomTextField({
     super.key,
@@ -21,7 +22,8 @@ class CustomTextField extends StatelessWidget {
     required this.textInputType,
     required this.textEditingController,
     this.obscureText = false, // Default value is false for non-password fields
-    this.suffixIcon, // Optional, used for visibility toggle
+    this.suffixIcon,
+    this.prefixIcon, // Optional, used for visibility toggle
   });
 
   @override
@@ -34,8 +36,9 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       onSaved: onSaved,
       obscureText: obscureText, // Use the passed obscureText value
-      cursorHeight: 23,
+      cursorHeight: obscureText ? 27 : 23,
       decoration: InputDecoration(
+        prefixIcon: prefixIcon,
         errorText: errorText,
         errorStyle: AppTextStyles.errorTextMessage,
         labelText: labelText,

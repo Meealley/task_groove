@@ -64,7 +64,7 @@ void main() async {
         : await getTemporaryDirectory(),
   );
 
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
   runApp(MyApp(
     authRepository: AuthRepository(),
   ));

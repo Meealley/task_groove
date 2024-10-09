@@ -64,6 +64,13 @@
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>We need your location to show the nearest network tower.</string>
 
+<!-- Messaging -->
+<key>UIBackgroundModes</key>
+<array>
+    <string>fetch</string>
+    <string>remote-notification</string>
+</array>
+
 
 </dict>
 </plist>

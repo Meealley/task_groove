@@ -15,6 +15,8 @@ class TodayTaskCubit extends Cubit<TodayTaskState> {
 
   TodayTaskCubit({required this.taskListCubit})
       : super(TodayTaskState.initial()) {
+    final todayTasks = _filterTodayTasks(taskListCubit.state.tasks);
+    emit(state.copyWith(tasks: todayTasks, isLoading: false));
     // Directly subscribe to TaskListCubit stream in the constructor
     taskListSubscription =
         taskListCubit.stream.listen((TaskListState taskListState) {

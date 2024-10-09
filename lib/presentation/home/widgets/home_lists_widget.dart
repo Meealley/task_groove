@@ -57,15 +57,13 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
       elevation: 5,
       child: Container(
         decoration: BoxDecoration(
-          // border: Border.all(
-          //   color: Colors.grey,
-          // ),
           color: Colors.white,
           borderRadius: BorderRadius.circular(
             10,
           ),
         ),
         child: ListView.separated(
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(0),
           separatorBuilder: (context, index) {
             return const Padding(
