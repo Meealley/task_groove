@@ -59,30 +59,23 @@ class TaskListCubit extends Cubit<TaskListState> {
     }
   }
 
-// update tasks
+// Update tasks
   Future<void> updateTasks(TaskModel task) async {
-    emit(state.copyWith(status: TaskListStatus.loading));
-
     try {
       await taskRepository.updateTask(task);
       final updatedTasks =
           state.tasks.map((t) => t.id == task.id ? task : t).toList();
-      emit(state.copyWith(
-        tasks: updatedTasks,
-        status: TaskListStatus.success,
-      ));
+      emit(state.copyWith(tasks: updatedTasks, status: TaskListStatus.success));
 
-// Reschedule a notification when the task is updated
+      // Reschedule notification if needed
       if (task.startDateTime != null) {
         _scheduleTaskNotification(task);
       }
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: TaskListStatus.error,
-          error: CustomError(message: e.toString()),
-        ),
-      );
+      emit(state.copyWith(
+        status: TaskListStatus.error,
+        error: CustomError(message: e.toString()),
+      ));
     }
   }
 
@@ -171,6 +164,23 @@ class TaskListCubit extends Cubit<TaskListState> {
       }
     } catch (e) {
       log("Error sending push notification: $e");
+    }
+  }
+
+  // Method to sort tasks by priority
+  Future<void> sortTasksByPriority() async {
+    emit(state.copyWith(status: TaskListStatus.loading));
+
+    try {
+      List<TaskModel> sortedTasks = await taskRepository.sortTasksByPriority();
+      emit(state.copyWith(tasks: sortedTasks, status: TaskListStatus.success));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          error: CustomError(message: e.toString()),
+          status: TaskListStatus.error,
+        ),
+      );
     }
   }
 }

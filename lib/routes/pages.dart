@@ -8,6 +8,8 @@ class Pages {
   static const todaytask = '/todaytask';
   static const upcomingtask = '/upcomingtask';
   static const createTask = '/createTask';
+  static const overduetask = '/overduetask';
   static const taskDescription = '/taskDescription/:id';
   static const editTask = '/editTask/:id';
+  static const notificationDescription = '/notificationDescription/:id';
 }

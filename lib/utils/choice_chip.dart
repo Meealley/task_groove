@@ -5,16 +5,29 @@ import 'package:sizer/sizer.dart';
 
 class PriorityChips extends StatefulWidget {
   final Function(int) onSelected;
+  final int initialPriority; // This field is to accept the initial priority
 
-  const PriorityChips({super.key, required this.onSelected});
+  const PriorityChips({
+    super.key,
+    required this.onSelected,
+    required this.initialPriority,
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _PriorityChipsState createState() => _PriorityChipsState();
 }
 
 class _PriorityChipsState extends State<PriorityChips> {
   // This will hold the currently selected priority
-  int _selectedPriority = 3;
+  late int _selectedPriority;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the selected priority with the value passed from the parent widget
+    _selectedPriority = widget.initialPriority;
+  }
 
   void _updatePriority(int priority) {
     setState(() {
@@ -26,7 +39,6 @@ class _PriorityChipsState extends State<PriorityChips> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      // mainAxisAlignment: MainAxisAlignment.center, // Align chips horizontally
       children: [
         // High Priority Chip
         ChoiceChip(

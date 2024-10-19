@@ -28,7 +28,7 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
       "icon": const FaIcon(
         FontAwesomeIcons.inbox,
         color: Colors.blue,
-        size: 30,
+        size: 24,
       ),
       'title': 'Inbox',
       'route': Pages.inboxtask,
@@ -43,11 +43,19 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
       "icon": const FaIcon(
         FontAwesomeIcons.calendarDays,
         color: Colors.orange,
-        size: 30,
+        size: 24,
       ),
       'title': 'Upcoming',
       'route': Pages.upcomingtask,
-      // Set the desired color for Upcoming icon
+    },
+    {
+      "icon": const FaIcon(
+        FontAwesomeIcons.clockRotateLeft,
+        color: Colors.red,
+        size: 24,
+      ),
+      'title': 'Overdue',
+      'route': Pages.overduetask,
     },
   ];
 

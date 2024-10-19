@@ -1,4 +1,7 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io'; // Import this to check the platform type
+import 'package:flutter/cupertino.dart'; // For CupertinoAlertDialog
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,12 +25,93 @@ class TaskDescriptionScreen extends StatefulWidget {
 }
 
 class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
-// Function to format the date
+  // Function to format the date
   String _formatDate(DateTime? date) {
     if (date == null) {
       return 'No date selected';
     }
     return DateFormat('EEEE d, yyyy').format(date);
+  }
+
+  Future<void> _showDeleteTaskDialog() async {
+    final shouldDeletetask = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        if (Platform.isIOS) {
+          // Use CupertinoAlertDialog for iOS
+          return CupertinoAlertDialog(
+            title: Text(
+              "Delete Task ",
+              style: AppTextStyles.bodyTextBold,
+            ),
+            content: Text(
+              "Are you sure you want to delete this task 🤔?  \nThis action cannot be undone.",
+              style: AppTextStyles.bodySmall,
+            ),
+            actions: [
+              CupertinoDialogAction(
+                onPressed: () {
+                  context.pop(); // Dismiss dialog
+                },
+                child: Text(
+                  "Cancel",
+                  style: AppTextStyles.bodyText,
+                ),
+              ),
+              CupertinoDialogAction(
+                onPressed: () {
+                  context.pop(true); // Confirm delete
+                },
+                isDestructiveAction: true,
+                child: Text(
+                  "Delete",
+                  style: AppTextStyles.bodyText,
+                ),
+              ),
+            ],
+          );
+        } else {
+          // Use AlertDialog for Android and other platforms
+          return AlertDialog(
+            title: Text(
+              "Delete Task ",
+              style: AppTextStyles.bodyTextBold,
+            ),
+            content: Text(
+              "Are you sure you want to delete this task 🤔?  \nThis action cannot be undone.",
+              style: AppTextStyles.bodySmall,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Dismiss dialog
+                },
+                child: Text(
+                  "Cancel",
+                  style: AppTextStyles.bodyText,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); // Confirm delete
+                },
+                child: Text(
+                  "Delete",
+                  style: AppTextStyles.bodyText,
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+
+    // If delete if user confirmed delete
+    if (shouldDeletetask ?? false) {
+      context.read<TaskListCubit>().deleteTasks(widget.task);
+      context.read<TaskListCubit>().fetchTasks();
+      context.goNamed(Pages.inboxtask);
+    }
   }
 
   @override
@@ -170,24 +254,25 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
                   style: GoogleFonts.manrope(
                     textStyle: const TextStyle(
                       fontSize: 16,
+                      color: Colors.black,
                     ),
-                    // color: _selectedPriority == 3 ? Colors.white : Colors.black,
                   ),
                 ),
                 selected: widget.task.priority == widget.task.priority,
-                selectedColor: Colors.green,
-                // onSelected: (_) => _updatePriority(3),
+                selectedColor: widget.task.priority == 1
+                    ? Colors.red
+                    : widget.task.priority == 2
+                        ? Colors.orange
+                        : Colors.green,
               ),
-
               SizedBox(
                 height: 3.h,
               ),
-              // Edit task button
               ButtonPress(
                 text: "Edit task",
                 loadWithProgress: false,
                 onPressed: () {
-                  context.push(
+                  context.pushReplacement(
                     Pages.editTask,
                     extra: widget.task,
                   );
@@ -203,56 +288,17 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
                 width: double.infinity,
                 child: TextButton.icon(
                   style: TextButton.styleFrom(
-                      backgroundColor:
-                          AppColors.backgroundDark, // Red delete button
+                      backgroundColor: AppColors.backgroundDark,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       )),
                   onPressed: () async {
-                    // Show connfirmation dialog before deleting the task
-                    final shouldDeletetask = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(
-                          "Delete Task ",
-                          style: AppTextStyles.bodyText,
-                        ),
-                        content: Text(
-                          "Are you sure you want to delete this task? This action cannot be undone.",
-                          style: AppTextStyles.bodySmall,
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              context.pop();
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: AppTextStyles.bodyText,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              context.pop(true);
-                            },
-                            child: Text(
-                              "Delete",
-                              style: AppTextStyles.bodyText,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                    // If delete if user confirmed delete
-                    if (shouldDeletetask ?? false) {
-                      context.read<TaskListCubit>().deleteTasks(widget.task);
-                      context.pop();
-                    }
+                    await _showDeleteTaskDialog(); // Use the platform-specific dialog here
                   },
                   icon: const FaIcon(
                     FontAwesomeIcons.trash,
                     color: Colors.red,
-                    size: 19,
+                    size: 17,
                   ),
                   label: Text(
                     "Delete task",

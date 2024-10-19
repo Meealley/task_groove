@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/routes/pages.dart';
+import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/utils/choice_chip.dart';
+import 'package:task_groove/utils/custom_description_field.dart';
+import 'package:task_groove/utils/custom_textfield.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final TaskModel task;
@@ -17,6 +22,9 @@ class EditTaskScreen extends StatefulWidget {
 class _EditTaskScreenState extends State<EditTaskScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
+  late int _selectedPriority;
+
+  // int _priority = 3;
 
   @override
   void initState() {
@@ -24,6 +32,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _titleController = TextEditingController(text: widget.task.title);
     _descriptionController =
         TextEditingController(text: widget.task.description);
+    _selectedPriority = widget.task.priority;
   }
 
   @override
@@ -42,22 +51,24 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       id: widget.task.id,
       title: _titleController.text,
       description: _descriptionController.text,
-      // Add any other fields that are part of TaskModel
       completed: widget.task.completed,
-      priority: widget.task.priority,
+      priority: _selectedPriority,
       createdAt: widget.task.createdAt,
     );
 
     // Then navigate back or update your state as needed
     context.read<TaskListCubit>().updateTasks(updatedTask);
-    context.pushReplacement(Pages.inboxtask);
+    context.goNamed(Pages.inboxtask);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Task'),
+        title: Text(
+          'Edit Task',
+          style: AppTextStyles.headingBold,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -67,19 +78,53 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: ListView(
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Task Title'),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Task Title",
+                  style: AppTextStyles.bodyText,
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                CustomTextField(
+                    textInputType: TextInputType.text,
+                    textEditingController: _titleController),
+                SizedBox(height: 2.h),
+                Text(
+                  "Task Description",
+                  style: AppTextStyles.bodyText,
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                CustomDescriptionTextField(
+                  textInputType: TextInputType.text,
+                  textEditingController: _descriptionController,
+                ),
+                SizedBox(
+                  height: 1.5.h,
+                ),
+                Text(
+                  "Task Priority",
+                  style: AppTextStyles.bodyText,
+                ),
+                SizedBox(
+                  height: 1.h,
+                ),
+                PriorityChips(
+                  initialPriority: _selectedPriority,
+                  onSelected: (priority) {
+                    setState(() {
+                      _selectedPriority = priority;
+                    });
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Task Description'),
-              maxLines: 5,
-            ),
-            // Add more fields as needed
           ],
         ),
       ),

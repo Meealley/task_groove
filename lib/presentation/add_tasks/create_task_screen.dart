@@ -258,11 +258,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      PriorityChips(onSelected: (priority) {
-                        setState(() {
-                          _priority = priority;
-                        });
-                      }),
+                      PriorityChips(
+                          initialPriority: 3,
+                          onSelected: (priority) {
+                            setState(() {
+                              _priority = priority;
+                            });
+                          }),
                       const SizedBox(height: 20),
 
                       Row(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+// import 'package:sizer/sizer.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
@@ -35,8 +35,7 @@ class CustomDescriptionTextField extends StatelessWidget {
         style: obscureText
             ? const TextStyle(fontSize: 27)
             : AppTextStyles.bodySmall,
-        // validator: validator,
-        // onSaved: onSaved,
+
         obscureText: obscureText, // Use the passed obscureText value
         cursorHeight: 23,
         decoration: InputDecoration(
@@ -44,11 +43,7 @@ class CustomDescriptionTextField extends StatelessWidget {
           errorStyle: AppTextStyles.errorTextMessage,
           labelText: labelText,
           labelStyle: AppTextStyles.bodyText,
-          // contentPadding: const EdgeInsets.only(
-          //   top: 1,
-          //   bottom: 0,
-          //   left: 6,
-          // ),
+
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),

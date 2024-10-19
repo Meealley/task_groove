@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:task_groove/theme/app_textstyle.dart'; // For date formatting
+// import 'package:task_groove/theme/app_textstyle.dart'; // For date formatting
 
 class CalendarWithDateIcon extends StatelessWidget {
   const CalendarWithDateIcon({super.key});
@@ -17,7 +17,7 @@ class CalendarWithDateIcon extends StatelessWidget {
       children: [
         const FaIcon(
           FontAwesomeIcons.calendar,
-          size: 30,
+          size: 24,
           color: Colors.green,
         ),
         Positioned(

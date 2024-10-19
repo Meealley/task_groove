@@ -68,8 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: AppTextStyles.bodyTextBold,
                           ),
                           Text(
-                            "Day ${state.loginStreak} 🔥, Thursday",
-                            style: AppTextStyles.bodyGrey,
+                            "Day ${state.loginStreak} 🔥",
+                            style: AppTextStyles.bodyTextBold,
                           ),
                         ],
                       );
@@ -158,10 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  // Text(
-                  //   "Recent Activity",
-                  //   style: AppTextStyles.bodyTextBold,
-                  // ),
+
                   SizedBox(
                     height: 1.5.h,
                   ),

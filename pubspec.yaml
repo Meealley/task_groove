@@ -63,6 +63,9 @@ dependencies:
   http: ^1.2.2
   googleapis_auth: ^1.6.0
   timeago: ^3.7.0
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.14.1
+  badges: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +82,25 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/tasks.png
+  branding: assets/images/tasks.png
+  color_dark: "#121212"
+  image_dark: assets/images/tasks.png
+  branding_dark: assets/images/tasks.png
+
+  android_12:
+    image: assets/images/tasks.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/images/tasks.png
+    icon_background_color_dark: "#121212"
+
+  web: false
+
+
+
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -90,6 +112,8 @@ flutter:
   assets:
     - assets/images/
     - .env
+    - assets/images/tasks.png
+    - assets/images/app_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -117,3 +141,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  

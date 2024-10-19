@@ -31,12 +31,11 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       keyboardType: textInputType,
       controller: textEditingController,
-      style:
-          obscureText ? const TextStyle(fontSize: 27) : AppTextStyles.bodySmall,
+      style: obscureText ? AppTextStyles.bodyText : AppTextStyles.bodySmall,
       validator: validator,
       onSaved: onSaved,
       obscureText: obscureText, // Use the passed obscureText value
-      cursorHeight: obscureText ? 27 : 23,
+      cursorHeight: obscureText ? 24 : 23,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         errorText: errorText,

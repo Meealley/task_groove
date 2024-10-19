@@ -55,8 +55,9 @@ class TaskRepository {
           .doc(currentUserId)
           .collection("tasks")
           .doc(task.id);
-
+      log("Updating task: ${task.toMap()}");
       await taskRef.update(task.toMap());
+      log("Task updated with priority: ${task.priority}");
     } catch (e) {
       log(e.toString());
       throw CustomError(
@@ -117,19 +118,31 @@ class TaskRepository {
   // Search tasks by title of description
   Future<List<TaskModel>> searchTasks(String searchTerm) async {
     try {
+      // Convert the search term to lowercase
+      String lowerSearchTerm = searchTerm.toLowerCase();
+
+      // Retrieve a broader set of tasks based on title and description
       QuerySnapshot snapshot = await firestore
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
-          .where('title', isGreaterThanOrEqualTo: searchTerm)
-          .where("title", isLessThanOrEqualTo: '$searchTerm\uf8ff')
-          .where('description', isGreaterThanOrEqualTo: searchTerm)
-          .where("description", isLessThan: '$searchTerm\uf8ff')
-          .get();
+          .get(); // Get all tasks
 
-      return snapshot.docs.map((doc) {
+      // Filter the tasks locally by comparing lowercased title and description
+      List<TaskModel> matchedTasks = snapshot.docs.map((doc) {
         return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).where((task) {
+        String taskTitleLower = task.title.toLowerCase();
+        String taskDescriptionLower = task.description.toLowerCase();
+
+        // Check if either the title or description contains the search term
+        return taskTitleLower.contains(lowerSearchTerm) ||
+            taskDescriptionLower.contains(lowerSearchTerm);
       }).toList();
+
+      log("Found ${matchedTasks.length} tasks for search term: $searchTerm");
+
+      return matchedTasks;
     } catch (e) {
       log(e.toString());
       throw CustomError(
@@ -202,5 +215,57 @@ class TaskRepository {
         message: e.toString(),
       );
     }
+  }
+
+  // Fetch overdue tasks, prioritizing stopDateTime and falling back on startDateTime
+  // Future<List<TaskModel>> fetchOverdueTasks() async {
+  //   try {
+  //     DateTime now = DateTime.now(); // Current date and time
+
+  //     QuerySnapshot snapshot = await firestore
+  //         .collection("users")
+  //         .doc(currentUserId)
+  //         .collection("tasks")
+  //         .where('completed', isEqualTo: false) // Only fetch incomplete tasks
+  //         .where('startDateTime',
+  //             isLessThan: now) // Use startDateTime for overdue
+  //         .orderBy('startDateTime', descending: true) // Order by start date
+  //         .get();
+
+  //     return snapshot.docs.map((doc) {
+  //       return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
+  //     }).toList();
+  //   } catch (e) {
+  //     log(e.toString());
+  //     throw CustomError(
+  //       code: "Error Fetching Overdue Tasks",
+  //       message: e.toString(),
+  //     );
+  //   }
+  // }
+  Future<List<TaskModel>> fetchOverdueTasks() async {
+    final now = DateTime.now();
+    // Fetch all tasks, then filter out the ones that are overdue and not completed
+    final tasks = await fetchTasks();
+    return tasks.where((task) {
+      // Exclude completed tasks
+      if (task.completed) return false;
+
+      // If stopDateTime is set, use it to determine overdue status
+      if (task.stopDateTime != null && task.stopDateTime!.isBefore(now)) {
+        return true;
+      }
+
+      // If stopDateTime is not set but startDateTime is, check if the task is overdue by one day
+      if (task.stopDateTime == null && task.startDateTime != null) {
+        final oneDayAfterStart =
+            task.startDateTime!.add(const Duration(days: 1));
+        if (now.isAfter(oneDayAfterStart)) {
+          return true;
+        }
+      }
+      // Otherwise, the task is not overdue
+      return false;
+    }).toList();
   }
 }

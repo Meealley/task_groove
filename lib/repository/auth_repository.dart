@@ -11,6 +11,18 @@ import 'package:task_groove/models/user_model.dart'; // Fix: Typo in 'user_moder
 import 'package:task_groove/utils/custom_error.dart';
 
 class AuthRepository {
+// Function to create a welcome notification
+  Future<void> _createWelcomeNotification(String userId) async {
+    await firestore.collection('notifications').add({
+      'userId': userId,
+      'title': 'Welcome!',
+      'message': 'Welcome to Task Groove! We’re glad to have you here.',
+      // 'imageUrl': 'assets/images/welcome_notification.png',
+      'isOpened': false,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+
   // Sign Up method
   Future<UserModel> signUp({
     required String name,
@@ -53,6 +65,8 @@ class AuthRepository {
         'lastLogin': DateTime.now(),
         'fcmToken': fcmToken,
       });
+
+      await _createWelcomeNotification(user.userID);
 
       // Save user data to SharedPreferences
       await _saveUserToPrefs(user);
@@ -262,6 +276,8 @@ class AuthRepository {
     await prefs.setString('user_email', user.email);
     await prefs.setString('user_name', user.name);
     await prefs.setString('user_profilePicsUrl', user.profilePicsUrl);
+    await prefs.setInt('user_points', user.points);
+    await prefs.setInt('user_loginStreak', user.loginStreak);
   }
 
   // Clear user data from SharedPreferences
@@ -271,38 +287,54 @@ class AuthRepository {
     await prefs.remove('user_email');
     await prefs.remove('user_name');
     await prefs.remove('user_profilePicsUrl');
+    await prefs.remove('user_points');
+    await prefs.remove('user_loginStreak');
   }
 
   // Get the current user from FirebaseAuth and Firestore
   Future<UserModel?> getCurrentUser() async {
     try {
-      // Get the currently signed-in user from FirebaseAuth
-      User? firebaseUser = auth.currentUser;
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getString('user_uid');
 
-      // Check if the user is logged in
-      if (firebaseUser != null) {
-        // Fetch the user data from Firestore using the user's UID
-        DocumentSnapshot userDoc =
-            await firestore.collection('users').doc(firebaseUser.uid).get();
+      if (userId != null) {
+        // Fetch from SharedPreferences
+        String name = prefs.getString('user_name') ?? '';
+        String email = prefs.getString('user_email') ?? '';
+        String profilePic = prefs.getString('user_profilePicsUrl') ?? '';
+        int points = prefs.getInt('user_points') ?? 0;
+        int loginStreak = prefs.getInt('user_loginStreak') ?? 0;
 
-        if (userDoc.exists) {
-          // Map the Firestore data to a UserModel
-          UserModel currentUser = UserModel(
-            userID: userDoc['userID'],
-            name: userDoc['name'],
-            email: userDoc['email'],
-            profilePicsUrl: userDoc['profilePicsUrl'],
-            loginStreak: userDoc['loginStreak'],
-            points: userDoc['points'],
-          );
-          return currentUser;
-        } else {
-          log('User document not found in Firestore');
-          return null; // User data not found in Firestore
-        }
+        UserModel currentUser = UserModel(
+          userID: userId,
+          name: name,
+          email: email,
+          profilePicsUrl: profilePic,
+          loginStreak: loginStreak,
+          points: points,
+          // Other fields, you can default to 0 or fetch from Firestore if needed
+        );
+
+        log("Fetched user from SharedPreferences: $currentUser");
+        return currentUser;
       } else {
-        log('No user is currently logged in');
-        return null; // No user is logged in
+        // If no data in SharedPreferences, fallback to Firestore
+        User? firebaseUser = auth.currentUser;
+        if (firebaseUser != null) {
+          DocumentSnapshot userDoc =
+              await firestore.collection('users').doc(firebaseUser.uid).get();
+          if (userDoc.exists) {
+            UserModel currentUser = UserModel(
+              userID: userDoc['userID'],
+              name: userDoc['name'],
+              email: userDoc['email'],
+              profilePicsUrl: userDoc['profilePicsUrl'],
+              loginStreak: userDoc['loginStreak'],
+              points: userDoc['points'],
+            );
+            return currentUser;
+          }
+        }
       }
     } catch (e) {
       log('Error fetching current user: $e');
@@ -312,6 +344,7 @@ class AuthRepository {
         plugin: "Firebase_Auth",
       );
     }
+    return null;
   }
 
   // Sign out method
