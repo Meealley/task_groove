@@ -175,14 +175,43 @@ class TaskRepository {
   }
 
   // Sort tasks by completion status (completed first, then pending)
-  Future<List<TaskModel>> sortTasksByCompletionStatus() async {
+  // Future<List<TaskModel>> sortTasksByCompletionStatus() async {
+  //   try {
+  //     QuerySnapshot snapshot = await firestore
+  //         .collection("users")
+  //         .doc(currentUserId)
+  //         .collection("tasks")
+  //         .orderBy("completed", descending: true)
+  //         .get();
+
+  //     return snapshot.docs.map((doc) {
+  //       return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
+  //     }).toList();
+  //   } catch (e) {
+  //     log(e.toString());
+  //     throw CustomError(
+  //       code: "Error Searching for tasks",
+  //       message: e.toString(),
+  //     );
+  //   }
+  // }
+
+  Future<List<TaskModel>> fetchCompletedTasks(
+      {int limit = 3, DocumentSnapshot? lastDoc}) async {
     try {
-      QuerySnapshot snapshot = await firestore
+      Query query = firestore
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
-          .orderBy("completed", descending: true)
-          .get();
+          .where("completed", isEqualTo: true)
+          .orderBy("createdAt", descending: true)
+          .limit(limit);
+
+      if (lastDoc != null) {
+        query = query.startAfterDocument(lastDoc);
+      }
+
+      QuerySnapshot snapshot = await query.get();
 
       return snapshot.docs.map((doc) {
         return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
@@ -190,7 +219,7 @@ class TaskRepository {
     } catch (e) {
       log(e.toString());
       throw CustomError(
-        code: "Error Searching for tasks",
+        code: "Error fetching completed tasks",
         message: e.toString(),
       );
     }

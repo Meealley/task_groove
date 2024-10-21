@@ -92,7 +92,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
         icon: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FaIcon(
-            FontAwesomeIcons.personSkating,
+            FontAwesomeIcons.user,
             size: 17.sp,
           ),
         ),

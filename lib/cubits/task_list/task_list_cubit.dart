@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:equatable/equatable.dart';
@@ -181,6 +182,35 @@ class TaskListCubit extends Cubit<TaskListState> {
           status: TaskListStatus.error,
         ),
       );
+    }
+  }
+
+  // Fetch completed tasks with optional pagination (limit and lastDoc)
+  Future<void> fetchCompletedTasks(
+      {int limit = 3, DocumentSnapshot? lastDoc}) async {
+    emit(state.copyWith(status: TaskListStatus.loading));
+
+    try {
+      // Fetch completed tasks from repository
+      List<TaskModel> completedTasks = await taskRepository.fetchCompletedTasks(
+        limit: limit,
+        lastDoc: lastDoc, // Pass last document if available for pagination
+      );
+
+      // If state.completedTasks is null, initialize it as an empty list before adding new tasks
+      final updatedCompletedTasks =
+          List<TaskModel>.from(state.completedTasks ?? [])
+            ..addAll(completedTasks);
+
+      emit(state.copyWith(
+        completedTasks: updatedCompletedTasks,
+        status: TaskListStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        error: CustomError(message: e.toString()),
+        status: TaskListStatus.error,
+      ));
     }
   }
 }
