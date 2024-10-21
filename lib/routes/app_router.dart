@@ -13,6 +13,7 @@ import 'package:task_groove/presentation/home/widgets/overdue_task_screen.dart';
 import 'package:task_groove/presentation/home/widgets/task_description.dart';
 import 'package:task_groove/presentation/home/widgets/today_screen.dart';
 import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart';
+import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
 import 'package:task_groove/routes/pages.dart';
 
 class AppRouter {
@@ -95,6 +96,15 @@ class AppRouter {
           builder: (context, state) {
             final task = state.extra as TaskModel;
             return EditTaskScreen(task: task);
+          },
+        ),
+        GoRoute(
+          path: Pages.profileDescription,
+          name: Pages.profileDescription,
+          builder: (context, state) {
+            // final task = state.extra as TaskModel;
+            // return EditTaskScreen(task: task);
+            return const ProfileDescription();
           },
         ),
         //  GoRoute(

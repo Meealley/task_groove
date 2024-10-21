@@ -7,6 +7,7 @@ import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/models/task_model.dart';
+import 'package:task_groove/theme/appcolors.dart';
 
 class TodayTaskScreen extends StatefulWidget {
   const TodayTaskScreen({super.key});
@@ -28,8 +29,9 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
       appBar: AppBar(
         title: Text(
           "Today's Tasks",
-          style: AppTextStyles.headingBold,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
+        backgroundColor: AppColors.backgroundDark,
       ),
       body: BlocBuilder<TodayTaskCubit, TodayTaskState>(
         builder: (context, state) {

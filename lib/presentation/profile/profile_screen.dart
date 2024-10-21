@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
 import 'package:task_groove/cubits/signup/signup_cubit.dart';
+import 'package:task_groove/routes/pages.dart';
+import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/theme/appcolors.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,13 +15,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.teal,
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'Profile',
+      //     style: AppTextStyles.headingBold,
+      //   ),
+      //   backgroundColor: AppColors.backgroundDark,
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -25,30 +29,42 @@ class ProfileScreen extends StatelessWidget {
           children: [
             BlocBuilder<ProfileCubit, ProfileState>(
               builder: (context, state) {
-                return Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          'https://via.placeholder.com/150'), // Placeholder image or user profile pic
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          state.name, // Username fetched from the backend
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          'johndoe@email.com', // Email fetched from the backend
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    )
-                  ],
+                return GestureDetector(
+                  onTap: () {
+                    context.push(
+                      Pages.profileDescription,
+                      extra: {
+                        'name': state.name,
+                        'email': state.email,
+                        'profileImageUrl': state.profileImageUrl,
+                      },
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(
+                          state.profileImageUrl,
+                        ), // Placeholder image or user profile pic
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            state.name, // Username fetched from the backend
+                            style: AppTextStyles.headingBold,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            state.email, // Email fetched from the backend
+                            style: AppTextStyles.bodySmall,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 );
               },
             ),

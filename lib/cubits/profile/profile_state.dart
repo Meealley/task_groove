@@ -3,7 +3,9 @@ import 'package:equatable/equatable.dart';
 
 class ProfileState extends Equatable {
   final String name;
+  final String email;
   final int loginStreak;
+  final String profileImageUrl;
   final int points;
   final bool isLoading;
   final String? errorMessage;
@@ -13,7 +15,9 @@ class ProfileState extends Equatable {
       required this.loginStreak,
       required this.points,
       required this.isLoading,
-      required this.errorMessage});
+      required this.errorMessage,
+      required this.email,
+      required this.profileImageUrl});
 
   factory ProfileState.initial() {
     return const ProfileState(
@@ -22,6 +26,8 @@ class ProfileState extends Equatable {
       points: 0,
       isLoading: false,
       errorMessage: "",
+      profileImageUrl: "",
+      email: "",
     );
   }
 
@@ -32,7 +38,9 @@ class ProfileState extends Equatable {
       loginStreak,
       points,
       isLoading,
+      email,
       errorMessage,
+      profileImageUrl
     ];
   }
 
@@ -45,13 +53,17 @@ class ProfileState extends Equatable {
     int? points,
     bool? isLoading,
     String? errorMessage,
+    String? profileImageUrl,
+    String? email,
   }) {
     return ProfileState(
       name: name ?? this.name,
+      email: email ?? this.email,
       loginStreak: loginStreak ?? this.loginStreak,
       points: points ?? this.points,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
     );
   }
 }

@@ -52,6 +52,7 @@ class AuthRepository {
         loginStreak: 1,
         points: 0,
         fcmToken: fcmToken,
+        lastUsage: DateTime.now(),
       );
 
       // Save user to Firestore
@@ -121,7 +122,10 @@ class AuthRepository {
         loginStreak: userDoc['loginStreak'],
         points: userDoc['points'],
         fcmToken: fcmToken,
+        lastUsage: DateTime.now(),
       );
+
+      await trackDailyAppUsage();
 
       //Save user to shared preferences
       await _saveUserToPrefs(user);
@@ -167,69 +171,149 @@ class AuthRepository {
   }
 
 // Track login streak
-  Future<void> trackLogin() async {
+  // Future<void> trackLogin() async {
+  //   final uid = auth.currentUser?.uid;
+  //   if (uid != null) {
+  //     final userRef = firestore.collection('users').doc(uid);
+  //     final userDoc = await userRef.get();
+  //     final data = userDoc.data();
+
+  //     final currentLogin = DateTime.now().toUtc(); // Ensure UTC timezone
+  //     log("Start tracking login : $currentLogin");
+
+  //     if (data != null) {
+  //       final lastLogin = (data['lastLogin'] as Timestamp?)
+  //           ?.toDate()
+  //           .toUtc(); // Convert lastLogin to UTC
+  //       log("Current Login: $currentLogin");
+  //       log("Last Login: $lastLogin");
+
+  //       try {
+  //         if (lastLogin != null) {
+  //           final differenceInHours =
+  //               currentLogin.difference(lastLogin).inHours;
+  //           log("Difference in hours: $differenceInHours");
+
+  //           if (differenceInHours >= 24 && differenceInHours < 48) {
+  //             // Continue streak if last login was between 24 and 48 hours ago
+  //             log("Incrementing login streak...");
+  //             await userRef.update({
+  //               'loginStreak': FieldValue.increment(1),
+  //               'lastLogin': currentLogin,
+  //             });
+  //           } else if (currentLogin.difference(lastLogin).inDays >= 1) {
+  //             // Reset streak if last login was more than 1 day ago
+  //             log("Resetting login streak...");
+  //             await userRef.update({
+  //               'loginStreak': 1,
+  //               'lastLogin': currentLogin,
+  //             });
+  //           }
+  //         } else {
+  //           // Handle case where lastLogin is null
+  //           log("Last login is null, setting initial streak...");
+  //           await userRef.update({
+  //             'loginStreak': 1,
+  //             'lastLogin': currentLogin,
+  //           });
+  //         }
+  //       } catch (e) {
+  //         log('Error updating login streak: ${e.toString()}');
+  //         throw CustomError(
+  //           code: 'Login Streak Update Error',
+  //           message: e.toString(),
+  //         );
+  //       }
+  //     } else {
+  //       // If user data doesn't exist, set initial streak and last login
+  //       log("No user data found, setting initial login streak...");
+  //       await userRef.set({
+  //         'loginStreak': 1,
+  //         'lastLogin': currentLogin,
+  //       }, SetOptions(merge: true));
+  //     }
+  //   } else {
+  //     log("User ID not found.");
+  //   }
+  // }
+
+// Track App usage
+  Future<void> trackDailyAppUsage() async {
     final uid = auth.currentUser?.uid;
     if (uid != null) {
-      final userRef = firestore.collection('users').doc(uid);
+      final userRef = firestore.collection("users").doc(uid);
       final userDoc = await userRef.get();
       final data = userDoc.data();
 
-      final currentLogin = DateTime.now().toUtc(); // Ensure UTC timezone
-      log("Start tracking login : $currentLogin");
+      final currentUsage = DateTime.now().toUtc();
+      log("Start tracking App usage: $currentUsage");
 
       if (data != null) {
-        final lastLogin = (data['lastLogin'] as Timestamp?)
-            ?.toDate()
-            .toUtc(); // Convert lastLogin to UTC
-        log("Current Login: $currentLogin");
-        log("Last Login: $lastLogin");
+        final lastUsage = (data['lastUsage'] as Timestamp?)?.toDate().toUtc();
+
+        log("Current App usage : $currentUsage");
+        log('Last App usage: $lastUsage');
 
         try {
-          if (lastLogin != null) {
+          if (lastUsage != null) {
+            // Check if more than 24 hours have passed since last usage last usage
+
             final differenceInHours =
-                currentLogin.difference(lastLogin).inHours;
+                currentUsage.difference(lastUsage).inHours;
             log("Difference in hours: $differenceInHours");
 
-            if (differenceInHours >= 24 && differenceInHours < 48) {
-              // Continue streak if last login was between 24 and 48 hours ago
-              log("Incrementing login streak...");
+            if (differenceInHours >= 24) {
+              // Increment if streak is more than 24 hours
+              log("Incrementing App usage streak...");
               await userRef.update({
                 'loginStreak': FieldValue.increment(1),
-                'lastLogin': currentLogin,
+                'lastUsage': currentUsage,
               });
-            } else if (currentLogin.difference(lastLogin).inDays >= 1) {
-              // Reset streak if last login was more than 1 day ago
-              log("Resetting login streak...");
+
+              // Update SharedPreferences with the new streak value
+              final prefs = await SharedPreferences.getInstance();
+              int currentStreak = data['loginStreak'] + 1; // Incremented streak
+              await prefs.setInt('user_loginStreak', currentStreak);
+            } else {
+              // If less than 24 hours has passed, just update the lastUsage timestamp
+              log("Less than 24 hours since last usage, only updating the timestamp....");
               await userRef.update({
-                'loginStreak': 1,
-                'lastLogin': currentLogin,
+                'lastUsage': currentUsage,
               });
             }
           } else {
-            // Handle case where lastLogin is null
-            log("Last login is null, setting initial streak...");
+            // Handle case where lastUsage is null (first time using app)
+            log("Last app usage is null, setting initial streak...");
             await userRef.update({
               'loginStreak': 1,
-              'lastLogin': currentLogin,
+              'lastUsage': currentUsage,
             });
+
+            // Update SharedPreferences with the initial streak value
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setInt('user_loginStreak', 1);
           }
         } catch (e) {
-          log('Error updating login streak: ${e.toString()}');
+          log('Error updating app usage streak: ${e.toString()}');
           throw CustomError(
-            code: 'Login Streak Update Error',
+            code: 'App Usage Streak Update Error',
             message: e.toString(),
           );
         }
       } else {
-        // If user data doesn't exist, set initial streak and last login
-        log("No user data found, setting initial login streak...");
+        // If user data doesn't exist, set initial streak and last usage
+        log("No user data found, setting initial app usage streak...");
         await userRef.set({
           'loginStreak': 1,
-          'lastLogin': currentLogin,
+          'lastUsage': currentUsage,
         }, SetOptions(merge: true));
+
+        // Update SharedPreferences with the initial streak value
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('user_loginStreak', 1);
       }
     } else {
-      log("User ID not found.");
+      log("User ID not found");
     }
   }
 
@@ -269,7 +353,7 @@ class AuthRepository {
     }
   }
 
-  // Save user data to SharedPreferences
+// Save user data to SharedPreferences
   Future<void> _saveUserToPrefs(UserModel user) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_uid', user.userID);
@@ -278,9 +362,14 @@ class AuthRepository {
     await prefs.setString('user_profilePicsUrl', user.profilePicsUrl);
     await prefs.setInt('user_points', user.points);
     await prefs.setInt('user_loginStreak', user.loginStreak);
+
+    // Save lastUsage as a string (ISO 8601 format)
+    if (user.lastUsage != null) {
+      await prefs.setString('last_usage', user.lastUsage!.toIso8601String());
+    }
   }
 
-  // Clear user data from SharedPreferences
+// Clear user data from SharedPreferences
   Future<void> _clearUserFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_uid');
@@ -289,6 +378,9 @@ class AuthRepository {
     await prefs.remove('user_profilePicsUrl');
     await prefs.remove('user_points');
     await prefs.remove('user_loginStreak');
+
+    // Remove lastUsage as well
+    await prefs.remove('last_usage');
   }
 
   // Get the current user from FirebaseAuth and Firestore
@@ -304,6 +396,11 @@ class AuthRepository {
         String profilePic = prefs.getString('user_profilePicsUrl') ?? '';
         int points = prefs.getInt('user_points') ?? 0;
         int loginStreak = prefs.getInt('user_loginStreak') ?? 0;
+        String? lastUsageString = prefs.getString("last_usage");
+
+        // Parse lastUsage from stored string
+        DateTime? lastUsage =
+            lastUsageString != null ? DateTime.parse(lastUsageString) : null;
 
         UserModel currentUser = UserModel(
           userID: userId,
@@ -312,6 +409,7 @@ class AuthRepository {
           profilePicsUrl: profilePic,
           loginStreak: loginStreak,
           points: points,
+          lastUsage: lastUsage,
           // Other fields, you can default to 0 or fetch from Firestore if needed
         );
 
@@ -324,6 +422,10 @@ class AuthRepository {
           DocumentSnapshot userDoc =
               await firestore.collection('users').doc(firebaseUser.uid).get();
           if (userDoc.exists) {
+// Extract lastUsage from Firestore document
+            Timestamp? lastUsageTimestamp = userDoc['lastUsage'] as Timestamp?;
+            DateTime? lastUsage = lastUsageTimestamp?.toDate();
+
             UserModel currentUser = UserModel(
               userID: userDoc['userID'],
               name: userDoc['name'],
@@ -331,6 +433,7 @@ class AuthRepository {
               profilePicsUrl: userDoc['profilePicsUrl'],
               loginStreak: userDoc['loginStreak'],
               points: userDoc['points'],
+              lastUsage: lastUsage,
             );
             return currentUser;
           }

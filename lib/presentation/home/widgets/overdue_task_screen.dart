@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/models/overdue_task_status.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
+import 'package:task_groove/theme/appcolors.dart';
 
 class OverdueTaskScreen extends StatefulWidget {
   const OverdueTaskScreen({super.key});
@@ -34,8 +35,9 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
       appBar: AppBar(
         title: Text(
           "Overdue tasks",
-          style: AppTextStyles.headingBold,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
+        backgroundColor: AppColors.backgroundDark,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),

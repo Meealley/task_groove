@@ -23,6 +23,8 @@ class ProfileCubit extends Cubit<ProfileState> {
           loginStreak: user.loginStreak, // Adjust UserModel if needed
           points: user.points, // Adjust UserModel if needed
           isLoading: false,
+          email: user.email,
+          profileImageUrl: user.profilePicsUrl,
         ));
       } else {
         emit(state.copyWith(
@@ -42,7 +44,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> trackLogin() async {
     log("Tracking login...");
     try {
-      await authRepository.trackLogin();
+      await authRepository.trackDailyAppUsage();
       log("Login tracked successfully");
       await fetchUserProfile(); // Refresh the profile after tracking login
     } catch (e) {

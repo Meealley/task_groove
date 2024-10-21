@@ -8,6 +8,7 @@ import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/presentation/notification/widget/notification_screen.dart';
 import 'package:task_groove/presentation/profile/profile_screen.dart';
 import 'package:task_groove/presentation/search/search_screen.dart';
+import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 import 'package:badges/badges.dart' as badges;
@@ -24,6 +25,17 @@ class BottomNavigationUserBar extends StatefulWidget {
 class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _trackAppUsage();
+  }
+
+  Future<void> _trackAppUsage() async {
+    final authRepository = AuthRepository(); // Ensure to use your instance
+    await authRepository.trackDailyAppUsage();
+  }
 
   // Function to fetch unread notification count
   Stream<int> _fetchUnreadNotificationCount() {

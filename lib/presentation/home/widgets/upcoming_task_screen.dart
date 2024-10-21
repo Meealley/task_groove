@@ -8,6 +8,7 @@ import 'package:task_groove/models/tastlist_status.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:intl/intl.dart';
+import 'package:task_groove/theme/appcolors.dart';
 
 class UpcomingTaskScreen extends StatefulWidget {
   const UpcomingTaskScreen({super.key});
@@ -54,8 +55,9 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
       appBar: AppBar(
         title: Text(
           'Upcoming Tasks',
-          style: AppTextStyles.headingBold,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
+        backgroundColor: AppColors.backgroundDark,
       ),
       body: Column(
         children: [

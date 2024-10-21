@@ -11,6 +11,7 @@ class UserModel extends Equatable {
   final int loginStreak;
   final int points;
   final String? fcmToken;
+  final DateTime? lastUsage;
 
   const UserModel({
     required this.name,
@@ -20,6 +21,7 @@ class UserModel extends Equatable {
     required this.loginStreak,
     required this.points,
     this.fcmToken,
+    required this.lastUsage,
   });
 
   factory UserModel.fromDoc(DocumentSnapshot userDoc) {
@@ -33,6 +35,7 @@ class UserModel extends Equatable {
       loginStreak: userData['loginStreak'],
       points: userData['points'],
       fcmToken: userData['fcmToken'],
+      lastUsage: (userData['lastUsage'] as Timestamp?)?.toDate(),
     );
   }
 
@@ -46,12 +49,21 @@ class UserModel extends Equatable {
       loginStreak: 1,
       points: 0,
       fcmToken: fcmToken,
+      lastUsage: DateTime.now(),
     );
   }
 
   @override
-  List<Object?> get props =>
-      [name, email, userID, profilePicsUrl, loginStreak, points, fcmToken];
+  List<Object?> get props => [
+        name,
+        email,
+        userID,
+        profilePicsUrl,
+        loginStreak,
+        points,
+        fcmToken,
+        lastUsage
+      ];
 
   @override
   bool get stringify => true;

@@ -12,4 +12,5 @@ class Pages {
   static const taskDescription = '/taskDescription/:id';
   static const editTask = '/editTask/:id';
   static const notificationDescription = '/notificationDescription/:id';
+  static const profileDescription = '/profileDescription';
 }
