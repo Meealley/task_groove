@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class ProfileState extends Equatable {
   final String name;
+  final String userID;
   final String email;
   final int loginStreak;
   final String profileImageUrl;
@@ -12,6 +13,7 @@ class ProfileState extends Equatable {
 
   const ProfileState(
       {required this.name,
+      required this.userID,
       required this.loginStreak,
       required this.points,
       required this.isLoading,
@@ -21,6 +23,7 @@ class ProfileState extends Equatable {
 
   factory ProfileState.initial() {
     return const ProfileState(
+      userID: "",
       name: "",
       loginStreak: 1,
       points: 0,
@@ -34,6 +37,7 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props {
     return [
+      userID,
       name,
       loginStreak,
       points,
@@ -48,6 +52,7 @@ class ProfileState extends Equatable {
   bool get stringify => true;
 
   ProfileState copyWith({
+    String? userID,
     String? name,
     int? loginStreak,
     int? points,
@@ -57,6 +62,7 @@ class ProfileState extends Equatable {
     String? email,
   }) {
     return ProfileState(
+      userID: userID ?? this.userID,
       name: name ?? this.name,
       email: email ?? this.email,
       loginStreak: loginStreak ?? this.loginStreak,

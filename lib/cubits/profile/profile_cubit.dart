@@ -19,6 +19,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       if (user != null && user.name.isNotEmpty) {
         log(user.points.toString());
         emit(state.copyWith(
+          userID: user.userID,
           name: user.name,
           loginStreak: user.loginStreak, // Adjust UserModel if needed
           points: user.points, // Adjust UserModel if needed

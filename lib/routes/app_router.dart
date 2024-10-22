@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:task_groove/models/task_model.dart';
+import 'package:task_groove/models/user_model.dart';
 import 'package:task_groove/presentation/add_tasks/create_task_screen.dart';
 import 'package:task_groove/presentation/add_tasks/edit_task_screen.dart';
 import 'package:task_groove/presentation/auth/forgot_password_screen.dart';
@@ -98,15 +100,26 @@ class AppRouter {
             return EditTaskScreen(task: task);
           },
         ),
+        // GoRoute(
+        //   path: Pages.profileDescription,
+        //   name: Pages.profileDescription,
+        //   builder: (context, state) {
+        //     // final task = state.extra as TaskModel;
+        //     // return EditTaskScreen(task: task);
+        //     return const ProfileDescription();
+        //   },
+        // ),
         GoRoute(
           path: Pages.profileDescription,
           name: Pages.profileDescription,
           builder: (context, state) {
-            // final task = state.extra as TaskModel;
-            // return EditTaskScreen(task: task);
-            return const ProfileDescription();
+            final user = state.extra as UserModel; // Cast extra as UserModel
+
+            return ProfileDescription(
+                user: user); // Pass the user model to ProfileDescription
           },
         ),
+
         //  GoRoute(
         //   path: Pages.notificationDescription,
         //   name: Pages.notificationDescription,
