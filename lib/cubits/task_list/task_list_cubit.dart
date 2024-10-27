@@ -27,7 +27,12 @@ class TaskListCubit extends Cubit<TaskListState> {
 
     try {
       List<TaskModel> tasks = await taskRepository.fetchTasks();
-      emit(state.copyWith(tasks: tasks, status: TaskListStatus.success));
+      emit(
+        state.copyWith(
+          tasks: tasks,
+          status: TaskListStatus.success,
+        ),
+      );
       print(tasks);
     } catch (e) {
       emit(

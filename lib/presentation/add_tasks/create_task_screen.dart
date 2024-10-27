@@ -65,15 +65,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             textTheme: TextTheme(
-              bodyMedium:
-                  AppTextStyles.bodyText, // Apply your custom text style here
+              bodyMedium: AppTextStyles.bodyText,
             ),
             timePickerTheme: TimePickerThemeData(
-              // cancelButtonStyle: ButtonStyle(foregroundColor: MaterialStateColor.resolveWith((states) => Colosrs)),
-              hourMinuteTextStyle:
-                  AppTextStyles.bodyText, // Style for hour/minute text
-              dayPeriodTextStyle:
-                  AppTextStyles.bodyText, // Style for AM/PM text
+              hourMinuteTextStyle: AppTextStyles.bodyText,
+              dayPeriodTextStyle: AppTextStyles.bodyText,
             ),
           ),
           child: child!,

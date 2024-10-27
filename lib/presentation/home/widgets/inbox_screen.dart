@@ -36,9 +36,12 @@ class _InboxScreenState extends State<InboxScreen> {
   void initState() {
     super.initState();
     context.read<TaskListCubit>().fetchTasks(); // Fetch tasks when screen loads
-    context
-        .read<TaskListCubit>()
-        .fetchCompletedTasks(); // Fetch completed tasks
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      context
+          .read<TaskListCubit>()
+          .fetchCompletedTasks(); // Fetch completed tasks
+    });
   }
 
   // Toggle show/hide completed tasks
