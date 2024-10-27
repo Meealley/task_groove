@@ -45,7 +45,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> trackLogin() async {
     log("Tracking login...");
     try {
-      await authRepository.trackDailyAppUsage();
+      // await authRepository.trackDailyAppUsage();
+      await authRepository.trackLogin();
       log("Login tracked successfully");
       await fetchUserProfile(); // Refresh the profile after tracking login
     } catch (e) {
@@ -57,5 +58,28 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> awardPoints(int points) async {
     await authRepository.awardPoints(points);
     await fetchUserProfile(); // Refresh the profile after awarding points
+  }
+
+  Future<void> updateUserProfile({
+    required String name,
+    required String email,
+    String? profileImageUrl,
+  }) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      await authRepository.updateUserProfile(
+        userId: state.userID, // Use the current user's ID
+        name: name,
+        email: email,
+        profileImageUrl: profileImageUrl,
+      );
+      log("User profile updated successfully");
+      await fetchUserProfile(); // Refresh the profile after updating
+    } catch (e) {
+      emit(state.copyWith(
+        errorMessage: e.toString(),
+        isLoading: false,
+      ));
+    }
   }
 }

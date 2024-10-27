@@ -33,8 +33,8 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
   }
 
   Future<void> _trackAppUsage() async {
-    final authRepository = AuthRepository(); // Ensure to use your instance
-    await authRepository.trackDailyAppUsage();
+    // final authRepository = AuthRepository(); // Ensure to use your instance
+    // await authRepository.trackDailyAppUsage();
   }
 
   // Function to fetch unread notification count

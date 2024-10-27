@@ -75,6 +75,7 @@ class PushNotificationRepository {
       "client_x509_cert_url": dotenv.env['CLIENT_X509_CERT_URL'],
       "universe_domain": dotenv.env['UNIVERSE_DOMAIN'],
     };
+
     List<String> scopes = [
       'https://www.googleapis.com/auth/firebase.messaging',
     ];

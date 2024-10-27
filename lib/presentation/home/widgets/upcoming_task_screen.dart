@@ -133,7 +133,7 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
                           style: AppTextStyles.bodySmall,
                         ),
                         trailing: Text(
-                          DateFormat.jm().format(task.startDateTime!),
+                          DateFormat.jm().format(task.createdAt),
                           style: AppTextStyles.bodySmall,
                         ),
                         onTap: () {

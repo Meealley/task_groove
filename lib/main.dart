@@ -61,11 +61,11 @@ void main() async {
   });
 
   // Initialize HydratedStorage
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorage.webStorageDirectory
-        : await getTemporaryDirectory(),
-  );
+  // HydratedBloc.storage = await HydratedStorage.build(
+  //   storageDirectory: kIsWeb
+  //       ? HydratedStorage.webStorageDirectory
+  //       : await getTemporaryDirectory(),
+  // );
 
   // Initialize the app router
   final appRouter = AppRouter();

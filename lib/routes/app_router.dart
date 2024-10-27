@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/user_model.dart';
 import 'package:task_groove/presentation/add_tasks/create_task_screen.dart';
@@ -19,14 +20,22 @@ import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
 import 'package:task_groove/routes/pages.dart';
 
 class AppRouter {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // This method checks the auth status to set the initial location
+  // Future<String> getInitialLocation() async {
+  //   User? user = _auth.currentUser;
+  //   return user != null
+  //       ? Pages.bottomNavbar
+  //       : Pages.login; // If authenticated, go to Home, else Login
+  // }
+
   Future<String> getInitialLocation() async {
-    User? user = _auth.currentUser;
-    return user != null
-        ? Pages.bottomNavbar
-        : Pages.login; // If authenticated, go to Home, else Login
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('user_uid'); // Check for stored user ID
+
+    // Redirect to the appropriate page based on user existence
+    return userId != null ? Pages.bottomNavbar : Pages.login;
   }
 
   Future<GoRouter> createRouter() async {

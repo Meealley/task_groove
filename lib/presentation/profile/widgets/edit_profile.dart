@@ -107,7 +107,9 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/models/user_model.dart'; // Ensure you import the UserModel
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/utils/button.dart';
@@ -195,6 +197,11 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
                 print("Updated Name: ${_nameController.text}");
                 print("Updated Email: ${_emailController.text}");
                 // You can call a method in your cubit to update the user profile.
+                context.read<ProfileCubit>().updateUserProfile(
+                      name: _nameController.text,
+                      email: _emailController.text,
+                      profileImageUrl: _profileImageUrl,
+                    );
               },
             ),
           ],
