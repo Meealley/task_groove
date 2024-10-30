@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:equatable/equatable.dart';
+import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/tastlist_status.dart';
 import 'package:task_groove/repository/push_notification_repository.dart';
@@ -109,6 +110,7 @@ class TaskListCubit extends Cubit<TaskListState> {
   // Helper function to schedule task notifications
   void _scheduleTaskNotification(TaskModel task) {
     final now = DateTime.now();
+    final userID = auth.currentUser!.uid;
 
     if (task.reminder != null) {
       final reminderTime = task.reminder!;
@@ -130,6 +132,8 @@ class TaskListCubit extends Cubit<TaskListState> {
         final durationUntilReminder = reminderTime.difference(now);
         Timer(durationUntilReminder, () {
           _sendNotification(task, "Task reminder: Time to start the task!");
+          _saveNotificationToFirestore(
+              task, userID, "Task reminder: Time to start the task");
         });
       }
     } else if (task.startDateTime != null) {
@@ -144,6 +148,8 @@ class TaskListCubit extends Cubit<TaskListState> {
             notificationTimeBeforeDue.difference(now);
         Timer(durationUntilNotificationBeforeDue, () {
           _sendNotification(task, "Task is due in 30 minutes");
+          _saveNotificationToFirestore(
+              task, userID, "Task is due in 30 minutes");
         });
       }
 
@@ -152,6 +158,7 @@ class TaskListCubit extends Cubit<TaskListState> {
         final durationUntilDue = dueDateTime.difference(now);
         Timer(durationUntilDue, () {
           _sendNotification(task, "Task is due now");
+          _saveNotificationToFirestore(task, userID, "Task is due now");
         });
       }
     }
@@ -170,6 +177,22 @@ class TaskListCubit extends Cubit<TaskListState> {
       }
     } catch (e) {
       log("Error sending push notification: $e");
+    }
+  }
+
+  // Method to save notification to Firestore
+  Future<void> _saveNotificationToFirestore(
+      TaskModel task, String userId, String message) async {
+    try {
+      await firestore.collection('notifications').add({
+        'userId': userId,
+        'title': 'Task Reminder: ${task.title}',
+        'message': message,
+        'createdAt': DateTime.now(),
+        'isOpened': false,
+      });
+    } catch (e) {
+      log("Error saving notification to Firestore: $e");
     }
   }
 
