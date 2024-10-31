@@ -220,6 +220,7 @@ class _InboxScreenState extends State<InboxScreen> {
                   break;
                 case 'Sort by Date':
                   // Handle sorting by date
+                  context.read<TaskListCubit>().sortTasksByDueDate();
                   break;
               }
             },

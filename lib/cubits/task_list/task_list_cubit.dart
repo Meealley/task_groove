@@ -241,4 +241,52 @@ class TaskListCubit extends Cubit<TaskListState> {
       ));
     }
   }
+
+  Future<void> sortTasksByDueDate() async {
+    emit(state.copyWith(status: TaskListStatus.loading));
+
+    try {
+      List<TaskModel> allTasks = await taskRepository.sortTasksByDueDate();
+
+// Spliting task based on preference of stopDateTime
+      List<TaskModel> taskWithBothDates = allTasks
+          .where(
+              (task) => task.stopDateTime != null && task.startDateTime != null)
+          .toList();
+      List<TaskModel> tasksWithOneDate = allTasks
+          .where((task) =>
+              (task.stopDateTime != null || task.startDateTime != null) &&
+              (task.stopDateTime == null || task.startDateTime == null))
+          .toList();
+      List<TaskModel> taskWithoutAnyDate = allTasks
+          .where(
+              (task) => task.stopDateTime == null && task.startDateTime == null)
+          .toList();
+
+      // sort task without stopdateTime, with startDateTime
+
+      taskWithBothDates
+          .sort((a, b) => a.stopDateTime!.compareTo(b.stopDateTime!));
+      tasksWithOneDate.sort((a, b) {
+        final aDate = a.stopDateTime ?? a.startDateTime ?? DateTime(0);
+        final bDate = b.startDateTime ?? b.startDateTime ?? DateTime(0);
+        return aDate.compareTo(bDate);
+      });
+
+      // Combine the list prioritizing the task with stopDate
+      final sortedTask = [
+        ...taskWithBothDates,
+        ...tasksWithOneDate,
+        ...taskWithoutAnyDate,
+      ];
+      // List<TaskModel> sortedTask = await taskRepository.sortTasksByDueDate();
+
+      emit(state.copyWith(tasks: sortedTask, status: TaskListStatus.success));
+    } catch (e) {
+      emit(state.copyWith(
+        error: CustomError(message: e.toString()),
+        status: TaskListStatus.error,
+      ));
+    }
+  }
 }

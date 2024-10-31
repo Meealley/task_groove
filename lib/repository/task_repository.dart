@@ -231,7 +231,7 @@ class TaskRepository {
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
-          .orderBy('stopDateTime')
+          .orderBy('stopDateTime', descending: false)
           .get();
 
       return snapshot.docs.map((doc) {
