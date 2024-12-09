@@ -83,38 +83,78 @@ class NotificationScreen extends StatelessWidget {
               final notification = notifications[index];
               final bool isOpened = notification['isOpened'] ?? false;
 
-              return ListTile(
-                title: Text(
-                  notification['title'] ?? 'No Title',
-                  style: AppTextStyles.bodyText,
+              return Dismissible(
+                key: Key(notification.id),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: const Icon(
+                    FontAwesomeIcons.trash,
+                    color: Colors.white,
+                  ),
                 ),
-                subtitle: Text(
-                  notification['message'] ?? 'No Message',
-                  style: AppTextStyles.bodySmall,
-                ),
-                trailing: FaIcon(
-                  isOpened
-                      ? FontAwesomeIcons.envelopeOpen
-                      : FontAwesomeIcons.envelope,
-                  color: isOpened ? Colors.green : Colors.red,
-                ),
-                onTap: () {
-                  // Navigate to NotificationDescriptionScreen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => NotificationDescriptionScreen(
-                        title: notification['title'],
-                        message: notification['message'],
-                        // imageUrl: notification['imageUrl'] ??
-                        //     '', // Add image URL field if it exists
-                      ),
-                    ),
-                  );
-                  _markAsOpened(notification.id); // Mark as opened when tapped
+                onDismissed: (direction) async {
+// Remove notifications from the firestore
 
-                  // You can display the notification message or take other actions here
+                  try {
+                    await firestore
+                        .collection('notifications')
+                        .doc(notification.id)
+                        .delete();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "Notification deleted",
+                          style: AppTextStyles.bodyText.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    debugPrint('Error deleting notification: $e');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Failed to delete notification')),
+                    );
+                  }
                 },
+                child: ListTile(
+                  title: Text(
+                    notification['title'] ?? 'No Title',
+                    style: AppTextStyles.bodyText,
+                  ),
+                  subtitle: Text(
+                    notification['message'] ?? 'No Message',
+                    style: AppTextStyles.bodySmall,
+                  ),
+                  trailing: FaIcon(
+                    isOpened
+                        ? FontAwesomeIcons.envelopeOpen
+                        : FontAwesomeIcons.envelope,
+                    color: isOpened ? Colors.green : Colors.red,
+                  ),
+                  onTap: () {
+                    // Navigate to NotificationDescriptionScreen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationDescriptionScreen(
+                          title: notification['title'],
+                          message: notification['message'],
+                          // imageUrl: notification['imageUrl'] ??
+                          //     '', // Add image URL field if it exists
+                        ),
+                      ),
+                    );
+                    _markAsOpened(
+                        notification.id); // Mark as opened when tapped
+
+                    // You can display the notification message or take other actions here
+                  },
+                ),
               );
             },
           );

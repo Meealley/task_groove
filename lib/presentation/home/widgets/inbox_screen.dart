@@ -115,7 +115,10 @@ class _InboxScreenState extends State<InboxScreen> {
         backgroundColor: AppColors.backgroundDark,
         leading: IconButton(
           onPressed: () => context.goNamed(Pages.bottomNavbar),
-          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
         actions: [
           PopupMenuButton<String>(
@@ -124,7 +127,10 @@ class _InboxScreenState extends State<InboxScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(9),
             ),
-            icon: const Icon(Icons.more_vert),
+            icon: const Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
             onSelected: (String value) {
               switch (value) {
                 case 'Show Completed Tasks':
@@ -214,7 +220,7 @@ class _InboxScreenState extends State<InboxScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    context.go(Pages.createTask);
+                    context.push(Pages.createTask);
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -239,7 +245,9 @@ class _InboxScreenState extends State<InboxScreen> {
           }
 
 // Check if all tasks have been completed
-          if (activeTasks.isEmpty && completedTasks.isNotEmpty) {
+          if (activeTasks.isEmpty &&
+              completedTasks.isNotEmpty &&
+              !showCompletedTasks) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -265,7 +273,7 @@ class _InboxScreenState extends State<InboxScreen> {
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () {
-                        context.go(Pages.createTask);
+                        context.push(Pages.createTask);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
