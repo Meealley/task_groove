@@ -2,11 +2,9 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
@@ -26,7 +24,6 @@ import 'package:task_groove/repository/recent_activity_repository.dart';
 import 'package:task_groove/repository/task_repository.dart';
 import 'package:task_groove/routes/app_router.dart'; // Import AppRouter
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
 void main() async {

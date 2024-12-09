@@ -1,10 +1,11 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/tastlist_status.dart';
@@ -29,7 +30,7 @@ class _InboxScreenState extends State<InboxScreen> {
       GlobalKey<AnimatedListState>(); // Key for AnimatedList
   final Duration animationDuration =
       const Duration(milliseconds: 300); // Duration for animations
-  int _completedTasksVisibleCount =
+  final int _completedTasksVisibleCount =
       0; // Tracks the number of completed tasks shown in the AnimatedList.
 
   @override
@@ -53,8 +54,8 @@ class _InboxScreenState extends State<InboxScreen> {
         for (int i = 0; i < completedTasks.length; i++) {
           _listKey.currentState?.insertItem(i);
         }
-        _completedTasksVisibleCount =
-            completedTasks.length; // Set to full count
+        // _completedTasksVisibleCount =
+        //     completedTasks.length; // Set to full count
       } else {
         // Remove completed tasks with animation
         for (int i = completedTasks.length - 1; i >= 0; i--) {
@@ -62,129 +63,43 @@ class _InboxScreenState extends State<InboxScreen> {
             return _buildCompletedTaskItem(completedTasks[i], animation);
           });
         }
-        _completedTasksVisibleCount = 0; // Set to full count
+        // _completedTasksVisibleCount = 0; // Set to full count
       }
     });
   }
-
-  // Handle task completion status change
-  // void _onTaskCompleted(TaskModel task) {
-  //   setState(() {
-  //     final updatedTask = task.copyWith(completed: !task.completed);
-
-  //     if (updatedTask.completed) {
-  //       // Task is marked as completed, move it to completedTasks list
-  //       activeTasks.removeWhere((t) => t.id == task.id);
-  //       completedTasks.add(updatedTask);
-
-  //       // If showCompletedTasks is true, animate the addition of the task
-  //       if (showCompletedTasks) {
-  //         _listKey.currentState?.insertItem(completedTasks.length - 1);
-  //       }
-  //     } else {
-  //       // Task is unmarked as completed, move it back to activeTasks list
-  //       int completedTaskIndex =
-  //           completedTasks.indexWhere((t) => t.id == task.id);
-  //       if (completedTaskIndex != -1) {
-  //         final removedTask = completedTasks.removeAt(completedTaskIndex);
-
-  //         // If showCompletedTasks is true, animate the removal of the task
-  //         if (showCompletedTasks) {
-  //           _listKey.currentState?.removeItem(
-  //             completedTaskIndex,
-  //             (context, animation) =>
-  //                 _buildCompletedTaskItem(removedTask, animation),
-  //           );
-  //         }
-
-  //         // Add it back to the active task list
-  //         activeTasks.add(updatedTask);
-  //       }
-  //     }
-
-  //     // Update the task in the state management
-  //     context.read<TaskListCubit>().updateTasks(updatedTask);
-  //   });
-  // }
-
-  // void _onTaskCompleted(TaskModel task) {
-  //   setState(() {
-  //     final updatedTask = task.copyWith(completed: !task.completed);
-
-  //     if (updatedTask.completed) {
-  //       int activeTaskIndex = activeTasks.indexWhere((t) => t.id == task.id);
-  //       if (activeTaskIndex != -1) {
-  //         activeTasks.removeAt(activeTaskIndex);
-  //         completedTasks.add(updatedTask);
-
-  //         if (showCompletedTasks && _listKey.currentState != null) {
-  //           _listKey.currentState?.insertItem(_completedTasksVisibleCount);
-  //           _completedTasksVisibleCount++; // Increment the visible count
-  //         }
-  //       }
-  //     } else {
-  //       int completedTaskIndex =
-  //           completedTasks.indexWhere((t) => t.id == task.id);
-  //       if (completedTaskIndex != -1) {
-  //         completedTasks.removeAt(completedTaskIndex);
-  //         activeTasks.add(updatedTask);
-
-  //         if (showCompletedTasks && _listKey.currentState != null) {
-  //           _listKey.currentState?.removeItem(
-  //             completedTaskIndex,
-  //             (context, animation) => _buildCompletedTaskItem(task, animation),
-  //           );
-  //           _completedTasksVisibleCount--; // Decrement the visible count
-  //         }
-  //       }
-  //     }
-
-  //     context.read<TaskListCubit>().updateTasks(updatedTask);
-  //   });
-  // }
 
   void _onTaskCompleted(TaskModel task) {
     setState(() {
       final updatedTask = task.copyWith(completed: !task.completed);
 
       if (updatedTask.completed) {
-        // Remove from activeTasks
-        final activeIndex = activeTasks.indexWhere((t) => t.id == task.id);
-        if (activeIndex != -1) {
-          activeTasks.removeAt(activeIndex);
-        }
-
-        // Add to completedTasks and insert into AnimatedList if necessary
+        // Move to completed tasks
+        activeTasks.removeWhere((t) => t.id == task.id);
         completedTasks.add(updatedTask);
-        if (showCompletedTasks && _listKey.currentState != null) {
-          if (_completedTasksVisibleCount < completedTasks.length) {
-            _listKey.currentState?.insertItem(completedTasks.length - 1);
-            _completedTasksVisibleCount++;
-          }
+
+        // If showing completed tasks, animate addition
+        if (showCompletedTasks) {
+          _listKey.currentState?.insertItem(completedTasks.length - 1);
         }
       } else {
-        // Remove from completedTasks and active AnimatedList
+        // Move back to active tasks
         final completedIndex =
             completedTasks.indexWhere((t) => t.id == task.id);
         if (completedIndex != -1) {
-          completedTasks.removeAt(completedIndex);
-          if (showCompletedTasks && _listKey.currentState != null) {
-            if (_completedTasksVisibleCount > completedIndex) {
-              _listKey.currentState?.removeItem(
-                completedIndex,
-                (context, animation) =>
-                    _buildCompletedTaskItem(task, animation),
-              );
-              _completedTasksVisibleCount--;
-            }
+          final removedTask = completedTasks.removeAt(completedIndex);
+
+          if (showCompletedTasks) {
+            _listKey.currentState?.removeItem(
+              completedIndex,
+              (context, animation) =>
+                  _buildCompletedTaskItem(removedTask, animation),
+            );
           }
         }
-
-        // Add back to activeTasks
         activeTasks.add(updatedTask);
       }
 
-      // Update the state in your cubit or state manager
+      // Update state in the cubit
       context.read<TaskListCubit>().updateTasks(updatedTask);
     });
   }
@@ -278,11 +193,98 @@ class _InboxScreenState extends State<InboxScreen> {
           activeTasks = state.tasks.where((task) => !task.completed).toList();
           completedTasks = state.tasks.where((task) => task.completed).toList();
 
-          if (activeTasks.isEmpty && completedTasks.isEmpty) {
+          // Checks if there are no tasks created at all
+          if (state.tasks.isEmpty) {
+            return Column(
+              children: [
+                Center(
+                  child: Image.asset(
+                    'assets/images/empty_file.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    'No tasks available, Please add a task. 📝',
+                    style: AppTextStyles.bodyText,
+                  ),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.go(Pages.createTask);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundDark,
+                      borderRadius: BorderRadius.circular(
+                        20,
+                      ),
+                    ),
+                    child: Text(
+                      "Add Task",
+                      style:
+                          AppTextStyles.bodyText.copyWith(color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+
+// Check if all tasks have been completed
+          if (activeTasks.isEmpty && completedTasks.isNotEmpty) {
             return Center(
-              child: Text(
-                'No tasks available, Please add a task. 📝',
-                style: AppTextStyles.bodyText,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/congratulations.png', // Replace with a congratulatory image
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '🎉 Congratulations!',
+                      style: AppTextStyles.heading.copyWith(fontSize: 24),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'You have completed all your tasks for today. Keep up the great work!',
+                      style: AppTextStyles.bodyText,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        context.go(Pages.createTask);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundDark,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          "Add More Tasks",
+                          style: AppTextStyles.bodyText
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -295,17 +297,9 @@ class _InboxScreenState extends State<InboxScreen> {
                 ...activeTasks.map((task) {
                   return _buildTaskItem(task);
                 }),
-                // AnimatedList(
-                //   key: _listKey,
-                //   shrinkWrap: true,
-                //   initialItemCount: activeTasks.length,
-                //   itemBuilder: (context, index, animation) {
-                //     return _buildTaskItem(activeTasks[index], animation);
-                //   },
-                // ),
 
                 // Animated list for completed tasks
-                if (completedTasks.isNotEmpty)
+                if (completedTasks.isNotEmpty && showCompletedTasks)
                   AnimatedList(
                     key: _listKey,
                     shrinkWrap: true,
@@ -313,6 +307,10 @@ class _InboxScreenState extends State<InboxScreen> {
                     initialItemCount:
                         showCompletedTasks ? completedTasks.length : 0,
                     itemBuilder: (context, index, animation) {
+                      if (index < 0 || index >= completedTasks.length) {
+                        // Ensure we don't try to access an invalid index
+                        return const SizedBox.shrink();
+                      }
                       return _buildCompletedTaskItem(
                           completedTasks[index], animation);
                     },
