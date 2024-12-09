@@ -274,6 +274,44 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ? "Loading..."
                                 : "Register",
                           ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<SignupCubit>()
+                                  .googleSignInMethod(context);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 22.w,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/google_sign_in.png",
+                                    fit: BoxFit.contain,
+                                    height: 29,
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      "Sign in with Google",
+                                      style: AppTextStyles.bodyText,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),

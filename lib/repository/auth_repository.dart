@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/models/user_model.dart'; // Fix: Typo in 'user_moder'
@@ -11,6 +12,8 @@ import 'package:task_groove/models/user_model.dart'; // Fix: Typo in 'user_moder
 import 'package:task_groove/utils/custom_error.dart';
 
 class AuthRepository {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
 // Function to create a welcome notification
   Future<void> _createWelcomeNotification(String userId) async {
     await firestore.collection('notifications').add({
@@ -84,6 +87,96 @@ class AuthRepository {
         code: "Exception",
         message: e.toString(),
         plugin: "Flutter_error",
+      );
+    }
+  }
+
+// Google Sign-In method
+  Future<UserModel> signInWithGoogle() async {
+    try {
+      // Trigger the Google Sign-In flow
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw const CustomError(
+          code: "GoogleSignInError",
+          message: "Google Sign-In was canceled by the user.",
+        );
+      }
+
+      // Get the authentication details from the Google account
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential using the Google token
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase with the Google credentials
+      final UserCredential userCredential =
+          await auth.signInWithCredential(credential);
+
+      // Retrieve user data from Firestore (or create new user if not found)
+      var userDoc = await firestore
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .get();
+
+      // Check if user exists
+      UserModel user;
+      if (!userDoc.exists) {
+        // If the user doesn't exist, create a new user record
+        user = UserModel(
+          userID: userCredential.user!.uid,
+          name: googleUser.displayName ?? 'No Name',
+          email: googleUser.email,
+          profilePicsUrl: googleUser.photoUrl ?? '',
+          loginStreak: 1,
+          points: 0,
+          fcmToken: await getFcmToken(),
+          lastUsage: DateTime.now(),
+        );
+
+        // Save the user to Firestore
+        await firestore.collection('users').doc(user.userID).set({
+          'name': user.name,
+          'email': user.email,
+          'userID': user.userID,
+          'profilePicsUrl': user.profilePicsUrl,
+          'loginStreak': 1,
+          'points': 0,
+          'fcmToken': user.fcmToken,
+          'lastLogin': DateTime.now(),
+        });
+
+        // Optionally, send a welcome notification
+        await _createWelcomeNotification(user.userID);
+      } else {
+        // If the user exists, get the existing data
+        user = UserModel(
+          userID: userDoc['userID'],
+          name: userDoc['name'],
+          email: userDoc['email'],
+          profilePicsUrl: userDoc['profilePicsUrl'],
+          loginStreak: userDoc['loginStreak'],
+          points: userDoc['points'],
+          fcmToken: await getFcmToken(),
+          lastUsage: DateTime.now(),
+        );
+      }
+
+      // Save the user data to SharedPreferences
+      await _saveUserToPrefs(user);
+
+      return user;
+    } catch (e) {
+      log('Error signing in with Google: $e');
+      throw CustomError(
+        code: "GoogleSignInError",
+        message: e.toString(),
+        plugin: "Firebase_Auth",
       );
     }
   }

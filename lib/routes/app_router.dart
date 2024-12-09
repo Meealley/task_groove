@@ -16,6 +16,8 @@ import 'package:task_groove/presentation/home/widgets/overdue_task_screen.dart';
 import 'package:task_groove/presentation/home/widgets/task_description.dart';
 import 'package:task_groove/presentation/home/widgets/today_screen.dart';
 import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart';
+import 'package:task_groove/presentation/profile/calendar_integration/calendar_integration_screen.dart';
+import 'package:task_groove/presentation/profile/statistics/statistics_page.dart';
 import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
 import 'package:task_groove/routes/pages.dart';
 
@@ -127,6 +129,16 @@ class AppRouter {
             return ProfileDescription(
                 user: user); // Pass the user model to ProfileDescription
           },
+        ),
+        GoRoute(
+          path: Pages.profileStatistics,
+          name: Pages.profileStatistics,
+          builder: ((context, state) => const StatisticsPage()),
+        ),
+        GoRoute(
+          path: Pages.profileCalendarIntegration,
+          name: Pages.profileCalendarIntegration,
+          builder: ((context, state) => const CalendarIntegrationScreen()),
         ),
 
         //  GoRoute(

@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
+import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
@@ -19,6 +20,7 @@ import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
 import 'package:task_groove/firebase_options.dart';
 import 'package:task_groove/repository/auth_repository.dart';
+import 'package:task_groove/repository/google_calendar_repository.dart';
 import 'package:task_groove/repository/push_notification_repository.dart';
 import 'package:task_groove/repository/recent_activity_repository.dart';
 import 'package:task_groove/repository/task_repository.dart';
@@ -136,6 +138,11 @@ class MyApp extends StatelessWidget {
             recentActivityRepository: RecentActivityRepository(),
           ),
         ),
+        BlocProvider<GoogleCalenderCubit>(
+          create: (context) => GoogleCalenderCubit(
+            googleCalendarRepository: GoogleCalendarRepository(),
+          ),
+        )
       ],
       child: Sizer(
         builder: (context, _, __) {

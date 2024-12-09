@@ -13,4 +13,6 @@ class Pages {
   static const editTask = '/editTask/:id';
   static const notificationDescription = '/notificationDescription/:id';
   static const profileDescription = '/profileDescription';
+  static const profileStatistics = '/profileStatistics';
+  static const profileCalendarIntegration = '/profileCalendarIntegration';
 }

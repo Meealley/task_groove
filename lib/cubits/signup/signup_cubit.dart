@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_groove/models/signup_status.dart';
+import 'package:task_groove/models/user_model.dart';
 import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/utils/custom_error.dart';
@@ -60,6 +61,45 @@ class SignupCubit extends Cubit<SignupState> {
           ),
         ),
       );
+    }
+  }
+
+// Google Sign-In method
+  Future<void> googleSignInMethod(BuildContext context) async {
+    emit(state.copyWith(signUpStatus: SignUpStatus.loading));
+
+    try {
+      // Call signInWithGoogle from AuthRepository
+      UserModel user = await authRepository.signInWithGoogle();
+
+      // Show success message
+      ToastService.sendScaffoldAlert(
+        msg: "Google Sign-In Successful",
+        toastStatus: "SUCCESS",
+        context: context,
+      );
+
+      // Emit the success state
+      emit(state.copyWith(
+        signUpStatus: SignUpStatus.success,
+      ));
+
+      log("User signed in with Google: ${user.name}");
+
+      // Navigate to the home or dashboard page
+      context.go(Pages.home); // Adjust this navigation as needed
+    } catch (e) {
+      emit(
+        state.copyWith(
+          signUpStatus: SignUpStatus.error,
+          error: CustomError(
+            code: "GoogleSignInError",
+            message: e.toString(),
+            plugin: "firebase_auth",
+          ),
+        ),
+      );
+      log("Error signing in with Google: $e");
     }
   }
 
