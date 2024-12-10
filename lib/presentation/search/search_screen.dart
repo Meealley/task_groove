@@ -232,7 +232,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         Center(
                             child: Image.asset(
-                          "assets/images/empty_list.png",
+                          "assets/images/empty_search.png",
                           fit: BoxFit.cover,
                         )),
                         SizedBox(
