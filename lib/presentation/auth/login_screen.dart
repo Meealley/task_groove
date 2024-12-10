@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/login/login_cubit.dart';
+import 'package:task_groove/cubits/signup/signup_cubit.dart';
 
 import 'package:task_groove/models/login_status.dart';
 import 'package:task_groove/routes/pages.dart';
@@ -217,6 +218,79 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ? "Loading..."
                                   : "Login",
                             ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Flexible(
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                    endIndent:
+                                        20, // Adds spacing to the end of the divider
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0), // Space around "or"
+                                  child: Text(
+                                    "or",
+                                    style: AppTextStyles.bodySmall,
+                                  ),
+                                ),
+                                const Flexible(
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: Colors.grey,
+                                    indent:
+                                        20, // Adds spacing to the start of the divider
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<SignupCubit>()
+                                    .googleSignInMethod(context);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 22.w,
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/google_sign_in.png",
+                                      fit: BoxFit.contain,
+                                      height: 29,
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        "Login in with Google",
+                                        style: AppTextStyles.bodyText,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

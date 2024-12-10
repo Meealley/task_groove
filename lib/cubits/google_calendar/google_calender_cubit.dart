@@ -12,14 +12,17 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
   GoogleCalenderCubit({required this.googleCalendarRepository})
       : super(GoogleCalenderState.initial());
 
-  // Authenticate User
+  /// Authenticate User
   Future<void> authenticateUser() async {
     emit(state.copyWith(isLoading: true));
-
     try {
       final api = await googleCalendarRepository.authenticateUser();
       if (api != null) {
-        emit(state.copyWith(isAuthenticated: true, isLoading: false));
+        emit(state.copyWith(
+          isAuthenticated: true,
+          isLoading: false,
+          error: null, // Clear previous errors
+        ));
       } else {
         emit(state.copyWith(
           isLoading: false,
@@ -29,19 +32,23 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        error: const CustomError(message: "Authentication failed"),
+        error: CustomError(message: "Authentication error: $e"),
       ));
     }
   }
 
-  /// Fetch events
+  /// Fetch Events
   Future<void> fetchEvents({int maxResults = 10}) async {
     emit(state.copyWith(isLoading: true));
     try {
       final events = await googleCalendarRepository.fetchEvents(
         maxResults: maxResults,
       );
-      emit(state.copyWith(events: events, isLoading: false));
+      emit(state.copyWith(
+        events: events,
+        isLoading: false,
+        error: null, // Clear previous errors
+      ));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
@@ -50,7 +57,7 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
     }
   }
 
-  /// Create a new event
+  /// Create a New Event
   Future<void> createEvent({
     required String title,
     required DateTime startTime,
@@ -63,7 +70,10 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
         startTime: startTime,
         endTime: endTime,
       );
-      emit(state.copyWith(isLoading: false));
+      emit(state.copyWith(
+        isLoading: false,
+        error: null, // Clear previous errors
+      ));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
@@ -72,21 +82,24 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
     }
   }
 
-  /// Sync tasks to calendar
+  /// Sync Tasks to Calendar
   Future<void> syncTasksToCalendar(List<Map<String, dynamic>> tasks) async {
     emit(state.copyWith(isLoading: true));
     try {
       await googleCalendarRepository.syncTasksToCalendar(tasks);
-      emit(state.copyWith(isLoading: false));
+      emit(state.copyWith(
+        isLoading: false,
+        error: null, // Clear previous errors
+      ));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,
-        error: CustomError(message: "Error syncing tasks: $e"),
+        error: CustomError(message: "Error syncing tasks to calendar: $e"),
       ));
     }
   }
 
-  /// Logout and clear tokens
+  /// Logout and Clear Tokens
   Future<void> logout() async {
     emit(state.copyWith(isLoading: true));
     try {
@@ -98,5 +111,10 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
         error: CustomError(message: "Error during logout: $e"),
       ));
     }
+  }
+
+  /// Clear Errors Manually
+  void clearError() {
+    emit(state.copyWith(error: null));
   }
 }

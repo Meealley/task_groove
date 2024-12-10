@@ -121,28 +121,23 @@
 //   }
 // }
 
+import 'dart:convert';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:googleapis_auth/auth_io.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class GoogleCalendarRepository {
   final _storage = const FlutterSecureStorage();
-
-  // OAuth credentials (Client ID only, no secret)
   final _clientId = ClientId(
     dotenv.env['OAUTH_CLIENT_ID']!,
     null, // No client secret for Android
   );
-
-  // OAuth scopes
   final List<String> _scopes = [calendar.CalendarApi.calendarScope];
-
-  // Redirect URI (custom scheme for mobile)
-  final String _redirectUri = 'com.yourapp:/oauth2redirect';
-
   calendar.CalendarApi? _calendarApi;
 
   /// Authenticate the user with Google OAuth and initialize the Calendar API
@@ -150,7 +145,6 @@ class GoogleCalendarRepository {
     try {
       final client =
           await clientViaUserConsent(_clientId, _scopes, (url) async {
-        // Launch the URL in an external browser
         if (await canLaunchUrl(Uri.parse(url))) {
           await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
         } else {
@@ -167,7 +161,6 @@ class GoogleCalendarRepository {
 
       // Initialize Calendar API
       _calendarApi = calendar.CalendarApi(client);
-      print("Authentication successful. Calendar API initialized.");
       return _calendarApi;
     } catch (e) {
       print("Authentication failed: $e");
@@ -175,25 +168,21 @@ class GoogleCalendarRepository {
     }
   }
 
-  /// Fetch a list of events from Google Calendar
-  Future<List<calendar.Event>> fetchEvents({int maxResults = 10}) async {
+  /// Sync tasks to Google Calendar as events
+  Future<void> syncTasksToCalendar(List<Map<String, dynamic>> tasks) async {
     if (_calendarApi == null) {
       throw Exception("Google Calendar API not initialized");
     }
 
-    try {
-      final events = await _calendarApi!.events.list(
-        'primary',
-        maxResults: maxResults,
-        orderBy: 'startTime',
-        singleEvents: true,
+    for (var task in tasks) {
+      await createEvent(
+        title: task['title'],
+        startTime: task['startTime'],
+        endTime: task['endTime'],
       );
-
-      return events.items ?? [];
-    } catch (e) {
-      print("Error fetching events: $e");
-      throw Exception("Failed to fetch events");
     }
+
+    print("All tasks synced to Google Calendar successfully");
   }
 
   /// Create a new Google Calendar event
@@ -221,64 +210,76 @@ class GoogleCalendarRepository {
     }
   }
 
-  /// Sync a list of tasks to Google Calendar as events
-  Future<void> syncTasksToCalendar(List<Map<String, dynamic>> tasks) async {
-    for (var task in tasks) {
-      await createEvent(
-        title: task['title'],
-        startTime: task['startTime'],
-        endTime: task['endTime'],
-      );
+  /// Fetch events from Google Calendar
+  Future<List<calendar.Event>> fetchEvents({int maxResults = 10}) async {
+    if (_calendarApi == null) {
+      throw Exception("Google Calendar API not initialized");
     }
-    print("All tasks synced to Google Calendar successfully");
-  }
 
-  /// Reauthenticate using stored refresh token
-  Future<void> reauthenticate() async {
     try {
-      final accessToken = await _storage.read(key: 'accessToken');
-      final refreshToken = await _storage.read(key: 'refreshToken');
-
-      if (accessToken == null || refreshToken == null) {
-        throw Exception("No valid tokens found. Reauthentication required.");
-      }
-
-      // Create an AccessCredentials object
-      final credentials = AccessCredentials(
-        AccessToken(
-          "Bearer",
-          accessToken,
-          DateTime.now()
-              .add(const Duration(seconds: 3600)), // Expiration placeholder
-        ),
-        refreshToken,
-        _scopes,
+      final events = await _calendarApi!.events.list(
+        'primary',
+        maxResults: maxResults,
+        orderBy: 'startTime',
+        singleEvents: true,
       );
 
-      // Refresh the credentials
-      final refreshedCredentials = await refreshCredentials(
-        _clientId,
-        credentials,
-        http.Client(),
-      );
-
-      // Save the updated access token
-      await _storage.write(
-          key: 'accessToken', value: refreshedCredentials.accessToken.data);
-      if (refreshedCredentials.refreshToken != null) {
-        await _storage.write(
-            key: 'refreshToken', value: refreshedCredentials.refreshToken);
-      }
-
-      print("Reauthenticated successfully.");
+      return events.items ?? [];
     } catch (e) {
-      print("Error during reauthentication: $e");
+      print("Error fetching events: $e");
+      throw Exception("Failed to fetch events");
     }
   }
 
-  /// Clear stored tokens (for logout)
+  /// Create a new Google Calendar event
+  // Future<void> createEvent({
+  //   required String title,
+  //   required DateTime startTime,
+  //   required DateTime endTime,
+  // }) async {
+  //   if (_calendarApi == null) {
+  //     throw Exception("Google Calendar API not initialized");
+  //   }
+
+  //   final event = calendar.Event(
+  //     summary: title,
+  //     start: calendar.EventDateTime(dateTime: startTime, timeZone: "UTC"),
+  //     end: calendar.EventDateTime(dateTime: endTime, timeZone: "UTC"),
+  //   );
+
+  //   try {
+  //     await _calendarApi!.events.insert(event, 'primary');
+  //     print("Event created successfully");
+  //   } catch (e) {
+  //     print("Error creating event: $e");
+  //     throw Exception("Failed to create event");
+  //   }
+  // }
+
+  /// Clear stored tokens (e.g., during logout)
   Future<void> clearTokens() async {
+    // await _googleSignIn.disconnect();
     await _storage.deleteAll();
     print("All tokens cleared");
+  }
+
+  /// Create an authenticated HTTP client from auth headers
+  http.Client _authenticatedClient(
+      http.Client client, Map<String, String> headers) {
+    return _AuthClient(client, headers);
+  }
+}
+
+/// A simple wrapper around HTTP client for adding authorization headers
+class _AuthClient extends http.BaseClient {
+  final http.Client _client;
+  final Map<String, String> _headers;
+
+  _AuthClient(this._client, this._headers);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    request.headers.addAll(_headers);
+    return _client.send(request);
   }
 }
