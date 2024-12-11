@@ -30,7 +30,6 @@ class ActiveTaskCountCubit extends Cubit<ActiveTaskCountState> {
 
   @override
   Future<void> close() {
-    // TODO: implement close
     activeTaskListSubscription.cancel();
     return super.close();
   }

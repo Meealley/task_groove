@@ -155,7 +155,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
       body: BlocConsumer<TaskListCubit, TaskListState>(
         listener: (context, state) {
-          // TODO: implement listener
           if (state.status == TaskListStatus.success) {
             context.pushReplacement(Pages.inboxtask);
           } else if (state.status == TaskListStatus.error) {

@@ -44,7 +44,6 @@ class TaskProgressCubit extends Cubit<TaskProgressState> {
 
   @override
   Future<void> close() {
-    // TODO: implement close
     taskListSubscription.cancel();
     return super.close();
   }

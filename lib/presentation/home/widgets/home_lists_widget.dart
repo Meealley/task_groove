@@ -18,7 +18,6 @@ class HomeListWidgets extends StatefulWidget {
 class _HomeListWidgetsState extends State<HomeListWidgets> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<TaskListCubit>().fetchTasks();
   }
