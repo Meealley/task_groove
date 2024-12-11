@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
+import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
@@ -128,6 +129,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProfileCubit>(
           create: (context) => ProfileCubit(authRepository: authRepository),
+        ),
+        BlocProvider<CompletedTaskPerDayCubit>(
+          create: (context) => CompletedTaskPerDayCubit(
+            taskRepository: TaskRepository(),
+          ),
         ),
         BlocProvider<OverdueTaskCubit>(
           create: (context) =>

@@ -39,13 +39,10 @@
 
             <!-- OAuth redirect deep linking -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW" />        
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Custom scheme for OAuth redirect -->
-                <data
-                    android:scheme="com.taskgroove"
-                    android:host="oauth2redirect" />
+                <data android:scheme="com.example.app" android:host="oauth2redirect" />
             </intent-filter>
         </activity>
 

@@ -129,45 +129,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            // if (_filteredSuggestions.isNotEmpty || _recentSearches.isNotEmpty)
-            //   SizedBox(
-            //     height: 1.h,
-            //   ),
-            // Align(
-            //   alignment: Alignment.centerLeft,
-            //   child: Text(
-            //     'Recent Searches',
-            //     style: AppTextStyles.bodySmall
-            //         .copyWith(fontWeight: FontWeight.bold),
-            //   ),
-            // ),
-            // Expanded(
-            //   child: ListView.builder(
-            //     shrinkWrap: true,
-            //     itemCount: _filteredSuggestions.isNotEmpty
-            //         ? _filteredSuggestions.length
-            //         : _recentSearches.length,
-            //     itemBuilder: (context, index) {
-            //       final suggestion = _filteredSuggestions.isNotEmpty
-            //           ? _filteredSuggestions[index]
-            //           : _recentSearches[index];
-            //       return ListTile(
-            //         title: Text(
-            //           suggestion,
-            //           style: AppTextStyles.bodyText,
-            //         ),
-            //         onTap: () => _onSuggestionSelected(suggestion),
-            //         trailing: IconButton(
-            //           icon: const FaIcon(
-            //             FontAwesomeIcons.x,
-            //             size: 13,
-            //           ),
-            //           onPressed: () => _deleteRecentSearches(suggestion),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
             if (_filteredSuggestions.isNotEmpty || _recentSearches.isNotEmpty)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,9 +136,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   SizedBox(height: 1.h),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Recent Search',
-                      style: AppTextStyles.bodySmall,
+                    child: Row(
+                      children: [
+                        const FaIcon(
+                          FontAwesomeIcons.clockRotateLeft,
+                          size: 14,
+                        ),
+                        SizedBox(
+                          width: 1.w,
+                        ),
+                        Text(
+                          'Recent Searches',
+                          style: AppTextStyles.bodySmall,
+                        ),
+                      ],
                     ),
                   ),
                   ListView.builder(
