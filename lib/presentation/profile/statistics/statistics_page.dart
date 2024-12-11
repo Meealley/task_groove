@@ -1,13 +1,15 @@
+// Import necessary packages
 import 'dart:async';
-
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:task_groove/cubit/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
+import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
+// Statistics Page
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
@@ -22,13 +24,12 @@ class StatisticsPage extends StatefulWidget {
 class StatisticsPageState extends State<StatisticsPage> {
   final Duration animDuration = const Duration(milliseconds: 250);
   int touchedIndex = -1;
-  bool isPlaying = false;
 
   @override
   void initState() {
+    context.read<TaskListCubit>().fetchTasks(); // Fetch tasks when screen loads
+
     super.initState();
-    // Trigger fetching tasks when the page is initialized
-    context.read<CompletedTaskPerDayCubit>().fetchCompletedTasksPerDay();
   }
 
   @override
@@ -52,46 +53,49 @@ class StatisticsPageState extends State<StatisticsPage> {
               ),
             );
           } else {
-            final completedTasksPerDay = state.completedTasksPerDay ?? {};
-            return Column(
-              children: [
-                SizedBox(
-                  height: 700,
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Text(
-                            'Weekly Productivity',
-                            style: AppTextStyles.bodyTextBold.copyWith(
-                              fontSize: 35,
+            final completedTasksPerDay = state.tasksPerDay;
+            return SingleChildScrollView(
+              child: SizedBox(
+                height: 450,
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Text(
+                          'Weekly Productivity',
+                          style: AppTextStyles.bodyTextBold.copyWith(
+                            fontSize: 35,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Number of tasks completed each day',
+                          style: AppTextStyles.bodyText,
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 15,
+                            ),
+                            child: BarChart(
+                              mainBarData(completedTasksPerDay),
+                              duration: animDuration,
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Number of tasks completed each day',
-                            style: AppTextStyles.bodyText,
-                          ),
-                          const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: BarChart(
-                                mainBarData(completedTasksPerDay),
-                                duration: animDuration,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
+              ),
             );
           }
         },
@@ -180,6 +184,13 @@ class StatisticsPageState extends State<StatisticsPage> {
         },
       ),
       titlesData: FlTitlesData(
+        show: true,
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
@@ -188,12 +199,11 @@ class StatisticsPageState extends State<StatisticsPage> {
               final day = value.toInt();
               return SideTitleWidget(
                 axisSide: meta.axisSide,
+                space: 7,
                 child: Text(
                   days[day],
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
+                  style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
                   ),
                 ),
               );
@@ -201,7 +211,10 @@ class StatisticsPageState extends State<StatisticsPage> {
           ),
         ),
         leftTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
+          sideTitles: SideTitles(
+            reservedSize: 42,
+            showTitles: true,
+          ),
         ),
       ),
       borderData: FlBorderData(show: false),

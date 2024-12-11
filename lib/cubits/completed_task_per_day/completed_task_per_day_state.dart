@@ -1,49 +1,41 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 part of 'completed_task_per_day_cubit.dart';
 
 class CompletedTaskPerDayState extends Equatable {
-  final Map<DateTime, int> completedTasksPerDay;
-  final String? message;
   final bool isLoading;
   final bool hasError;
+  final String? message;
+  final Map<DateTime, int> tasksPerDay;
 
   const CompletedTaskPerDayState({
-    required this.completedTasksPerDay,
+    required this.isLoading,
+    required this.hasError,
     this.message,
-    this.isLoading = false,
-    this.hasError = false,
+    required this.tasksPerDay,
   });
 
-  // Factory constructor for the initial state
   factory CompletedTaskPerDayState.initial() {
     return const CompletedTaskPerDayState(
-      completedTasksPerDay: {},
-      message: '',
       isLoading: false,
       hasError: false,
+      message: null,
+      tasksPerDay: {},
     );
   }
 
-  @override
-  List<Object?> get props =>
-      [completedTasksPerDay, message, isLoading, hasError];
-
-  @override
-  bool get stringify => true;
-
-  // Method to create a copy of the current state with optional changes
   CompletedTaskPerDayState copyWith({
-    Map<DateTime, int>? completedTasksPerDay,
-    String? message,
     bool? isLoading,
     bool? hasError,
+    String? message,
+    Map<DateTime, int>? tasksPerDay,
   }) {
     return CompletedTaskPerDayState(
-      completedTasksPerDay: completedTasksPerDay ?? this.completedTasksPerDay,
-      message: message ?? this.message,
       isLoading: isLoading ?? this.isLoading,
       hasError: hasError ?? this.hasError,
+      message: message ?? this.message,
+      tasksPerDay: tasksPerDay ?? this.tasksPerDay,
     );
   }
+
+  @override
+  List<Object?> get props => [isLoading, hasError, message, tasksPerDay];
 }

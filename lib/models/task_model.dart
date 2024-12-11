@@ -10,6 +10,7 @@ class TaskModel extends Equatable {
   final DateTime? stopDateTime;
   final int priority;
   final DateTime createdAt; // New field for task creation time
+  final DateTime? completionDate;
 
   const TaskModel({
     required this.id,
@@ -21,6 +22,7 @@ class TaskModel extends Equatable {
     this.stopDateTime,
     required this.priority,
     required this.createdAt,
+    this.completionDate,
   });
 
   // CopyWith method for creating a copy of the TaskModel with updated fields
@@ -33,6 +35,7 @@ class TaskModel extends Equatable {
     DateTime? startDateTime,
     DateTime? stopDateTime,
     int? priority,
+    DateTime? completionDate,
     DateTime? createdAt, // Add priority to copyWith
   }) {
     return TaskModel(
@@ -45,6 +48,7 @@ class TaskModel extends Equatable {
       stopDateTime: stopDateTime ?? this.stopDateTime,
       priority: priority ?? this.priority, // Copy priority if updated
       createdAt: createdAt ?? this.createdAt,
+      completionDate: completionDate ?? this.completionDate,
     );
   }
 
@@ -60,6 +64,7 @@ class TaskModel extends Equatable {
       'stopDateTime': stopDateTime?.millisecondsSinceEpoch,
       'priority': priority, // Add priority to map
       'createdAt': createdAt.millisecondsSinceEpoch,
+      'completionDate': completionDate?.millisecondsSinceEpoch,
     };
   }
 
@@ -81,6 +86,9 @@ class TaskModel extends Equatable {
           : null,
       priority: map['priority'] ?? 3, // Default priority to low if null
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      completionDate: map['completionDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['completionDate'])
+          : null,
     );
   }
 
@@ -96,6 +104,7 @@ class TaskModel extends Equatable {
       stopDateTime,
       priority,
       createdAt,
+      completionDate,
     ];
   }
 

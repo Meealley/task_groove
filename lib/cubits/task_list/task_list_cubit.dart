@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:equatable/equatable.dart';
 import 'package:task_groove/constants/constants.dart';
+import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/tastlist_status.dart';
 import 'package:task_groove/repository/push_notification_repository.dart';
@@ -17,9 +18,12 @@ part 'task_list_state.dart';
 class TaskListCubit extends Cubit<TaskListState> {
   final TaskRepository taskRepository;
   final PushNotificationRepository pushNotificationRepository;
+  // final CompletedTaskPerDayCubit completedTaskPerDayCubit;
 
   TaskListCubit(
-      {required this.taskRepository, required this.pushNotificationRepository})
+      {required this.taskRepository,
+      // required this.completedTaskPerDayCubit,
+      required this.pushNotificationRepository})
       : super(TaskListState.initial());
 
   // Fetch Task from TaskRepository
@@ -241,6 +245,35 @@ class TaskListCubit extends Cubit<TaskListState> {
       ));
     }
   }
+
+  // Future<void> fetchCompletedTasks(
+  //     {int limit = 3, DocumentSnapshot? lastDoc}) async {
+  //   emit(state.copyWith(status: TaskListStatus.loading));
+
+  //   try {
+  //     List<TaskModel> completedTasks = await taskRepository.fetchCompletedTasks(
+  //       limit: limit,
+  //       lastDoc: lastDoc,
+  //     );
+
+  //     final updatedCompletedTasks =
+  //         List<TaskModel>.from(state.completedTasks ?? [])
+  //           ..addAll(completedTasks);
+
+  //     emit(state.copyWith(
+  //       completedTasks: updatedCompletedTasks,
+  //       status: TaskListStatus.success,
+  //     ));
+
+  //     // Notify CompletedTaskPerDayCubit
+  //     completedTaskPerDayCubit.fetchCompletedTasksPerDay();
+  //   } catch (e) {
+  //     emit(state.copyWith(
+  //       error: CustomError(message: e.toString()),
+  //       status: TaskListStatus.error,
+  //     ));
+  //   }
+  // }
 
   Future<void> sortTasksByDueDate() async {
     emit(state.copyWith(status: TaskListStatus.loading));

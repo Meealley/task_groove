@@ -15,7 +15,7 @@ class _ProfileListState extends State<ProfileList> {
   List<Map<String, dynamic>> profileLists = [
     {
       "icon": const FaIcon(
-        FontAwesomeIcons.line,
+        FontAwesomeIcons.chartArea,
         color: Colors.blue,
       ),
       'title': "Statistics",

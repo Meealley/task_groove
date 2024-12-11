@@ -132,8 +132,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CompletedTaskPerDayCubit>(
           create: (context) => CompletedTaskPerDayCubit(
-            taskRepository: TaskRepository(),
-          ),
+              taskListCubit: context.read<TaskListCubit>()),
         ),
         BlocProvider<OverdueTaskCubit>(
           create: (context) =>
