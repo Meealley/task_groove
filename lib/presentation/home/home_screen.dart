@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/cubit/theme_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
 import 'package:task_groove/cubits/task_progress/task_progress_cubit.dart';
@@ -81,11 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 20.h,
                     width: double.infinity,
-                    child: BlocBuilder<TaskProgressCubit, TaskProgressState>(
+                    child: BlocBuilder<ThemeCubit, ThemeState>(
                       builder: (context, state) {
                         return Container(
                           decoration: BoxDecoration(
-                              color: AppColors.backgroundDark,
+                              color: state.color,
                               borderRadius: BorderRadius.circular(10)),
                           child: Stack(
                             children: [
@@ -120,29 +121,34 @@ class _HomeScreenState extends State<HomeScreen> {
                               Positioned(
                                 bottom: 20,
                                 right: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: LinearPercentIndicator(
-                                    width: 220,
-                                    lineHeight: 17,
-                                    barRadius: const Radius.circular(10),
-                                    // fillColor: Colors.yellow,
-                                    backgroundColor: Colors.white,
-                                    animation: true,
+                                child: BlocBuilder<TaskProgressCubit,
+                                    TaskProgressState>(
+                                  builder: (context, state) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: LinearPercentIndicator(
+                                        width: 220,
+                                        lineHeight: 17,
+                                        barRadius: const Radius.circular(10),
+                                        // fillColor: Colors.yellow,
+                                        backgroundColor: Colors.white,
+                                        animation: true,
 
-                                    animationDuration: 2000,
-                                    percent: state.percentCompleted,
-                                    center: Text(
-                                      "${(state.percentCompleted * 100).toStringAsFixed(1)}%",
-                                      style: GoogleFonts.montserrat(
-                                          textStyle: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                    ),
-                                    // linearStrokeCap: LinearStrokeCap.roundAll,
-                                    progressColor: Colors.greenAccent,
-                                  ),
+                                        animationDuration: 2000,
+                                        percent: state.percentCompleted,
+                                        center: Text(
+                                          "${(state.percentCompleted * 100).toStringAsFixed(1)}%",
+                                          style: GoogleFonts.montserrat(
+                                              textStyle: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                        ),
+                                        // linearStrokeCap: LinearStrokeCap.roundAll,
+                                        progressColor: Colors.greenAccent,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
@@ -183,16 +189,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: AppColors.backgroundDark,
-            shape: const CircleBorder(),
-            child: const FaIcon(
-              FontAwesomeIcons.plus,
-              color: AppColors.textWhite,
-            ),
-            onPressed: () {
-              context.push(Pages.createTask);
-            }),
+        floatingActionButton: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return FloatingActionButton(
+                backgroundColor: state.color,
+                shape: const CircleBorder(),
+                child: const FaIcon(
+                  FontAwesomeIcons.plus,
+                  color: AppColors.textWhite,
+                ),
+                onPressed: () {
+                  context.push(Pages.createTask);
+                });
+          },
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
+import 'package:task_groove/cubits/cubit/theme_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
@@ -130,6 +131,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProfileCubit>(
           create: (context) => ProfileCubit(authRepository: authRepository),
         ),
+        BlocProvider<ThemeCubit>(
+          create: (context) => ThemeCubit(),
+        ),
         BlocProvider<CompletedTaskPerDayCubit>(
           create: (context) => CompletedTaskPerDayCubit(
               taskListCubit: context.read<TaskListCubit>()),
@@ -147,29 +151,38 @@ class MyApp extends StatelessWidget {
           create: (context) => GoogleCalenderCubit(
             googleCalendarRepository: GoogleCalendarRepository(),
           ),
-        )
+        ),
       ],
       child: Sizer(
         builder: (context, _, __) {
-          return MaterialApp.router(
-            theme: ThemeData(
-              colorScheme: ColorScheme(
-                brightness: Brightness.light,
-                primary: AppColors.backgroundDark,
-                secondary: Colors.green,
-                surface: Colors.grey.shade200,
-                background: Colors.grey.shade200,
-                error: Colors.red,
-                onPrimary: Colors.grey.shade200,
-                onSecondary: Colors.grey.shade200,
-                onSurface: Colors.black,
-                onBackground: Colors.grey.shade400,
-                onError: Colors.white,
-              ),
-            ),
-            routerConfig: goRouter, // Use the dynamic GoRouter
-            debugShowCheckedModeBanner: false,
-            title: "Task Groove",
+          return BlocBuilder<ThemeCubit, ThemeState>(
+            builder: (context, state) {
+              return MaterialApp.router(
+                theme: ThemeData(
+                  appBarTheme: AppBarTheme(
+                    backgroundColor:
+                        state.color, // Set AppBar color dynamically
+                  ),
+                  primaryColor: state.color,
+                  colorScheme: ColorScheme(
+                    brightness: Brightness.light,
+                    primary: state.color,
+                    secondary: Colors.green,
+                    surface: Colors.grey.shade200,
+                    background: Colors.grey.shade200,
+                    error: Colors.red,
+                    onPrimary: Colors.grey.shade200,
+                    onSecondary: Colors.grey.shade200,
+                    onSurface: Colors.black,
+                    onBackground: Colors.grey.shade400,
+                    onError: Colors.white,
+                  ),
+                ),
+                routerConfig: goRouter, // Use the dynamic GoRouter
+                debugShowCheckedModeBanner: false,
+                title: "Task Groove",
+              );
+            },
           );
         },
       ),

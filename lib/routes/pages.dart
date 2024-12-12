@@ -14,5 +14,6 @@ class Pages {
   static const notificationDescription = '/notificationDescription/:id';
   static const profileDescription = '/profileDescription';
   static const profileStatistics = '/profileStatistics';
+  static const profileTheme = '/profileTheme';
   static const profileCalendarIntegration = '/profileCalendarIntegration';
 }

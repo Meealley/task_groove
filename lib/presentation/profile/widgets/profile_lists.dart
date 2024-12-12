@@ -31,6 +31,14 @@ class _ProfileListState extends State<ProfileList> {
     },
     {
       "icon": const FaIcon(
+        FontAwesomeIcons.paintbrush,
+        color: Colors.blue,
+      ),
+      'title': "Theme",
+      'route': Pages.profileTheme,
+    },
+    {
+      "icon": const FaIcon(
         FontAwesomeIcons.line,
         color: Colors.blue,
       ),

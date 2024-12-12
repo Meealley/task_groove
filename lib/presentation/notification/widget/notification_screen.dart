@@ -53,7 +53,7 @@ class NotificationScreen extends StatelessWidget {
           'Notifications 🔔',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _fetchNotifications(userId),

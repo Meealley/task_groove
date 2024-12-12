@@ -93,7 +93,7 @@ class _SearchScreenState extends State<SearchScreen> {
           'Search Tasks',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
