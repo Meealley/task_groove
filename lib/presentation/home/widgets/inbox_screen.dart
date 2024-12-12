@@ -1,6 +1,9 @@
 // import 'dart:io';
 
 // import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -32,6 +35,7 @@ class _InboxScreenState extends State<InboxScreen> {
       const Duration(milliseconds: 300); // Duration for animations
   final int _completedTasksVisibleCount =
       0; // Tracks the number of completed tasks shown in the AnimatedList.
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
@@ -107,6 +111,14 @@ class _InboxScreenState extends State<InboxScreen> {
       // Update state in the cubit
       context.read<TaskListCubit>().updateTasks(updatedTask);
     });
+  }
+
+  Future<void> _playPopSound() async {
+    try {
+      await _audioPlayer.play(AssetSource('audio/pop.mp3'));
+    } catch (e) {
+      log('Error Playing sound : $e');
+    }
   }
 
   @override
@@ -413,6 +425,8 @@ class _InboxScreenState extends State<InboxScreen> {
           checkColor: Colors.white,
           focusColor: Colors.green,
           onChanged: (_) {
+            _playPopSound();
+
             _onTaskCompleted(task); // Toggle task completion
           },
         ),

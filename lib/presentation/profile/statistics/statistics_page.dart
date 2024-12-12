@@ -35,7 +35,6 @@ class StatisticsPageState extends State<StatisticsPage> {
     super.initState();
   }
 
-  // TODO: FIGURE OUT WHY THE CHART DOESN'T SHOW THE BAR ON THE SPECIFIED DATE./..
   // TODO: Work on changing the color of the bar too.
 
   @override

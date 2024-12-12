@@ -71,6 +71,7 @@ dependencies:
   url_launcher: ^6.3.1
   google_sign_in: ^6.2.2
   fl_chart: ^0.69.2
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -119,6 +120,7 @@ flutter:
     - .env
     - assets/images/tasks.png
     - assets/images/app_logo.png
+    - assets/audio/pop.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
