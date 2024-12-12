@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:developer';
+// import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
@@ -43,6 +45,7 @@ class CompletedTaskPerDayCubit extends Cubit<CompletedTaskPerDayState> {
     for (final task in tasks) {
       if (task.completed && task.completionDate != null) {
         final completionDate = _normalizeDate(task.completionDate!);
+
         tasksPerDay[completionDate] = (tasksPerDay[completionDate] ?? 0) + 1;
       }
     }

@@ -4,8 +4,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
+import 'package:task_groove/presentation/profile/statistics/daily_goals.dart';
+import 'package:task_groove/presentation/profile/statistics/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
@@ -14,8 +17,8 @@ class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
   final Color barBackgroundColor = AppColors.textWhite;
-  final Color barColor = AppColors.textPrimary;
-  final Color touchedBarColor = AppColors.backgroundDark;
+  final Color barColor = const Color.fromARGB(255, 103, 187, 106);
+  final Color touchedBarColor = Colors.green;
 
   @override
   State<StatefulWidget> createState() => StatisticsPageState();
@@ -40,9 +43,10 @@ class StatisticsPageState extends State<StatisticsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Productivity Statistics",
-          style: AppTextStyles.bodyTextLg,
+          "Productivity",
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
+        backgroundColor: AppColors.backgroundDark,
       ),
       body: BlocBuilder<CompletedTaskPerDayCubit, CompletedTaskPerDayState>(
         builder: (context, state) {
@@ -58,45 +62,51 @@ class StatisticsPageState extends State<StatisticsPage> {
           } else {
             final completedTasksPerDay = state.tasksPerDay;
             return SingleChildScrollView(
-              child: SizedBox(
-                height: 450,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Text(
-                          'Weekly Productivity',
-                          style: AppTextStyles.bodyTextBold.copyWith(
-                            fontSize: 35,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Number of tasks completed each day',
-                          style: AppTextStyles.bodyText,
-                        ),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(10)),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 15,
-                            ),
-                            child: BarChart(
-                              mainBarData(completedTasksPerDay),
-                              duration: animDuration,
-                            ),
-                          ),
-                        ),
-                      ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    Text(
+                      'Number of tasks completed each day',
+                      style: AppTextStyles.bodyText,
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    const DailyGoals(),
+                    const Divider(),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    const WeeklyGoals(),
+                    const Divider(),
+                    SizedBox(
+                      height: 450,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            const SizedBox(height: 20),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: AppColors.backgroundDark,
+                                    borderRadius: BorderRadius.circular(10)),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 15,
+                                ),
+                                child: BarChart(
+                                  mainBarData(completedTasksPerDay),
+                                  duration: animDuration,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -138,11 +148,16 @@ class StatisticsPageState extends State<StatisticsPage> {
     final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     final now = DateTime.now();
 
+    final today = DateTime(now.year, now.month, now.day);
+
     // Get tasks for the last 7 days
     List<int> tasksPerDay = List.generate(7, (index) {
-      final day = now.subtract(Duration(days: 6 - index));
-      final dayOnly = DateTime(day.year, day.month, day.day);
-      return completedTasksPerDay[dayOnly] ?? 0;
+      // final day = today.subtract(Duration(days: 6 - index));
+      // final dayOnly = DateTime(day.year, day.month, day.day);
+      // return completedTasksPerDay[day] ?? 0;
+      final day = DateTime(today.year, today.month, today.day - (6 - index));
+      final normalizedDay = DateTime(day.year, day.month, day.day); // Normalize
+      return completedTasksPerDay[normalizedDay] ?? 0;
     });
 
     return List.generate(7, (i) {
@@ -155,25 +170,33 @@ class StatisticsPageState extends State<StatisticsPage> {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
-          getTooltipItem: (group, groupIndex, rod, rodIndex) {
-            final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            final day = days[group.x];
-            final tasks = rod.toY.toInt();
-            return BarTooltipItem(
-              '$day\n',
-              AppTextStyles.bodyText.copyWith(color: Colors.white),
-              children: [
-                TextSpan(
-                  text: '$tasks tasks',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+          final now = DateTime.now();
+          final today = DateTime(now.year, now.month, now.day);
+          final day = today.subtract(Duration(days: 6 - group.x));
+          final dayName = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat',
+            'Sun'
+          ][day.weekday - 1];
+          return BarTooltipItem(
+            '$dayName\n',
+            AppTextStyles.bodyText.copyWith(color: Colors.white),
+            children: [
+              TextSpan(
+                text: '${rod.toY.toInt()} tasks',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        }),
         touchCallback: (FlTouchEvent event, barTouchResponse) {
           setState(() {
             if (!event.isInterestedForInteractions ||
@@ -197,14 +220,38 @@ class StatisticsPageState extends State<StatisticsPage> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
+            // getTitlesWidget: (value, meta) {
+            //   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            //   final day = value.toInt();
+            //   return SideTitleWidget(
+            //     axisSide: meta.axisSide,
+            //     space: 7,
+            //     child: Text(
+            //       days[day],
+            //       style: AppTextStyles.bodySmall.copyWith(
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //   );
+            // },
             getTitlesWidget: (value, meta) {
-              const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-              final day = value.toInt();
+              final now = DateTime.now();
+              final today = DateTime(now.year, now.month, now.day);
+              final day = today.subtract(Duration(days: 6 - value.toInt()));
+              final dayName = [
+                'Mon',
+                'Tue',
+                'Wed',
+                'Thu',
+                'Fri',
+                'Sat',
+                'Sun'
+              ][day.weekday - 1];
               return SideTitleWidget(
                 axisSide: meta.axisSide,
                 space: 7,
                 child: Text(
-                  days[day],
+                  dayName,
                   style: AppTextStyles.bodySmall.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -216,7 +263,7 @@ class StatisticsPageState extends State<StatisticsPage> {
         leftTitles: const AxisTitles(
           sideTitles: SideTitles(
             reservedSize: 42,
-            showTitles: true,
+            showTitles: false,
           ),
         ),
       ),

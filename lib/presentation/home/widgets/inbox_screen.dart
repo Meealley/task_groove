@@ -70,9 +70,11 @@ class _InboxScreenState extends State<InboxScreen> {
 
   void _onTaskCompleted(TaskModel task) {
     setState(() {
+      final now = DateTime.now();
+      final normalizedDate = DateTime(now.year, now.month, now.day);
       final updatedTask = task.copyWith(
         completed: !task.completed,
-        completionDate: !task.completed ? DateTime.now() : null,
+        completionDate: !task.completed ? normalizedDate : null,
       );
 
       if (updatedTask.completed) {
