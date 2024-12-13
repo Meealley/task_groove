@@ -31,7 +31,7 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
           "Today's Tasks",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: BlocBuilder<TodayTaskCubit, TodayTaskState>(
         builder: (context, state) {

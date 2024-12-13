@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_groove/cubits/cubit/theme_cubit.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
 import 'package:task_groove/cubits/task_progress/task_progress_cubit.dart';

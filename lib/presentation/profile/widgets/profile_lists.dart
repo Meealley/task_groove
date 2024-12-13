@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
@@ -14,34 +16,22 @@ class ProfileList extends StatefulWidget {
 class _ProfileListState extends State<ProfileList> {
   List<Map<String, dynamic>> profileLists = [
     {
-      "icon": const FaIcon(
-        FontAwesomeIcons.chartArea,
-        color: Colors.blue,
-      ),
+      "icon": FontAwesomeIcons.chartArea,
       'title': "Statistics",
       'route': Pages.profileStatistics,
     },
     {
-      "icon": const FaIcon(
-        FontAwesomeIcons.line,
-        color: Colors.blue,
-      ),
+      "icon": FontAwesomeIcons.line,
       'title': "Security",
       'route': Pages.profileStatistics,
     },
     {
-      "icon": const FaIcon(
-        FontAwesomeIcons.paintbrush,
-        color: Colors.blue,
-      ),
+      "icon": FontAwesomeIcons.paintbrush,
       'title': "Theme",
       'route': Pages.profileTheme,
     },
     {
-      "icon": const FaIcon(
-        FontAwesomeIcons.line,
-        color: Colors.blue,
-      ),
+      "icon": FontAwesomeIcons.intercom,
       'title': "Calendar Integration",
       'route': Pages.profileCalendarIntegration,
     },
@@ -56,18 +46,25 @@ class _ProfileListState extends State<ProfileList> {
       itemBuilder: (context, index) {
         final profilesections = profileLists[index];
 
-        return ListTile(
-          leading: profilesections['icon'],
-          minVerticalPadding: 0,
-          title: Text(
-            profilesections['title'],
-            style: AppTextStyles.bodySmall,
-          ),
-          trailing: const Icon(
-            Icons.chevron_right,
-          ),
-          onTap: () {
-            context.push(profilesections['route']);
+        return BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return ListTile(
+              leading: Icon(
+                profilesections['icon'],
+                color: state.color,
+              ),
+              minVerticalPadding: 0,
+              title: Text(
+                profilesections['title'],
+                style: AppTextStyles.bodySmall,
+              ),
+              trailing: const Icon(
+                Icons.chevron_right,
+              ),
+              onTap: () {
+                context.push(profilesections['route']);
+              },
+            );
           },
         );
       },

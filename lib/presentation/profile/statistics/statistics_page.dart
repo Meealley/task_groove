@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
+import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_goals.dart';
 import 'package:task_groove/presentation/profile/statistics/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
@@ -30,7 +32,9 @@ class StatisticsPageState extends State<StatisticsPage> {
 
   @override
   void initState() {
-    context.read<TaskListCubit>().fetchTasks(); // Fetch tasks when screen loads
+    context.read<TaskListCubit>().fetchTasks();
+
+    context.read<TotalCompletedTaskCountCubit>();
 
     super.initState();
   }
@@ -45,7 +49,7 @@ class StatisticsPageState extends State<StatisticsPage> {
           "Productivity",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: BlocBuilder<CompletedTaskPerDayCubit, CompletedTaskPerDayState>(
         builder: (context, state) {
@@ -64,11 +68,18 @@ class StatisticsPageState extends State<StatisticsPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const SizedBox(height: 8),
-                    Text(
-                      'Number of tasks completed each day',
-                      style: AppTextStyles.bodyText,
+                    BlocBuilder<TotalCompletedTaskCountCubit,
+                        TotalCompletedTaskCountState>(
+                      builder: (context, state) {
+                        return Text(
+                          'Total completed task: ${state.totalTaskCount}',
+                          style: AppTextStyles.bodyText
+                              .copyWith(fontWeight: FontWeight.w600),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     const DailyGoals(),
@@ -87,18 +98,23 @@ class StatisticsPageState extends State<StatisticsPage> {
                           children: <Widget>[
                             const SizedBox(height: 20),
                             Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: AppColors.backgroundDark,
-                                    borderRadius: BorderRadius.circular(10)),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 15,
-                                ),
-                                child: BarChart(
-                                  mainBarData(completedTasksPerDay),
-                                  duration: animDuration,
-                                ),
+                              child: BlocBuilder<ThemeCubit, ThemeState>(
+                                builder: (context, state) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        color: state.color,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 15,
+                                    ),
+                                    child: BarChart(
+                                      mainBarData(completedTasksPerDay),
+                                      duration: animDuration,
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ],

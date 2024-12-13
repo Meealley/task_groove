@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
-import 'package:task_groove/cubits/cubit/theme_cubit.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
@@ -20,6 +20,7 @@ import 'package:task_groove/cubits/login/login_cubit.dart';
 import 'package:task_groove/cubits/signup/signup_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
+import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
 import 'package:task_groove/firebase_options.dart';
 import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/repository/google_calendar_repository.dart';
@@ -133,6 +134,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
+        ),
+        BlocProvider<TotalCompletedTaskCountCubit>(
+          create: (context) => TotalCompletedTaskCountCubit(
+              taskListCubit: context.read<TaskListCubit>()),
         ),
         BlocProvider<CompletedTaskPerDayCubit>(
           create: (context) => CompletedTaskPerDayCubit(

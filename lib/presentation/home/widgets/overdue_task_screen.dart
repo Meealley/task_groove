@@ -37,7 +37,7 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
           "Overdue tasks",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),

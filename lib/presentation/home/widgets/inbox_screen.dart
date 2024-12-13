@@ -129,7 +129,7 @@ class _InboxScreenState extends State<InboxScreen> {
           "Inbox",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
         leading: IconButton(
           onPressed: () => context.goNamed(Pages.bottomNavbar),
           color: Colors.white,

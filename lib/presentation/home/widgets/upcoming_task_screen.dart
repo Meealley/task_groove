@@ -57,7 +57,7 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
           'Upcoming Tasks',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        backgroundColor: AppColors.backgroundDark,
+        // backgroundColor: AppColors.backgroundDark,
       ),
       body: Column(
         children: [
