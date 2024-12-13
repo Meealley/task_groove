@@ -8,7 +8,7 @@ import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/presentation/notification/widget/notification_screen.dart';
 import 'package:task_groove/presentation/profile/profile_screen.dart';
 import 'package:task_groove/presentation/search/search_screen.dart';
-import 'package:task_groove/repository/auth_repository.dart';
+// import 'package:task_groove/repository/auth_repository.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 import 'package:badges/badges.dart' as badges;

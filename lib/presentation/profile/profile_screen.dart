@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
-import 'package:task_groove/cubits/signup/signup_cubit.dart';
 import 'package:task_groove/presentation/profile/widgets/profile_lists.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
-import 'package:task_groove/theme/appcolors.dart';
 
 import 'package:task_groove/models/user_model.dart'; // Make sure to import the UserModel
 
