@@ -165,6 +165,9 @@ class MyApp extends StatelessWidget {
               return MaterialApp.router(
                 theme: ThemeData(
                   appBarTheme: AppBarTheme(
+                    actionsIconTheme: const IconThemeData(
+                      color: Colors.white,
+                    ),
                     backgroundColor:
                         state.color, // Set AppBar color dynamically
                   ),

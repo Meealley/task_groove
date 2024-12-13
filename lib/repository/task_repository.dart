@@ -159,7 +159,7 @@ class TaskRepository {
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
-          .orderBy("priority", descending: true)
+          .orderBy("priority", descending: false)
           .get();
 
       return snapshot.docs.map((doc) {
