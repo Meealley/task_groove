@@ -39,8 +39,6 @@ class StatisticsPageState extends State<StatisticsPage> {
     super.initState();
   }
 
-  // TODO: Work on changing the color of the bar too.
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -268,8 +266,7 @@ class StatisticsPageState extends State<StatisticsPage> {
                 child: Text(
                   dayName,
                   style: AppTextStyles.bodySmall.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               );
             },

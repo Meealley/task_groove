@@ -18,6 +18,8 @@ class ProfileThemeScreen extends StatefulWidget {
 }
 
 class _ProfileThemeScreenState extends State<ProfileThemeScreen> {
+  Color? selectedThemeColor; // Persist selected theme color
+
   @override
   Widget build(BuildContext context) {
     // List of themes for dynamic rendering
@@ -29,7 +31,6 @@ class _ProfileThemeScreenState extends State<ProfileThemeScreen> {
       {'color': Colors.yellow, 'title': 'Yellow Theme'},
       {'color': Colors.pink, 'title': 'Pink Theme'},
     ];
-    Color? selectedThemeColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -39,37 +40,29 @@ class _ProfileThemeScreenState extends State<ProfileThemeScreen> {
             color: Colors.white,
           ),
         ),
-        // leading:  IconButton(
-        //   // onPressed: () => context.goNamed(Pages.),
-        //   color: Colors.white,
-        //   icon: FaIcon(
-        //     FontAwesomeIcons.arrowLeft,
-        //   ),
-        // ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+      body: ListView.builder(
+        padding: const EdgeInsets.all(8.0),
+        itemCount: themes.length,
+        itemBuilder: (context, index) {
+          final theme = themes[index];
+          return Column(
             children: [
-              for (var theme in themes) ...[
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedThemeColor = theme['color'];
-                    });
-                    context.read<ThemeCubit>().changeTheme(theme['color']);
-                  },
-                  child: ProfileThemeCard(
-                      color: theme['color'],
-                      themeTitle: theme['title'],
-                      isSelected: theme['color'] == selectedThemeColor),
-                ),
-                SizedBox(height: 1.h),
-              ],
+              ProfileThemeCard(
+                onTap: () {
+                  setState(() {
+                    selectedThemeColor = theme['color'];
+                  });
+                  context.read<ThemeCubit>().changeTheme(theme['color']);
+                },
+                color: theme['color'],
+                themeTitle: theme['title'],
+                isSelected: theme['color'] == selectedThemeColor,
+              ),
+              SizedBox(height: 1.h),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
