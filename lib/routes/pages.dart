@@ -16,4 +16,5 @@ class Pages {
   static const profileStatistics = '/profileStatistics';
   static const profileTheme = '/profileTheme';
   static const profileCalendarIntegration = '/profileCalendarIntegration';
+  static const editGoals = '/editGoals';
 }

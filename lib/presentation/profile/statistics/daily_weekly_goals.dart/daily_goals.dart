@@ -1,7 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/cubit/daily_goals_cubit.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
@@ -37,9 +42,14 @@ class _DailyGoalsState extends State<DailyGoals> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '${5}/5 tasks',
-                    style: AppTextStyles.bodyText,
+                  BlocBuilder<DailyGoalsCubit, DailyGoalsState>(
+                    builder: (context, state) {
+                      final totalTasks = state.totalTasks;
+                      return Text(
+                        '${5}/$totalTasks tasks',
+                        style: AppTextStyles.bodyText,
+                      );
+                    },
                   ),
                   SizedBox(
                     height: .3.h,
@@ -51,10 +61,13 @@ class _DailyGoalsState extends State<DailyGoals> {
                   SizedBox(
                     height: 1.h,
                   ),
-                  Text(
-                    "Edit Goals",
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.backgroundDark,
+                  GestureDetector(
+                    onTap: () => context.push(Pages.editGoals),
+                    child: Text(
+                      "Edit Goals",
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.backgroundDark,
+                      ),
                     ),
                   )
                 ],

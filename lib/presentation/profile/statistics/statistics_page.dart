@@ -1,7 +1,5 @@
 // Import necessary packages
-import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
@@ -9,8 +7,8 @@ import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
-import 'package:task_groove/presentation/profile/statistics/daily_goals.dart';
-import 'package:task_groove/presentation/profile/statistics/weekly_goals.dart';
+import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/daily_goals.dart';
+import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
