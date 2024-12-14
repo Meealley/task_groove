@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +17,7 @@ class DailyGoals extends StatefulWidget {
 }
 
 class _DailyGoalsState extends State<DailyGoals> {
+  // TODO : MAKE THE MESSAGE SENT TO THE USER DYNAMIC, SUCH THAT, THE GET A CONGRATULATORY MESSAGE WHEN THE COMPLETE THEIR TOTAL GOALS FOR THE DAY
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DailyGoalsCubit, DailyGoalsState>(
