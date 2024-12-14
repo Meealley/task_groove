@@ -21,6 +21,8 @@ class _EditDailyTaskGoalState extends State<EditDailyTaskGoal> {
     super.dispose();
   }
 
+  // TODO; SYNC THE MATHS WITH THE PERCENT INDICATOR
+
   @override
   Widget build(BuildContext context) {
     return Row(

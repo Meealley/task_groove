@@ -159,7 +159,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider<DailyGoalsCubit>(
-          create: (context) => DailyGoalsCubit(),
+          create: (context) => DailyGoalsCubit(
+            completedTaskPerDayCubit: CompletedTaskPerDayCubit(
+                taskListCubit: context.read<TaskListCubit>()),
+          ),
         ),
       ],
       child: Sizer(

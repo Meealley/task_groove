@@ -13,6 +13,8 @@ class EditWeeklyTaskGoal extends StatefulWidget {
 class _EditWeeklyTaskGoalState extends State<EditWeeklyTaskGoal> {
   final TextEditingController _weeklyTaskController = TextEditingController();
 
+// TODO: WRITE THE LOGIC FOR UPDATING THE WEEKLY GOALS
+
   @override
   Widget build(BuildContext context) {
     return Row(

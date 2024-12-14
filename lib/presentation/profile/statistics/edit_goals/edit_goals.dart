@@ -36,7 +36,9 @@ class EditGoals extends StatelessWidget {
               child: const Column(
                 children: [
                   EditDailyTaskGoal(),
-                  Divider(),
+                  Divider(
+                    color: Colors.black,
+                  ),
                   EditWeeklyTaskGoal(),
                 ],
               ),
