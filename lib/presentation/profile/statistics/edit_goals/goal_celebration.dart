@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
-class GoalCelebration extends StatefulWidget {
-  const GoalCelebration({super.key});
+class GoalCelebration extends StatelessWidget {
+  final bool isCelebrationEnabled;
+  final ValueChanged<bool> onToggle;
+  const GoalCelebration(
+      {super.key, required this.onToggle, required this.isCelebrationEnabled});
 
-  @override
-  State<GoalCelebration> createState() => _GoalCelebrationState();
-}
-
-class _GoalCelebrationState extends State<GoalCelebration> {
-  bool isCelebrationEnabled = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +19,7 @@ class _GoalCelebrationState extends State<GoalCelebration> {
           Text("Goal Celebration", style: AppTextStyles.bodyText),
           GestureDetector(
             onTap: () {
-              setState(() {
-                isCelebrationEnabled = !isCelebrationEnabled;
-              });
+              onToggle(!isCelebrationEnabled);
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),

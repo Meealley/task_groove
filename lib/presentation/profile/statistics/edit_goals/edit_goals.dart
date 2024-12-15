@@ -6,8 +6,21 @@ import 'package:task_groove/presentation/profile/statistics/edit_goals/goal_cele
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/utils/capitalize_text.dart';
 
-class EditGoals extends StatelessWidget {
+class EditGoals extends StatefulWidget {
   const EditGoals({super.key});
+
+  @override
+  State<EditGoals> createState() => _EditGoalsState();
+}
+
+class _EditGoalsState extends State<EditGoals> {
+  bool isCelebrationEnabled = false;
+
+  void _toggleCelebration(bool isEnabled) {
+    setState(() {
+      isCelebrationEnabled = isEnabled;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +59,10 @@ class EditGoals extends StatelessWidget {
             SizedBox(
               height: 2.h,
             ),
-            const GoalCelebration(),
+            GoalCelebration(
+              onToggle: _toggleCelebration,
+              isCelebrationEnabled: isCelebrationEnabled,
+            ),
             SizedBox(
               height: .5.h,
             ),

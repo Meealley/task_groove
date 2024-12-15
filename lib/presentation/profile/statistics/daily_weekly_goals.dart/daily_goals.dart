@@ -18,12 +18,29 @@ class DailyGoals extends StatefulWidget {
 
 class _DailyGoalsState extends State<DailyGoals> {
   // TODO : MAKE THE MESSAGE SENT TO THE USER DYNAMIC, SUCH THAT, THE GET A CONGRATULATORY MESSAGE WHEN THE COMPLETE THEIR TOTAL GOALS FOR THE DAY
+
+  String _getCongratulatoryMessage(int completedTasks, int totalTasks) {
+    if (completedTasks == totalTasks && totalTasks > 0) {
+      return 'Mischief managed, Well done!';
+    } else if (completedTasks > 0) {
+      return 'You\'ve got some great momentum!';
+    } else if (totalTasks == 0) {
+      return 'No tasks for today. Let\'s add some';
+    } else {
+      return 'Start your day strong! You can do it';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DailyGoalsCubit, DailyGoalsState>(
       builder: (context, state) {
         final totalTasks = state.totalTasks;
         final completedTasks = state.completedTasks;
+
+        // For congratulatory message
+        final motivationalMessage =
+            _getCongratulatoryMessage(completedTasks, totalTasks);
         return Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 12,
@@ -54,7 +71,7 @@ class _DailyGoalsState extends State<DailyGoals> {
                         height: .3.h,
                       ),
                       Text(
-                        'Mischief managed. Well done!',
+                        motivationalMessage,
                         style: AppTextStyles.bodySmall,
                       ),
                       SizedBox(
@@ -83,8 +100,11 @@ class _DailyGoalsState extends State<DailyGoals> {
                               ? completedTasks / totalTasks
                               : 0.0,
                           radius: 40,
-                          center: const FaIcon(
+                          center: FaIcon(
                             FontAwesomeIcons.medal,
+                            color: completedTasks / totalTasks == 1
+                                ? Colors.green
+                                : Colors.grey,
                             size: 40,
                           ),
                         ),
