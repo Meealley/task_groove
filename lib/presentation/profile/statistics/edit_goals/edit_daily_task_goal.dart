@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_groove/cubits/cubit/daily_goals_cubit.dart';
+import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
 class EditDailyTaskGoal extends StatefulWidget {

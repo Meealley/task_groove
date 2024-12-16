@@ -72,6 +72,7 @@ dependencies:
   google_sign_in: ^6.2.2
   fl_chart: ^0.69.2
   audioplayers: ^6.1.0
+  confetti: ^0.8.0
 
 dev_dependencies:
   flutter_test:

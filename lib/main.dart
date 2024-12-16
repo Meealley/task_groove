@@ -9,7 +9,8 @@ import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
-import 'package:task_groove/cubits/cubit/daily_goals_cubit.dart';
+import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
+import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
@@ -162,6 +163,11 @@ class MyApp extends StatelessWidget {
           create: (context) => DailyGoalsCubit(
             completedTaskPerDayCubit: CompletedTaskPerDayCubit(
                 taskListCubit: context.read<TaskListCubit>()),
+          ),
+        ),
+        BlocProvider<GoalCelebrationCubit>(
+          create: (context) => GoalCelebrationCubit(
+            dailyGoalsCubit: context.read<DailyGoalsCubit>(),
           ),
         ),
       ],

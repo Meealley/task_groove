@@ -14,13 +14,13 @@ class EditGoals extends StatefulWidget {
 }
 
 class _EditGoalsState extends State<EditGoals> {
-  bool isCelebrationEnabled = false;
+  // bool isCelebrationEnabled = false;
 
-  void _toggleCelebration(bool isEnabled) {
-    setState(() {
-      isCelebrationEnabled = isEnabled;
-    });
-  }
+  // void _toggleCelebration(bool isEnabled) {
+  //   setState(() {
+  //     isCelebrationEnabled = isEnabled;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +59,7 @@ class _EditGoalsState extends State<EditGoals> {
             SizedBox(
               height: 2.h,
             ),
-            GoalCelebration(
-              onToggle: _toggleCelebration,
-              isCelebrationEnabled: isCelebrationEnabled,
-            ),
+            const GoalCelebration(),
             SizedBox(
               height: .5.h,
             ),

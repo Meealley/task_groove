@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_groove/cubits/cubit/daily_goals_cubit.dart';
+import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
@@ -99,6 +99,7 @@ class _DailyGoalsState extends State<DailyGoals> {
                           percent: totalTasks > 0
                               ? completedTasks / totalTasks
                               : 0.0,
+                          // percent: .7,
                           radius: 40,
                           center: FaIcon(
                             FontAwesomeIcons.medal,
