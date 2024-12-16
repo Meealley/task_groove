@@ -156,7 +156,7 @@ class StatisticsPageState extends State<StatisticsPage> {
 
   List<BarChartGroupData> showingGroups(
       Map<DateTime, int> completedTasksPerDay) {
-    final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    // final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     final now = DateTime.now();
 
     final today = DateTime(now.year, now.month, now.day);

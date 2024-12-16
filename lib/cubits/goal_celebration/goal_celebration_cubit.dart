@@ -11,35 +11,30 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
   final DailyGoalsCubit dailyGoalsCubit;
   late final StreamSubscription _dailyGoalsSubscription;
 
+  bool goalCompletedPreviously = false;
+
   GoalCelebrationCubit({required this.dailyGoalsCubit})
       : super(GoalCelebrationState.initial()) {
+    _loadCelebrationPreference();
     _dailyGoalsSubscription =
         dailyGoalsCubit.stream.listen((DailyGoalsState dailyGoalsState) {
-      _loadCelebrationPreference();
       _handleDailyGoalsUpdate(dailyGoalsState);
     });
   }
 
-  void _handleDailyGoalsUpdate(DailyGoalsState dailyGoalsState) {
+  void _handleDailyGoalsUpdate(DailyGoalsState dailyGoalsState) async {
     final isAlltTaskCompleted =
         dailyGoalsState.completedTasks == dailyGoalsState.totalTasks &&
             dailyGoalsState.totalTasks > 0;
 
-    if (isAlltTaskCompleted && state.triggerCelebration) {
+    final prefs = await SharedPreferences.getInstance();
+    final isCelebrationEnabled = prefs.getBool('isCelebrationEnabled') ?? true;
+
+    if (isAlltTaskCompleted && isCelebrationEnabled) {
       emit(state.copyWith(triggerCelebration: true));
     } else {
       emit(state.copyWith(triggerCelebration: false));
     }
-
-    // final completedTask = dailyGoalsState.completedTasks;
-    // final totalTasks = dailyGoalsState.totalTasks;
-
-    // final goalsCompleted = totalTasks > 0 && completedTask == totalTasks;
-
-    // emit(state.copyWith(
-    //   goalsCompleted: goalsCompleted,
-    //   triggerCelebration: goalsCompleted && state.triggerCelebration,
-    // ));
   }
 
   void toggleCelebration(bool isEnabled) async {
@@ -53,29 +48,6 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
     final isEnabled = prefs.getBool('isCelebrationEnabled') ?? false;
     emit(state.copyWith(triggerCelebration: isEnabled));
   }
-
-  // void updateGoalStatus(
-  //     int completedTask, int totalTasks, bool isCelebrationEnabled) {
-  //   final goalCompleted = totalTasks > 0 && completedTask == totalTasks;
-  //   final shouldTrigger = goalCompleted && isCelebrationEnabled;
-
-  //   emit(state.copyWith(
-  //       goalsCompleted: goalCompleted, triggerCelebration: shouldTrigger));
-  // }
-
-  // void triggerCelebration() {
-  //   if (state.goalsCompleted) {
-  //     emit(state.copyWith(triggerCelebration: !state.triggerCelebration));
-  //   }
-
-  //   // // if(state.goalsCompleted)
-  // }
-
-  // void resetDailyGoals() {
-  //   emit(
-  //     state.copyWith(goalsCompleted: false, triggerCelebration: false),
-  //   );
-  // }
 
   @override
   Future<void> close() {

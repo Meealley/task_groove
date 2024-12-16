@@ -15,9 +15,6 @@ class DailyGoalsCubit extends Cubit<DailyGoalsState> {
     _initialize();
   }
 
-// TODO: IMPLEMENT THE CUBIT FOR THE COMPLETEDTASK
-// TODO: SYNC THE COMPLETEDTASK WITH THE FETCHDAILY TASK
-
   Future<void> _initialize() async {
     await loadGoals();
 

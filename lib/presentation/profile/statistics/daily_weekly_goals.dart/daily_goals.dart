@@ -17,8 +17,6 @@ class DailyGoals extends StatefulWidget {
 }
 
 class _DailyGoalsState extends State<DailyGoals> {
-  // TODO : MAKE THE MESSAGE SENT TO THE USER DYNAMIC, SUCH THAT, THE GET A CONGRATULATORY MESSAGE WHEN THE COMPLETE THEIR TOTAL GOALS FOR THE DAY
-
   String _getCongratulatoryMessage(int completedTasks, int totalTasks) {
     if (completedTasks == totalTasks && totalTasks > 0) {
       return 'Mischief managed, Well done!';
@@ -97,7 +95,7 @@ class _DailyGoalsState extends State<DailyGoals> {
                         child: CircularPercentIndicator(
                           progressColor: Colors.green,
                           percent: totalTasks > 0
-                              ? completedTasks / totalTasks
+                              ? (completedTasks / totalTasks).clamp(0.0, 1.0)
                               : 0.0,
                           // percent: .7,
                           radius: 40,

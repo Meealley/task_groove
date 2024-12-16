@@ -8,22 +8,31 @@ part 'theme_state.dart';
 
 class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState.initial()) {
-    _loadThemeColor(); // Load the saved theme color when the cubit is created
+    _loadThemeColor();
   }
 
-  // Load the saved theme color from SharedPreferences
   Future<void> _loadThemeColor() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedColorValue = prefs.getInt('themeColor') ??
-        Colors.blue.value; // Default to blue if no saved color
-    emit(state.copyWith(color: Color(savedColorValue)));
+    final savedColorValue = prefs.getInt('themeColor') ?? Colors.blue.value;
+    final savedThemeIndex = prefs.getInt('selectedThemeIndex') ?? 0;
+    emit(
+      state.copyWith(
+        color: Color(
+          savedColorValue,
+        ),
+        selectedThemeIndex: savedThemeIndex,
+      ),
+    );
   }
 
   // Change the theme color and save it to SharedPreferences
-  void changeTheme(Color color) async {
+  void changeTheme(Color color, int themeIndex) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(
-        'themeColor', color.value); // Save the color to SharedPreferences
-    emit(state.copyWith(color: color)); // Update the state with the new color
+    await prefs.setInt('themeColor', color.value);
+    await prefs.setInt('selectedThemeIndex', themeIndex);
+    emit(state.copyWith(
+      color: color,
+      selectedThemeIndex: themeIndex,
+    ));
   }
 }
