@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path_provider/path_provider.dart';
@@ -67,27 +65,23 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
       Uint8List capturedBytes = capturedByteData!.buffer.asUint8List();
 
       // Load app logo as an image
-      final ByteData logoData = await rootBundle.load(
-          'assets/images/tasks.png'); // Replace with the correct path to your app logo
+      final ByteData logoData =
+          await rootBundle.load('assets/images/tasks.png');
       Uint8List logoBytes = logoData.buffer.asUint8List();
-      ui.Codec codec = await ui.instantiateImageCodec(logoBytes,
-          targetHeight: 100); // Resize logo
+      ui.Codec codec =
+          await ui.instantiateImageCodec(logoBytes, targetHeight: 100);
       ui.FrameInfo logoFrame = await codec.getNextFrame();
       ui.Image logoImage = logoFrame.image;
 
-      // Merge captured image and app logo
       ui.PictureRecorder recorder = ui.PictureRecorder();
       Canvas canvas = Canvas(recorder);
 
-      // Draw the captured image
       final Paint paint = Paint();
       canvas.drawImage(capturedImage, Offset.zero, paint);
 
       // Draw the logo at the top-right corner
-      double logoX = capturedImage.width -
-          logoImage.width -
-          20; // 20px padding from the right
-      double logoY = 20; // 20px padding from the top
+      double logoX = capturedImage.width - logoImage.width - 20;
+      double logoY = 20;
       canvas.drawImage(logoImage, Offset(logoX, logoY), paint);
 
       // Generate final image
@@ -112,7 +106,7 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
       print('Error capturing and sharing: $e');
     } finally {
       setState(() {
-        _isCapturing = false; // Restore the Share button and 'X' button
+        _isCapturing = false;
       });
     }
   }
@@ -126,6 +120,10 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
           child: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(12),
+                topLeft: Radius.circular(12),
+              ),
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: 20,
@@ -134,14 +132,16 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
             child: Column(
               children: [
                 Center(
-                  child: Container(
-                    height: 8,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                  child: !_isCapturing
+                      ? Container(
+                          height: 8,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        )
+                      : null,
                 ),
                 SizedBox(
                   height: 1.h,
@@ -225,8 +225,9 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: 3.h,
+                      height: 14.h,
                     ),
+                    //  Spacer(),
                     SizedBox(
                       width: double.infinity,
                       child: Visibility(
