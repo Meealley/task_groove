@@ -25,16 +25,13 @@ class InboxScreen extends StatefulWidget {
 }
 
 class _InboxScreenState extends State<InboxScreen> {
-  List<TaskModel> activeTasks = []; // List to hold active tasks
-  List<TaskModel> completedTasks = []; // List to hold completed tasks
-  bool showCompletedTasks =
-      false; // To track if completed tasks should be shown
-  final GlobalKey<AnimatedListState> _listKey =
-      GlobalKey<AnimatedListState>(); // Key for AnimatedList
-  final Duration animationDuration =
-      const Duration(milliseconds: 300); // Duration for animations
-  final int _completedTasksVisibleCount =
-      0; // Tracks the number of completed tasks shown in the AnimatedList.
+  List<TaskModel> activeTasks = [];
+  List<TaskModel> completedTasks = [];
+  bool showCompletedTasks = false;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final Duration animationDuration = const Duration(milliseconds: 300);
+  // final int _completedTasksVisibleCount =
+  //     0;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override

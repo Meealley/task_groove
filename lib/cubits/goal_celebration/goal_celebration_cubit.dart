@@ -22,15 +22,16 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
     });
   }
 
+// TODO : FIX ISSUE WITH THE GOAL CELEBRATION AS IT IS SHOWING THE SHEET WITH 0 TASK COMPLETED,
   void _handleDailyGoalsUpdate(DailyGoalsState dailyGoalsState) async {
     final isAlltTaskCompleted =
         dailyGoalsState.completedTasks == dailyGoalsState.totalTasks &&
             dailyGoalsState.totalTasks > 0;
 
-    final prefs = await SharedPreferences.getInstance();
-    final isCelebrationEnabled = prefs.getBool('isCelebrationEnabled') ?? true;
+    // final prefs = await SharedPreferences.getInstance();
+    // final isCelebrationEnabled = prefs.getBool('isCelebrationEnabled') ?? true;
 
-    if (isAlltTaskCompleted && isCelebrationEnabled) {
+    if (isAlltTaskCompleted && state.isCelebrationEnabled) {
       emit(state.copyWith(triggerCelebration: true));
     } else {
       emit(state.copyWith(triggerCelebration: false));
@@ -38,15 +39,20 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
   }
 
   void toggleCelebration(bool isEnabled) async {
-    emit(state.copyWith(triggerCelebration: isEnabled));
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool("isCelebrationEnabled", isEnabled);
+    emit(
+      state.copyWith(
+        triggerCelebration: false,
+        isCelebrationEnabled: isEnabled,
+      ),
+    );
   }
 
   Future<void> _loadCelebrationPreference() async {
     final prefs = await SharedPreferences.getInstance();
     final isEnabled = prefs.getBool('isCelebrationEnabled') ?? false;
-    emit(state.copyWith(triggerCelebration: isEnabled));
+    emit(state.copyWith(isCelebrationEnabled: isEnabled));
   }
 
   @override

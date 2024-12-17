@@ -23,7 +23,7 @@ class SignupCubit extends Cubit<SignupState> {
     required String name,
     required String email,
     required String password,
-    required File? profileImage, // Accept image as a parameter
+    required File? profileImage,
   }) async {
     if (profileImage == null) {
       emit(state.copyWith(
@@ -39,7 +39,7 @@ class SignupCubit extends Cubit<SignupState> {
         name: name,
         email: email,
         password: password,
-        profileImage: profileImage, // Pass image here
+        profileImage: profileImage,
       )
           .whenComplete(() {
         ToastService.sendScaffoldAlert(
@@ -79,15 +79,14 @@ class SignupCubit extends Cubit<SignupState> {
         context: context,
       );
 
-      // Emit the success state
       emit(state.copyWith(
         signUpStatus: SignUpStatus.success,
       ));
 
       log("User signed in with Google: ${user.name}");
 
-      // Navigate to the home or dashboard page
-      context.go(Pages.home); // Adjust this navigation as needed
+      // Navigate to the home
+      context.go(Pages.home);
     } catch (e) {
       emit(
         state.copyWith(
@@ -105,21 +104,17 @@ class SignupCubit extends Cubit<SignupState> {
 
   Future<void> signOut(BuildContext context) async {
     try {
-      await authRepository
-          .signOut(); // Call the signOut method from AuthRepository
-      emit(state.copyWith(
-          signUpStatus:
-              SignUpStatus.initial)); // Reset state or handle as needed
-
+      await authRepository.signOut();
+      emit(state.copyWith(signUpStatus: SignUpStatus.initial));
       ToastService.sendScaffoldAlert(
         msg: "Signed Out Successfully",
         toastStatus: "SUCCESS",
         context: context,
       );
-      // Navigate to sign-up or login screen after successful sign-out
+
       context.go(
         Pages.login,
-      ); // Make sure 'Pages.signup' is the correct path for your login/signup page
+      );
 
       log("User logged out successfully");
     } catch (e) {

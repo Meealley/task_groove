@@ -12,7 +12,7 @@ class GoalCelebration extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GoalCelebrationCubit, GoalCelebrationState>(
       builder: (context, state) {
-        final isCelebrationEnabled = state.triggerCelebration;
+        final isCelebrationEnabled = state.isCelebrationEnabled;
         return Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
