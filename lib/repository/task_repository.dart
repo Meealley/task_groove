@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/models/task_model.dart';
+import 'package:task_groove/repository/daily_streak_repository.dart';
 import 'package:task_groove/repository/recent_activity_repository.dart';
 import 'package:task_groove/utils/custom_error.dart';
 
@@ -30,8 +31,12 @@ class TaskRepository {
           .doc(task.id);
       await taskRef.set(task.toMap());
 
-      // Log the activity
+      // Update Daily Streak
+      DailyStreakRepository streakRepository =
+          DailyStreakRepository(userId: currentUserId);
+      await streakRepository.updateDailyStreak();
 
+      // Log the activity
       await recentActivityRepository.logActivity(
         taskID: task.id,
         action: "You created a task:",
