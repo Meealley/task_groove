@@ -65,28 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: GoalBottomSheet(),
             ),
           );
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(
-          //     content: Column(
-          //       children: [
-          //         Text(
-          //           "🎉 Goal Achieved! 🎉",
-          //           style: AppTextStyles.bodyTextBold
-          //               .copyWith(color: Colors.white),
-          //         ),
-          //         const SizedBox(height: 8),
-          //         Text(
-          //           "You completed all your daily goals!",
-          //           style:
-          //               AppTextStyles.bodySmall.copyWith(color: Colors.white),
-          //         ),
-          //       ],
-          //     ),
-          //     behavior: SnackBarBehavior.floating,
-          //     backgroundColor: Colors.black.withOpacity(0.8),
-          //     duration: const Duration(seconds: 3),
-          //   ),
-          // );
         }
       },
       child: SafeArea(
