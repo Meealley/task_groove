@@ -268,89 +268,29 @@ class AuthRepository {
     }
   }
 
-  // Function to update user profile image, name, and email
-  // Future<void> updateUserProfile({
-  //   String? newName,
-  //   String? newEmail,
-  //   File? newProfileImage,
-  // }) async {
-  //   try {
-  //     final user = auth.currentUser;
-  //     if (user == null) {
-  //       throw const CustomError(
-  //         code: 'NoUser',
-  //         message: 'No authenticated user found',
-  //         plugin: 'Firebase_Auth',
-  //       );
-  //     }
-
-  //     // Update email if provided
-  //     if (newEmail != null && newEmail.isNotEmpty) {
-  //       await user.updateEmail(newEmail);
-  //     }
-
-  //     // Upload new profile image if provided
-  //     String? profileImageUrl;
-  //     if (newProfileImage != null) {
-  //       profileImageUrl = await _uploadProfileImage(newProfileImage);
-  //     }
-
-  //     // Prepare the updates map for Firestore
-  //     Map<String, dynamic> updates = {};
-  //     if (newName != null && newName.isNotEmpty) {
-  //       updates['name'] = newName;
-  //     }
-  //     if (newEmail != null && newEmail.isNotEmpty) {
-  //       updates['email'] = newEmail;
-  //     }
-  //     if (profileImageUrl != null && profileImageUrl.isNotEmpty) {
-  //       updates['profilePicsUrl'] = profileImageUrl;
-  //     }
-
-  //     if (updates.isNotEmpty) {
-  //       // Update user data in Firestore
-  //       await firestore.collection('users').doc(user.uid).update(updates);
-
-  //       // Update SharedPreferences with the new data
-  //       SharedPreferences prefs = await SharedPreferences.getInstance();
-  //       if (newName != null) {
-  //         await prefs.setString('user_name', newName);
-  //       }
-  //       if (newEmail != null) {
-  //         await prefs.setString('user_email', newEmail);
-  //       }
-  //       if (profileImageUrl != null) {
-  //         await prefs.setString('user_profilePicsUrl', profileImageUrl);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     log('Error updating profile: $e');
-  //     throw CustomError(
-  //       code: "ProfileUpdateError",
-  //       message: "Failed to update profile: $e",
-  //       plugin: "Firebase_Firestore",
-  //     );
-  //   }
-  // }
-
-// In auth_repository.dart
+// This is for updating the user profile name and email.
   Future<void> updateUserProfile({
     required String userId,
     required String name,
     required String email,
-    required String? profileImageUrl,
+    String? profileImageUrl,
   }) async {
     try {
-      await firestore.collection('users').doc(userId).update({
+      // Update the Firestore user document
+      final updateData = {
         'name': name,
         'email': email,
         if (profileImageUrl != null) 'profilePicsUrl': profileImageUrl,
-      });
+      };
+
+      await firestore.collection('users').doc(userId).update(updateData);
+
+      log("User profile updated successfully in Firestore");
     } catch (e) {
       log('Error updating user profile: $e');
-      throw CustomError(
+      throw const CustomError(
         code: 'UpdateProfileError',
-        message: e.toString(),
+        message: 'Failed to update user profile. Please try again.',
       );
     }
   }

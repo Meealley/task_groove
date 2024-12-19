@@ -29,7 +29,8 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
           error: const CustomError(message: "Authentication failed"),
         ));
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Authentication error: $e\n$stackTrace");
       emit(state.copyWith(
         isLoading: false,
         error: CustomError(message: "Authentication error: $e"),
@@ -49,7 +50,8 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
         isLoading: false,
         error: null, // Clear previous errors
       ));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Error fetching events: $e\n$stackTrace");
       emit(state.copyWith(
         isLoading: false,
         error: CustomError(message: "Error fetching events: $e"),
@@ -74,7 +76,8 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
         isLoading: false,
         error: null, // Clear previous errors
       ));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Error creating event: $e\n$stackTrace");
       emit(state.copyWith(
         isLoading: false,
         error: CustomError(message: "Error creating event: $e"),
@@ -91,7 +94,8 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
         isLoading: false,
         error: null, // Clear previous errors
       ));
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Error syncing tasks to calendar: $e\n$stackTrace");
       emit(state.copyWith(
         isLoading: false,
         error: CustomError(message: "Error syncing tasks to calendar: $e"),
@@ -105,7 +109,8 @@ class GoogleCalenderCubit extends Cubit<GoogleCalenderState> {
     try {
       await googleCalendarRepository.clearTokens();
       emit(GoogleCalenderState.initial());
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print("Error during logout: $e\n$stackTrace");
       emit(state.copyWith(
         isLoading: false,
         error: CustomError(message: "Error during logout: $e"),

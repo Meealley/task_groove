@@ -1,8 +1,10 @@
 // profile_cubit.dart
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:task_groove/repositories/auth_repository.dart'; // Ensure the correct import
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/repository/auth_repository.dart';
 import 'profile_state.dart';
 
@@ -54,32 +56,92 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  // Award points
-  Future<void> awardPoints(int points) async {
-    await authRepository.awardPoints(points);
-    await fetchUserProfile(); // Refresh the profile after awarding points
-  }
-
+  // Update User Profile
   Future<void> updateUserProfile({
     required String name,
     required String email,
     String? profileImageUrl,
   }) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoading: true)); // Emit loading state
+
     try {
+      // Update Firestore via the repository
       await authRepository.updateUserProfile(
-        userId: state.userID, // Use the current user's ID
+        userId: state.userID,
         name: name,
         email: email,
         profileImageUrl: profileImageUrl,
       );
-      log("User profile updated successfully");
-      await fetchUserProfile(); // Refresh the profile after updating
-    } catch (e) {
-      emit(state.copyWith(
-        errorMessage: e.toString(),
+
+      log("User profile updated successfully in Firestore");
+
+      // Update local state
+      final updatedState = state.copyWith(
+        name: name,
+        email: email,
+        profileImageUrl: profileImageUrl ?? state.profileImageUrl,
         isLoading: false,
+        errorMessage: null,
+      );
+
+      emit(updatedState); // Emit updated state
+
+      // Save to SharedPreferences
+      await saveProfileToSharedPreferences(updatedState);
+    } catch (e) {
+      log("Error updating user profile: $e");
+
+      emit(state.copyWith(
+        errorMessage: 'Failed to update profile. Please try again later.',
+        isLoading: false, // Reset loading state
       ));
     }
+  }
+
+  Future<void> saveProfileToSharedPreferences(ProfileState profileState) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Convert the state to a JSON string
+    final profileMap = {
+      'userID': profileState.userID,
+      'name': profileState.name,
+      'email': profileState.email,
+      'profileImageUrl': profileState.profileImageUrl,
+      'loginStreak': profileState.loginStreak,
+      'points': profileState.points,
+    };
+
+    final profileJson = jsonEncode(profileMap); // Encode as JSON
+    await prefs.setString(
+        'profileState', profileJson); // Save to SharedPreferences
+    log("Profile saved to SharedPreferences");
+  }
+
+  Future<ProfileState> loadProfileFromSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final profileData = prefs.getString('profileState');
+
+    if (profileData != null) {
+      try {
+        final profileMap =
+            jsonDecode(profileData) as Map<String, dynamic>; // Decode JSON
+
+        return ProfileState(
+          userID: profileMap['userID'] ?? "",
+          name: profileMap['name'] ?? "",
+          email: profileMap['email'] ?? "",
+          profileImageUrl: profileMap['profileImageUrl'] ?? "",
+          loginStreak: profileMap['loginStreak'] ?? 1,
+          points: profileMap['points'] ?? 0,
+          isLoading: false,
+          errorMessage: null,
+        );
+      } catch (e) {
+        log("Error decoding profile from SharedPreferences: $e");
+      }
+    }
+
+    // Return initial state if no data is found or decoding fails
+    return ProfileState.initial();
   }
 }
