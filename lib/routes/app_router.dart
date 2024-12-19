@@ -19,7 +19,7 @@ import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart'
 import 'package:task_groove/presentation/profile/calendar_integration/calendar_integration_screen.dart';
 import 'package:task_groove/presentation/profile/profile_theme/profile_theme_screen.dart';
 import 'package:task_groove/presentation/profile/statistics/edit_goals/edit_goals.dart';
-import 'package:task_groove/presentation/profile/statistics/statistics_page.dart';
+import 'package:task_groove/presentation/profile/statistics/productivity_page.dart';
 import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
 import 'package:task_groove/routes/pages.dart';
 

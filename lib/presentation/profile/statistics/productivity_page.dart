@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
+import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
+import 'package:task_groove/presentation/profile/statistics/daily_streaks/daily_streaks.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/daily_goals.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
@@ -33,6 +35,7 @@ class StatisticsPageState extends State<StatisticsPage> {
     context.read<TaskListCubit>().fetchTasks();
 
     context.read<TotalCompletedTaskCountCubit>();
+    context.read<DailyStreakCubit>().fetchStreakData();
 
     super.initState();
   }
@@ -83,7 +86,7 @@ class StatisticsPageState extends State<StatisticsPage> {
                     SizedBox(
                       height: 1.h,
                     ),
-                    const WeeklyGoals(),
+                    const DailyStreaks(),
                     const Divider(),
                     SizedBox(
                       height: 450,

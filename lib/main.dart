@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/completed_task_per_day/completed_task_per_day_cubit.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
+import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
@@ -25,6 +27,7 @@ import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
 import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
 import 'package:task_groove/firebase_options.dart';
 import 'package:task_groove/repository/auth_repository.dart';
+import 'package:task_groove/repository/daily_streak_repository.dart';
 import 'package:task_groove/repository/google_calendar_repository.dart';
 import 'package:task_groove/repository/push_notification_repository.dart';
 import 'package:task_groove/repository/recent_activity_repository.dart';
@@ -168,6 +171,13 @@ class MyApp extends StatelessWidget {
         BlocProvider<GoalCelebrationCubit>(
           create: (context) => GoalCelebrationCubit(
             dailyGoalsCubit: context.read<DailyGoalsCubit>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => DailyStreakCubit(
+            streakRepository: DailyStreakRepository(
+              userId: auth.currentUser!.uid,
+            ),
           ),
         ),
       ],

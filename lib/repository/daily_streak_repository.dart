@@ -68,6 +68,24 @@ class DailyStreakRepository {
     }
   }
 
+  Future<Map<String, dynamic>?> getDailyStreak() async {
+    try {
+      final streakDoc = await firestore
+          .collection('users')
+          .doc(userId)
+          .collection('streaks')
+          .doc('dailyStreak')
+          .get();
+
+      if (streakDoc.exists) {
+        return streakDoc.data();
+      }
+      return null;
+    } catch (e) {
+      throw Exception('Error fetching daily streak: $e');
+    }
+  }
+
   bool isSameDay(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&
         date1.month == date2.month &&
