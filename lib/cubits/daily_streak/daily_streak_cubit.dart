@@ -42,12 +42,11 @@ class DailyStreakCubit extends Cubit<DailyStreakState> {
         streakEndDate: streakEndDate,
       ));
     } catch (e) {
-      // emit(state.copyWith(
-      //   isLoading: false,
-      //   hasError: true,
-      //   errorMessage: e.toString(),
-      // ));
       e.toString();
     }
+  }
+
+  void reset() {
+    emit(DailyStreakState.initial());
   }
 }

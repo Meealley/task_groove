@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
+import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _loadwithProgress = !_loadwithProgress;
       Future.delayed(const Duration(seconds: 3), () {
         context.read<SignupCubit>().signOut(context);
+        context.read<DailyStreakCubit>().reset();
       });
     });
   }
@@ -184,18 +186,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 2.h,
                     ),
-
                     SizedBox(
                       height: 1.5.h,
                     ),
                     const HomeRecentActivity(),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     print("Track log in cliecked");
-                    //     context.read<ProfileCubit>().trackLogin();
-                    //   },
-                    //   child: const Text('Track Login'),
-                    // ),
                     SizedBox(
                       height: 8.h,
                     ),
