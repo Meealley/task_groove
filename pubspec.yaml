@@ -92,17 +92,18 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/images/tasks.png
-  branding: assets/images/tasks.png
-  color_dark: "#121212"
-  image_dark: assets/images/tasks.png
-  branding_dark: assets/images/tasks.png
+  image: assets/images/playstore.png
+  # branding: assets/images/playstore.png
+  # color_dark: "#121212"
+  # image_dark: assets/images/playstore.png
+  branding_dark: assets/images/playstore.png
 
   android_12:
-    image: assets/images/tasks.png
-    icon_background_color: "#ffffff"
-    image_dark: assets/images/tasks.png
-    icon_background_color_dark: "#121212"
+    color: "#ffffff"
+    image: assets/images/playstore.png
+    # icon_background_color: "#ffffff"
+    # image_dark: assets/images/tasks.png
+    # icon_background_color_dark: "#121212"
 
   web: false
 
@@ -150,4 +151,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: "launcher_icons"
+  ios: "AppIcon"
+  image_path: 'assets/images/playstore.png'
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+
   

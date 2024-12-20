@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
+import 'package:task_groove/cubits/signup/signup_cubit.dart';
 import 'package:task_groove/presentation/profile/widgets/profile_lists.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
-import 'package:task_groove/models/user_model.dart'; // Make sure to import the UserModel
+import 'package:task_groove/models/user_model.dart';
+import 'package:task_groove/utils/button.dart'; // Make sure to import the UserModel
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _loadwithProgress = false;
+
+  void _logout() {
+    setState(() {
+      _loadwithProgress = !_loadwithProgress;
+      Future.delayed(const Duration(seconds: 3), () {
+        context.read<SignupCubit>().signOut(context);
+        context.read<DailyStreakCubit>().reset();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +93,20 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            const ProfileList()
+            Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const ProfileList()),
+            SizedBox(
+              height: 3.h,
+            ),
+            ButtonPress(
+              text: "Logout",
+              loadWithProgress: _loadwithProgress,
+              onPressed: _logout,
+            )
           ],
         ),
       ),

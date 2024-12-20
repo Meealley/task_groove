@@ -10,7 +10,6 @@ import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_streaks/daily_streaks.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/daily_goals.dart';
-import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 

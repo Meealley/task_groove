@@ -32,11 +32,6 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
     // _trackAppUsage();
   }
 
-  // Future<void> _trackAppUsage() async {
-  //   final authRepository = AuthRepository(); // Ensure to use your instance
-  //   // await authRepository.trackDailyAppUsage();
-  // }
-
   // Function to fetch unread notification count
   Stream<int> _fetchUnreadNotificationCount() {
     final String userId = FirebaseAuth.instance.currentUser!.uid;

@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="task_groove"
+        android:label="Task Groove"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icons">
 
         <activity
             android:name=".MainActivity"

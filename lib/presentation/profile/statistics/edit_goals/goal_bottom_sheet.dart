@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
-import 'package:task_groove/theme/appcolors.dart';
 import 'package:confetti/confetti.dart';
 
 class GoalBottomSheet extends StatefulWidget {
