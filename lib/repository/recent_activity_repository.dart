@@ -53,7 +53,7 @@ class RecentActivityRepository {
           .doc(currentUserId)
           .collection("recent_activity")
           .orderBy("timestamp", descending: true)
-          .limit(6)
+          .limit(4)
           .get();
 
       return snapshot.docs.map((doc) {
@@ -68,6 +68,28 @@ class RecentActivityRepository {
     }
   }
 
+  // Fetch all recent activity
+  Future<List<ActivityModel>> fetchAllActivities() async {
+    try {
+      QuerySnapshot snapshot = await firestore
+          .collection("users")
+          .doc(currentUserId)
+          .collection("recent_activity")
+          .orderBy("timestamp", descending: true)
+          .get();
+
+      return snapshot.docs.map((doc) {
+        return ActivityModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      log(e.toString());
+      throw CustomError(
+        code: 'Activity Fetching Error',
+        message: e.toString(),
+      );
+    }
+  }
+
   // Listen for the realtime updates to recent activities
   Stream<List<ActivityModel>> listenToRecentActivities() {
     return firestore
@@ -75,7 +97,7 @@ class RecentActivityRepository {
         .doc(currentUserId)
         .collection("recent_activity")
         .orderBy("timestamp", descending: true)
-        .limit(6)
+        .limit(4)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {

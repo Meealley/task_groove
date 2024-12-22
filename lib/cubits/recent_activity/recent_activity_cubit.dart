@@ -20,6 +20,15 @@ class RecentActivityCubit extends Cubit<RecentActivityState> {
     }
   }
 
+  void fetchAllActivities() async {
+    try {
+      final allActivities = await recentActivityRepository.fetchAllActivities();
+      emit(state.copyWith(recentAcitvities: allActivities));
+    } catch (e) {
+      e.toString();
+    }
+  }
+
   Future<void> logActivity({
     required String taskID,
     required String action,

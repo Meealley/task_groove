@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     Center(
                                       child: Text(
-                                        "Login in with Google",
+                                        "Login with Google",
                                         style: AppTextStyles.bodyText,
                                       ),
                                     )

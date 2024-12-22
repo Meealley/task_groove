@@ -224,7 +224,7 @@ class _GoalBottomSheetState extends State<GoalBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
-                      height: 14.h,
+                      height: 10.h,
                     ),
                     //  Spacer(),
                     SizedBox(

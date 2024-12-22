@@ -35,6 +35,11 @@ class _ProfileListState extends State<ProfileList> {
       'title': "Calendar Integration",
       'route': Pages.profileCalendarIntegration,
     },
+    {
+      "icon": FontAwesomeIcons.joomla,
+      'title': "Recent Activity",
+      'route': Pages.recentActivity,
+    },
   ];
 
   @override
