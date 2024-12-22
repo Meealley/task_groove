@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
+import 'package:task_groove/models/recent_activity_status.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/utils/capitalize_text.dart';
 import 'package:task_groove/utils/truncate_text.dart';
@@ -32,7 +33,11 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
       ),
       body: BlocBuilder<RecentActivityCubit, RecentActivityState>(
         builder: (context, state) {
-          if (state.recentAcitvities.isEmpty) {
+          if (state.recentActivityStatus == RecentActivityStatus.loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state.recentAcitvities.isEmpty) {
             return Center(
               child: Text(
                 'No recent activities found.',

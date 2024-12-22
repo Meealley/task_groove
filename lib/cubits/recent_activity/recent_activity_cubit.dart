@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:task_groove/models/acitvity_model.dart';
+import 'package:task_groove/models/recent_activity_status.dart';
 import 'package:task_groove/repository/recent_activity_repository.dart';
 
 part 'recent_activity_state.dart';
@@ -22,8 +23,14 @@ class RecentActivityCubit extends Cubit<RecentActivityState> {
 
   void fetchAllActivities() async {
     try {
+      emit(state.copyWith(recentActivityStatus: RecentActivityStatus.loading));
       final allActivities = await recentActivityRepository.fetchAllActivities();
-      emit(state.copyWith(recentAcitvities: allActivities));
+      emit(
+        state.copyWith(
+          recentAcitvities: allActivities,
+          recentActivityStatus: RecentActivityStatus.success,
+        ),
+      );
     } catch (e) {
       e.toString();
     }

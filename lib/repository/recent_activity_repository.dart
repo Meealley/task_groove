@@ -46,14 +46,14 @@ class RecentActivityRepository {
   }
 
   // Fetch recent activity
-  Future<List<ActivityModel>> fetchRecentActivities() async {
+  Future<List<ActivityModel>> fetchRecentActivities({int limit = 4}) async {
     try {
       QuerySnapshot snapshot = await firestore
           .collection("users")
           .doc(currentUserId)
           .collection("recent_activity")
           .orderBy("timestamp", descending: true)
-          .limit(4)
+          .limit(limit)
           .get();
 
       return snapshot.docs.map((doc) {

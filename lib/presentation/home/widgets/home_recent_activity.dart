@@ -1,9 +1,12 @@
 // ignore_for_file: must_call_super
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/utils/capitalize_text.dart';
 import 'package:task_groove/utils/truncate_text.dart';
@@ -39,10 +42,26 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Recent Activities",
-                    style: AppTextStyles.bodyTextBold,
+                  padding: const EdgeInsets.only(
+                    right: 20,
+                    top: 13,
+                    left: 14,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Recent Activities",
+                        style: AppTextStyles.bodyTextBold,
+                      ),
+                      GestureDetector(
+                        onTap: () => context.push(Pages.recentActivity),
+                        child: Text(
+                          "View All",
+                          style: AppTextStyles.bodySmall,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 ListView.separated(
@@ -52,7 +71,7 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                     return const Divider();
                   },
                   shrinkWrap: true,
-                  itemCount: state.recentAcitvities.length,
+                  itemCount: state.recentAcitvities.length.clamp(0, 4),
                   itemBuilder: (context, index) {
                     final activity = state.recentAcitvities[index];
 

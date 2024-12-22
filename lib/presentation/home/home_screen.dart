@@ -193,11 +193,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 8.h,
                     ),
-                    ButtonPress(
-                      text: "Logout",
-                      loadWithProgress: _loadwithProgress,
-                      onPressed: _logout,
-                    )
+                    // ButtonPress(
+                    //   text: "Logout",
+                    //   loadWithProgress: _loadwithProgress,
+                    //   onPressed: _logout,
+                    // )
                   ],
                 ),
               ],
