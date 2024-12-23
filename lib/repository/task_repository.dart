@@ -36,7 +36,7 @@ class TaskRepository {
           DailyStreakRepository(userId: currentUserId);
       await streakRepository.updateDailyStreak();
 
-// TODO: WORK ON THE POINTS AND AWARD ACCUMULATION
+      // TODO: WORK ON THE POINTS AND AWARD ACCUMULATION
       // Log the activity
       await recentActivityRepository.logActivity(
         taskID: task.id,

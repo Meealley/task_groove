@@ -13,7 +13,8 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> _loadThemeColor() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedColorValue = prefs.getInt('themeColor') ?? Colors.blue.value;
+    final savedColorValue =
+        prefs.getInt('themeColor') ?? AppColors.backgroundDark.value;
     final savedThemeIndex = prefs.getInt('selectedThemeIndex') ?? 0;
     emit(
       state.copyWith(

@@ -48,8 +48,6 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
     }
   }
 
-// TODO: ADD THE BACKGROUND COLOR TO IT
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +56,6 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
           'Upcoming Tasks',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        // backgroundColor: AppColors.backgroundDark,
       ),
       body: Column(
         children: [
