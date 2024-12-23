@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/tastlist_status.dart';
@@ -285,26 +286,26 @@ class _InboxScreenState extends State<InboxScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () {
-                        context.push(Pages.createTask);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.backgroundDark,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          "Add More Tasks",
-                          style: AppTextStyles.bodyText
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     context.push(Pages.createTask);
+                    //   },
+                    //   child: Container(
+                    //     padding: const EdgeInsets.symmetric(
+                    //       vertical: 10,
+                    //       horizontal: 16,
+                    //     ),
+                    //     decoration: BoxDecoration(
+                    //       color: AppColors.backgroundDark,
+                    //       borderRadius: BorderRadius.circular(20),
+                    //     ),
+                    //     child: Text(
+                    //       "Add More Tasks",
+                    //       style: AppTextStyles.bodyText
+                    //           .copyWith(color: Colors.white),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -340,6 +341,20 @@ class _InboxScreenState extends State<InboxScreen> {
               ],
             ),
           );
+        },
+      ),
+      floatingActionButton: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return FloatingActionButton(
+              backgroundColor: state.color,
+              shape: const CircleBorder(),
+              child: const FaIcon(
+                FontAwesomeIcons.plus,
+                color: AppColors.textWhite,
+              ),
+              onPressed: () {
+                context.push(Pages.createTask);
+              });
         },
       ),
     );
@@ -405,93 +420,99 @@ class _InboxScreenState extends State<InboxScreen> {
 
   // Widget to build each active task
   Widget _buildTaskItem(TaskModel task) {
-    return Dismissible(
-      key: Key(task.id),
-      direction: DismissDirection.endToStart,
-      background: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(13),
-        ),
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: const Icon(
-          FontAwesomeIcons.trash,
-          color: Colors.white,
-        ),
-      ),
-      onDismissed: (direction) {
-        setState(() {
-          activeTasks.removeWhere((t) => t.id == task.id); // Remove the task
-          context
-              .read<TaskListCubit>()
-              .deleteTasks(task); // Update state in Cubit
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-            '${task.title} deleted',
-            style: AppTextStyles.bodyText.copyWith(
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, state) {
+        return Dismissible(
+          key: Key(task.id),
+          direction: DismissDirection.endToStart,
+          background: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(13),
+            ),
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const Icon(
+              FontAwesomeIcons.trash,
               color: Colors.white,
             ),
-          )),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        decoration: BoxDecoration(
-          color: task.priority == 1
-              ? Colors.red.shade300
-              : task.priority == 2
-                  ? const Color.fromRGBO(220, 164, 124, 57)
-                  : const Color.fromRGBO(156, 169, 134, 57),
-          borderRadius: BorderRadius.circular(13),
-        ),
-        child: ListTile(
-          leading: Checkbox(
-            value: task.completed,
-            shape: const CircleBorder(),
-            checkColor: Colors.white,
-            focusColor: Colors.green,
-            onChanged: (_) {
-              _playPopSound();
-
-              _onTaskCompleted(task); // Toggle task completion
-            },
           ),
-          title: Text(task.title, style: AppTextStyles.bodyText),
-          subtitle: Text(
-            truncateText(task.description, 30),
-            style: AppTextStyles.bodySmall,
-          ),
-          trailing: Chip(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-            label: Text(
-              task.priority == 1
-                  ? "High"
-                  : task.priority == 2
-                      ? "Medium"
-                      : "Low",
-              style: AppTextStyles.bodySmall.copyWith(
-                color: task.priority == 1
-                    ? Colors.red.shade300
-                    : task.priority == 2
-                        ? const Color.fromRGBO(220, 164, 124, 57)
-                        : const Color.fromRGBO(156, 169, 134, 57),
-              ),
-            ),
-          ),
-          onTap: () {
-            context.pushNamed(
-              Pages.taskDescription,
-              pathParameters: {'id': task.id},
-              extra: task,
+          onDismissed: (direction) {
+            setState(() {
+              activeTasks
+                  .removeWhere((t) => t.id == task.id); // Remove the task
+              context
+                  .read<TaskListCubit>()
+                  .deleteTasks(task); // Update state in Cubit
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  backgroundColor: state.color,
+                  content: Text(
+                    '${task.title} deleted',
+                    style: AppTextStyles.bodyText.copyWith(
+                      color: Colors.white,
+                    ),
+                  )),
             );
           },
-        ),
-      ),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            decoration: BoxDecoration(
+              color: task.priority == 1
+                  ? Colors.red.shade300
+                  : task.priority == 2
+                      ? const Color.fromRGBO(220, 164, 124, 57)
+                      : const Color.fromRGBO(156, 169, 134, 57),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: ListTile(
+              leading: Checkbox(
+                value: task.completed,
+                shape: const CircleBorder(),
+                checkColor: Colors.white,
+                focusColor: Colors.green,
+                onChanged: (_) {
+                  _playPopSound();
+
+                  _onTaskCompleted(task); // Toggle task completion
+                },
+              ),
+              title: Text(task.title, style: AppTextStyles.bodyText),
+              subtitle: Text(
+                truncateText(task.description, 30),
+                style: AppTextStyles.bodySmall,
+              ),
+              trailing: Chip(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24)),
+                label: Text(
+                  task.priority == 1
+                      ? "High"
+                      : task.priority == 2
+                          ? "Medium"
+                          : "Low",
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: task.priority == 1
+                        ? Colors.red.shade300
+                        : task.priority == 2
+                            ? const Color.fromRGBO(220, 164, 124, 57)
+                            : const Color.fromRGBO(156, 169, 134, 57),
+                  ),
+                ),
+              ),
+              onTap: () {
+                context.pushNamed(
+                  Pages.taskDescription,
+                  pathParameters: {'id': task.id},
+                  extra: task,
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

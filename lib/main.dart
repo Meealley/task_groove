@@ -35,6 +35,7 @@ import 'package:task_groove/repository/task_repository.dart';
 import 'package:task_groove/routes/app_router.dart'; // Import AppRouter
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_groove/theme/appcolors.dart';
+import 'package:task_groove/utils/network_aware.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
