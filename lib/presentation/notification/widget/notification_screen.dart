@@ -53,7 +53,6 @@ class NotificationScreen extends StatelessWidget {
           'Notifications 🔔',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        // backgroundColor: AppColors.backgroundDark,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _fetchNotifications(userId),
@@ -96,7 +95,7 @@ class NotificationScreen extends StatelessWidget {
                   ),
                 ),
                 onDismissed: (direction) async {
-// Remove notifications from the firestore
+                  // Remove notifications from the firestore
 
                   try {
                     await firestore
@@ -105,6 +104,7 @@ class NotificationScreen extends StatelessWidget {
                         .delete();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
+                        // backgroundColor: ,
                         content: Text(
                           "Notification deleted",
                           style: AppTextStyles.bodyText.copyWith(

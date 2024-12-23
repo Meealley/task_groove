@@ -48,6 +48,8 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
     }
   }
 
+// TODO: ADD THE BACKGROUND COLOR TO IT
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,23 +127,38 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
                     itemCount: tasksForSelectedDay.length,
                     itemBuilder: (context, index) {
                       final task = tasksForSelectedDay[index];
-                      return ListTile(
-                        title: Text(task.title, style: AppTextStyles.bodyText),
-                        subtitle: Text(
-                          task.description,
-                          style: AppTextStyles.bodySmall,
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 4),
+                          decoration: BoxDecoration(
+                            color: task.priority == 1
+                                ? Colors.red.shade300
+                                : task.priority == 2
+                                    ? const Color.fromRGBO(220, 164, 124, 57)
+                                    : const Color.fromRGBO(156, 169, 134, 57),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: ListTile(
+                            title:
+                                Text(task.title, style: AppTextStyles.bodyText),
+                            subtitle: Text(
+                              task.description,
+                              style: AppTextStyles.bodySmall,
+                            ),
+                            trailing: Text(
+                              DateFormat.jm().format(task.createdAt),
+                              style: AppTextStyles.bodySmall,
+                            ),
+                            onTap: () {
+                              context.pushNamed(
+                                Pages.taskDescription,
+                                pathParameters: {'id': task.id},
+                                extra: task,
+                              );
+                            },
+                          ),
                         ),
-                        trailing: Text(
-                          DateFormat.jm().format(task.createdAt),
-                          style: AppTextStyles.bodySmall,
-                        ),
-                        onTap: () {
-                          context.pushNamed(
-                            Pages.taskDescription,
-                            pathParameters: {'id': task.id},
-                            extra: task,
-                          );
-                        },
                       );
                     },
                   );

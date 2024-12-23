@@ -10,7 +10,7 @@ class DailyGoalsState extends Equatable {
       {required this.completedTasks, required this.totalTasks});
 
   factory DailyGoalsState.initial() {
-    return const DailyGoalsState(totalTasks: 0, completedTasks: 0);
+    return const DailyGoalsState(totalTasks: 3, completedTasks: 0);
   }
 
   @override

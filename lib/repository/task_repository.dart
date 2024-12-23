@@ -36,12 +36,13 @@ class TaskRepository {
           DailyStreakRepository(userId: currentUserId);
       await streakRepository.updateDailyStreak();
 
+// TODO: WORK ON THE POINTS AND AWARD ACCUMULATION
       // Log the activity
       await recentActivityRepository.logActivity(
         taskID: task.id,
         action: "You created a task:",
         taskTitle: task.title,
-        pointsGained: 10,
+        pointsGained: 1,
       );
     } catch (e) {
       log(e.toString());
@@ -179,28 +180,6 @@ class TaskRepository {
     }
   }
 
-  // Sort tasks by completion status (completed first, then pending)
-  // Future<List<TaskModel>> sortTasksByCompletionStatus() async {
-  //   try {
-  //     QuerySnapshot snapshot = await firestore
-  //         .collection("users")
-  //         .doc(currentUserId)
-  //         .collection("tasks")
-  //         .orderBy("completed", descending: true)
-  //         .get();
-
-  //     return snapshot.docs.map((doc) {
-  //       return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
-  //     }).toList();
-  //   } catch (e) {
-  //     log(e.toString());
-  //     throw CustomError(
-  //       code: "Error Searching for tasks",
-  //       message: e.toString(),
-  //     );
-  //   }
-  // }
-
   Future<List<TaskModel>> fetchCompletedTasks(
       {int limit = 3, DocumentSnapshot? lastDoc}) async {
     try {
@@ -251,32 +230,6 @@ class TaskRepository {
     }
   }
 
-  // Fetch overdue tasks, prioritizing stopDateTime and falling back on startDateTime
-  // Future<List<TaskModel>> fetchOverdueTasks() async {
-  //   try {
-  //     DateTime now = DateTime.now(); // Current date and time
-
-  //     QuerySnapshot snapshot = await firestore
-  //         .collection("users")
-  //         .doc(currentUserId)
-  //         .collection("tasks")
-  //         .where('completed', isEqualTo: false) // Only fetch incomplete tasks
-  //         .where('startDateTime',
-  //             isLessThan: now) // Use startDateTime for overdue
-  //         .orderBy('startDateTime', descending: true) // Order by start date
-  //         .get();
-
-  //     return snapshot.docs.map((doc) {
-  //       return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
-  //     }).toList();
-  //   } catch (e) {
-  //     log(e.toString());
-  //     throw CustomError(
-  //       code: "Error Fetching Overdue Tasks",
-  //       message: e.toString(),
-  //     );
-  //   }
-  // }
   Future<List<TaskModel>> fetchOverdueTasks() async {
     final now = DateTime.now();
     // Fetch all tasks, then filter out the ones that are overdue and not completed

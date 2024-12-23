@@ -22,15 +22,10 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
     });
   }
 
-// TODO : FIX ISSUE WITH THE GOAL CELEBRATION AS IT IS SHOWING THE SHEET WITH 0 TASK COMPLETED,
-// TODO: Fix  the issue of the total Goal being set without the user setting total Goal.
   void _handleDailyGoalsUpdate(DailyGoalsState dailyGoalsState) async {
     final isAlltTaskCompleted =
         dailyGoalsState.completedTasks == dailyGoalsState.totalTasks &&
             dailyGoalsState.totalTasks > 0;
-
-    // final prefs = await SharedPreferences.getInstance();
-    // final isCelebrationEnabled = prefs.getBool('isCelebrationEnabled') ?? true;
 
     if (isAlltTaskCompleted && state.isCelebrationEnabled) {
       emit(state.copyWith(triggerCelebration: true));
