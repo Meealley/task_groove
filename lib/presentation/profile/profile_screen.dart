@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(6.sp),
         child: ListView(
           children: [
             BlocBuilder<ProfileCubit, ProfileState>(
