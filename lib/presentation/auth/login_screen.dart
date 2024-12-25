@@ -81,12 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              "Login",
-              style: AppTextStyles.headingBold,
-            ),
-          ),
+          // appBar: AppBar(
+          //   title: Text(
+          //     "Login",
+          //     style: AppTextStyles.headingBold,
+          //   ),
+          // ),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Padding(
@@ -97,9 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 2.h),
-                      Text(
-                        "Login to continue \nwith your tasks 🗄️",
-                        style: AppTextStyles.bodyTextLg,
+                      Center(
+                        child: Text(
+                          "Login to continue with your tasks 🗄️",
+                          style: AppTextStyles.bodyTextLg,
+                        ),
                       ),
                       Center(
                         child: Image.asset(
@@ -281,6 +283,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(
                                       width: 5.w,
                                     ),
+
+                                    // TODO: WORK ON SHOWING THE LOADING STATE FOR THIS
+                                    // TODO; FIX THE ISSUE WITH THE BOTTOM NAVBAR NOT SHOWIN ON LOGIN
                                     Center(
                                       child: Text(
                                         "Login with Google",

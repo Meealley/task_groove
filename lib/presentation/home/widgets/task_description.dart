@@ -268,15 +268,41 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
               SizedBox(
                 height: 3.h,
               ),
-              ButtonPress(
-                text: "Edit task",
-                loadWithProgress: false,
-                onPressed: () {
-                  context.pushReplacement(
-                    Pages.editTask,
-                    extra: widget.task,
-                  );
-                },
+              // ButtonPress(
+              //   text: "Edit task",
+              //   loadWithProgress: false,
+              //   onPressed: () {
+              //     context.pushReplacement(
+              //       Pages.editTask,
+              //       extra: widget.task,
+              //     );
+              //   },
+              // ),
+              SizedBox(
+                height: 45,
+                width: double.infinity,
+                child: TextButton.icon(
+                  style: TextButton.styleFrom(
+                      backgroundColor: AppColors.backgroundDark,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      )),
+                  onPressed: () {
+                    context.pushReplacement(
+                      Pages.editTask,
+                      extra: widget.task,
+                    );
+                  },
+                  icon: const FaIcon(
+                    FontAwesomeIcons.penToSquare,
+                    color: Colors.white,
+                    size: 17,
+                  ),
+                  label: Text(
+                    "Edit task",
+                    style: AppTextStyles.textWhite,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 20,
