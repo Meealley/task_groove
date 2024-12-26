@@ -68,31 +68,24 @@ void main() async {
         'Message clicked: ${message.notification?.title}, ${message.notification?.body}');
   });
 
-  // Initialize HydratedStorage
-  // HydratedBloc.storage = await HydratedStorage.build(
-  //   storageDirectory: kIsWeb
-  //       ? HydratedStorage.webStorageDirectory
-  //       : await getTemporaryDirectory(),
-  // );
-
   // Initialize the app router
   final appRouter = AppRouter();
-  final goRouter = await appRouter.createRouter(); // Create router dynamically
+  final goRouter = await appRouter.createRouter();
 
   runApp(MyApp(
     authRepository: AuthRepository(),
-    goRouter: goRouter, // Pass the GoRouter instance
+    goRouter: goRouter,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final AuthRepository authRepository;
-  final GoRouter goRouter; // Accept GoRouter as a parameter
+  final GoRouter goRouter;
 
   const MyApp({
     super.key,
     required this.authRepository,
-    required this.goRouter, // GoRouter parameter
+    required this.goRouter,
   });
 
   @override

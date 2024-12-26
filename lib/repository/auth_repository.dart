@@ -285,6 +285,21 @@ class AuthRepository {
 
       await firestore.collection('users').doc(userId).update(updateData);
 
+// Create an updated UserModel object
+      UserModel updatedUser = UserModel(
+        userID: userId,
+        name: name,
+        email: email,
+        profilePicsUrl: profileImageUrl ?? '',
+        loginStreak: 0,
+        points: 0,
+        // fcmToken: null, // Replace with actual data if required
+        lastUsage: DateTime.now(), // Replace with actual data if required
+      );
+
+      // Save updated user data to SharedPreferences
+      await _saveUserToPrefs(updatedUser);
+
       log("User profile updated successfully in Firestore");
     } catch (e) {
       log('Error updating user profile: $e');
@@ -361,86 +376,6 @@ class AuthRepository {
       log("User ID not found.");
     }
   }
-
-// Track App usage
-  // Future<void> trackDailyAppUsage() async {
-  //   final uid = auth.currentUser?.uid;
-  //   if (uid != null) {
-  //     final userRef = firestore.collection("users").doc(uid);
-  //     final userDoc = await userRef.get();
-  //     final data = userDoc.data();
-
-  //     final currentUsage = DateTime.now().toUtc();
-  //     log("Start tracking App usage: $currentUsage");
-
-  //     if (data != null) {
-  //       final lastUsage = (data['lastUsage'] as Timestamp?)?.toDate().toUtc();
-
-  //       log("Current App usage : $currentUsage");
-  //       log('Last App usage: $lastUsage');
-
-  //       try {
-  //         if (lastUsage != null) {
-  //           // Check if more than 24 hours have passed since last usage last usage
-
-  //           final differenceInHours =
-  //               currentUsage.difference(lastUsage).inHours;
-  //           log("Difference in hours: $differenceInHours");
-
-  //           if (differenceInHours >= 24) {
-  //             // Increment if streak is more than 24 hours
-  //             log("Incrementing App usage streak...");
-  //             await userRef.update({
-  //               'loginStreak': FieldValue.increment(1),
-  //               'lastUsage': currentUsage,
-  //             });
-
-  //             // Update SharedPreferences with the new streak value
-  //             final prefs = await SharedPreferences.getInstance();
-  //             int currentStreak = data['loginStreak'] + 1; // Incremented streak
-  //             await prefs.setInt('user_loginStreak', currentStreak);
-  //           } else {
-  //             // If less than 24 hours has passed, just update the lastUsage timestamp
-  //             log("Less than 24 hours since last usage, only updating the timestamp....");
-  //             await userRef.update({
-  //               'lastUsage': currentUsage,
-  //             });
-  //           }
-  //         } else {
-  //           // Handle case where lastUsage is null (first time using app)
-  //           log("Last app usage is null, setting initial streak...");
-  //           await userRef.update({
-  //             'loginStreak': 1,
-  //             'lastUsage': currentUsage,
-  //           });
-
-  //           // Update SharedPreferences with the initial streak value
-  //           final prefs = await SharedPreferences.getInstance();
-  //           await prefs.setInt('user_loginStreak', 1);
-  //         }
-  //       } catch (e) {
-  //         log('Error updating app usage streak: ${e.toString()}');
-  //         throw CustomError(
-  //           code: 'App Usage Streak Update Error',
-  //           message: e.toString(),
-  //         );
-  //       }
-  //     } else {
-  //       // If user data doesn't exist, set initial streak and last usage
-  //       log("No user data found, setting initial app usage streak...");
-  //       await userRef.set({
-  //         'loginStreak': 1,
-  //         'lastUsage': currentUsage,
-  //       }, SetOptions(merge: true));
-
-  //       // Update SharedPreferences with the initial streak value
-  //       final prefs = await SharedPreferences.getInstance();
-  //       await prefs.setInt('user_loginStreak', 1);
-  //     }
-  //   } else {
-  //     log("User ID not found");
-  //   }
-  // }
 
 // Award points for completing tasks
   Future<void> awardPoints(int points) async {

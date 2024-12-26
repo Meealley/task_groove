@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_groove/repository/auth_repository.dart';
+import 'package:task_groove/utils/toast_message_services.dart';
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -56,6 +58,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   // Update User Profile
   Future<void> updateUserProfile({
+    required BuildContext context,
     required String name,
     required String email,
     String? profileImageUrl,
@@ -64,12 +67,20 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     try {
       // Update Firestore via the repository
-      await authRepository.updateUserProfile(
+      await authRepository
+          .updateUserProfile(
         userId: state.userID,
         name: name,
         email: email,
         profileImageUrl: profileImageUrl,
-      );
+      )
+          .whenComplete(() {
+        ToastService.sendScaffoldAlert(
+          msg: "Profile Updated",
+          toastStatus: "SUCCESS",
+          context: context,
+        );
+      });
 
       log("User profile updated successfully in Firestore");
 
@@ -86,6 +97,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       // Save to SharedPreferences
       await saveProfileToSharedPreferences(updatedState);
+      // Load the updated profile immediately after saving it to SharedPreferences
+      // await loadProfileFromSharedPreferences();
     } catch (e) {
       log("Error updating user profile: $e");
 
@@ -101,12 +114,12 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     // Convert the state to a JSON string
     final profileMap = {
-      'userID': profileState.userID,
-      'name': profileState.name,
-      'email': profileState.email,
-      'profileImageUrl': profileState.profileImageUrl,
-      'loginStreak': profileState.loginStreak,
-      'points': profileState.points,
+      'user_uid': profileState.userID,
+      'user_name': profileState.name,
+      'user_email': profileState.email,
+      'user_profilePicsUrl': profileState.profileImageUrl,
+      'user_loginStreak': profileState.loginStreak,
+      'user_points': profileState.points,
     };
 
     final profileJson = jsonEncode(profileMap); // Encode as JSON
@@ -124,16 +137,26 @@ class ProfileCubit extends Cubit<ProfileState> {
         final profileMap =
             jsonDecode(profileData) as Map<String, dynamic>; // Decode JSON
 
-        return ProfileState(
-          userID: profileMap['userID'] ?? "",
-          name: profileMap['name'] ?? "",
-          email: profileMap['email'] ?? "",
-          profileImageUrl: profileMap['profileImageUrl'] ?? "",
-          loginStreak: profileMap['loginStreak'] ?? 1,
-          points: profileMap['points'] ?? 0,
+        // return ProfileState(
+        //   userID: profileMap['userID'] ?? "",
+        //   name: profileMap['name'] ?? "",
+        //   email: profileMap['email'] ?? "",
+        //   profileImageUrl: profileMap['profileImageUrl'] ?? "",
+        //   loginStreak: profileMap['loginStreak'] ?? 1,
+        //   points: profileMap['points'] ?? 0,
+        //   isLoading: false,
+        //   errorMessage: null,
+        // );
+        emit(state.copyWith(
+          userID: profileMap['user_uid'] ?? "",
+          name: profileMap['user_name'] ?? "",
+          email: profileMap['user_email'] ?? "",
+          profileImageUrl: profileMap['user_profilePicsUrl'] ?? "",
+          loginStreak: profileMap['user_loginStreak'] ?? 1,
+          points: profileMap['user_points'] ?? 0,
           isLoading: false,
           errorMessage: null,
-        );
+        ));
       } catch (e) {
         log("Error decoding profile from SharedPreferences: $e");
       }
