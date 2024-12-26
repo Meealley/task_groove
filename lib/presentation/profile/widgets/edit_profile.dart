@@ -48,8 +48,6 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
     context.read<ProfileCubit>().fetchUserProfile();
   }
 
-  // TODO : FIX THE ISSUWE WITH THE EDIT NAME THAT DOES NOT PERSIST THE NAME
-  // TODO: WORK ON CHANGING THE PROFILE IMAGE TOO
   @override
   void dispose() {
     super.dispose();

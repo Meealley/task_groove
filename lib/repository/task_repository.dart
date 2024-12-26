@@ -14,6 +14,53 @@ class TaskRepository {
   RecentActivityRepository recentActivityRepository =
       RecentActivityRepository();
 
+  // Groove level configuration
+  final List<Map<String, dynamic>> grooveLevels = [
+    {"level": "Trailblazer", "minPoints": 0, "maxPoints": 399},
+    {"level": "Seedling", "minPoints": 0, "maxPoints": 399},
+    {"level": "Pathfinder", "minPoints": 0, "maxPoints": 399},
+    {"level": "Craftsman", "minPoints": 0, "maxPoints": 399},
+    {"level": "Artisan", "minPoints": 0, "maxPoints": 399},
+    {"level": "Virtuoso", "minPoints": 0, "maxPoints": 399},
+    {"level": "Savant", "minPoints": 0, "maxPoints": 399},
+    {"level": "Luminary", "minPoints": 0, "maxPoints": 399},
+  ];
+
+  // Get the user's current points
+  Future<int> getUserPoints() async {
+    DocumentSnapshot userDoc =
+        await firestore.collection("users").doc(currentUserId).get();
+    final data = userDoc.data()
+        as Map<String, dynamic>?; // Cast to Map<String, dynamic> or null
+    return data?["points"] ?? 0; // Safely access "points"
+  }
+
+  // Update the user's points and level
+  Future<void> updatePoints(int pointsGained) async {
+    try {
+      DocumentReference userRef =
+          firestore.collection("users").doc(currentUserId);
+
+      int currentPoints = await getUserPoints();
+      int newPoints = currentPoints + pointsGained;
+
+      // Determine the new level
+      String newLevel = grooveLevels.firstWhere((level) =>
+          newPoints >= level['minPoints'] &&
+          newPoints <= level['maxPoints'])['level'];
+
+// Update firestore
+      await userRef.update({
+        "points": newPoints,
+        "levels": newLevel,
+      });
+
+      log("User points updated to $newPoints, Level: $newLevel");
+    } catch (e) {
+      log("Error updating point : ${e.toString()}");
+    }
+  }
+
   // Add a new task to the current user task
   Future<void> addTask(TaskModel task) async {
     try {
@@ -36,13 +83,13 @@ class TaskRepository {
           DailyStreakRepository(userId: currentUserId);
       await streakRepository.updateDailyStreak();
 
-      // TODO: WORK ON THE POINTS AND AWARD ACCUMULATION
+      await updatePoints(2);
       // Log the activity
       await recentActivityRepository.logActivity(
         taskID: task.id,
         action: "You created a task:",
         taskTitle: task.title,
-        pointsGained: 1,
+        pointsGained: 2,
       );
     } catch (e) {
       log(e.toString());

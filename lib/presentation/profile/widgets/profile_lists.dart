@@ -26,6 +26,11 @@ class _ProfileListState extends State<ProfileList> {
       'route': Pages.profileStatistics,
     },
     {
+      "icon": FontAwesomeIcons.award,
+      'title': "Groove levels",
+      'route': Pages.grooveLevel,
+    },
+    {
       "icon": FontAwesomeIcons.paintbrush,
       'title': "Theme",
       'route': Pages.profileTheme,

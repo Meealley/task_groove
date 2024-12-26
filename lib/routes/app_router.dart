@@ -17,6 +17,7 @@ import 'package:task_groove/presentation/home/widgets/task_description.dart';
 import 'package:task_groove/presentation/home/widgets/today_screen.dart';
 import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart';
 import 'package:task_groove/presentation/profile/calendar_integration/calendar_integration_screen.dart';
+import 'package:task_groove/presentation/profile/groove_levels/groove_levels.dart';
 import 'package:task_groove/presentation/profile/profile_theme/profile_theme_screen.dart';
 import 'package:task_groove/presentation/profile/recent_activity/recent_activity_screen.dart';
 import 'package:task_groove/presentation/profile/statistics/edit_goals/edit_goals.dart';
@@ -158,6 +159,11 @@ class AppRouter {
           path: Pages.recentActivity,
           name: Pages.recentActivity,
           builder: (context, state) => const RecentActivityScreen(),
+        ),
+        GoRoute(
+          path: Pages.grooveLevel,
+          name: Pages.grooveLevel,
+          builder: (context, state) => const GrooveLevels(),
         ),
         //  GoRoute(
         //   path: Pages.notificationDescription,

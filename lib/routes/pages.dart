@@ -18,4 +18,5 @@ class Pages {
   static const profileCalendarIntegration = '/profileCalendarIntegration';
   static const editGoals = '/editGoals';
   static const recentActivity = '/recentActivity';
+  static const grooveLevel = '/grooveLevel';
 }
