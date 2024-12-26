@@ -147,96 +147,99 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Stack(
-                    alignment: Alignment.center, // Center the loading indicator
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: _isUploading
-                            ? null // No image if uploading
-                            : NetworkImage(
-                                _profileImageUrl.isNotEmpty
-                                    ? _profileImageUrl
-                                    : 'https://example.com/default_profile_image.png',
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Stack(
+                      alignment:
+                          Alignment.center, // Center the loading indicator
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: _isUploading
+                              ? null // No image if uploading
+                              : NetworkImage(
+                                  _profileImageUrl.isNotEmpty
+                                      ? _profileImageUrl
+                                      : 'https://example.com/default_profile_image.png',
+                                ),
+                          child: _isUploading
+                              ? const CircularProgressIndicator(
+                                  backgroundColor: Colors.white,
+                                ) // Show progress indicator
+                              : null,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Your avatar photo will be public.",
+                          style: AppTextStyles.bodySmall,
+                        ),
+                        BlocBuilder<ThemeCubit, ThemeState>(
+                          builder: (context, state) {
+                            return GestureDetector(
+                              onTap: _pickSingleImage,
+                              child: Text(
+                                "Edit",
+                                style: AppTextStyles.bodySmall
+                                    .copyWith(color: state.color),
                               ),
-                        child: _isUploading
-                            ? const CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                              ) // Show progress indicator
-                            : null,
-                      ),
-                    ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 1.h,
-                ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Your avatar photo will be public.",
-                        style: AppTextStyles.bodySmall,
-                      ),
-                      BlocBuilder<ThemeCubit, ThemeState>(
-                        builder: (context, state) {
-                          return GestureDetector(
-                            onTap: _pickSingleImage,
-                            child: Text(
-                              "Edit",
-                              style: AppTextStyles.bodySmall
-                                  .copyWith(color: state.color),
-                            ),
+                  SizedBox(height: 3.h),
+                  Text(
+                    "Fullname",
+                    style: AppTextStyles.bodyTextBold,
+                  ),
+                  SizedBox(height: 1.5.h),
+                  CustomTextField(
+                    textInputType: TextInputType.text,
+                    textEditingController: _nameController,
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    "Email",
+                    style: AppTextStyles.bodyTextBold,
+                  ),
+                  SizedBox(height: 1.5.h),
+                  CustomTextField(
+                    textInputType: TextInputType.emailAddress,
+                    textEditingController: _emailController,
+                  ),
+                  SizedBox(height: 4.h),
+                  ButtonPress(
+                    text: state.isLoading ? "Loading..." : "Edit Profile",
+                    loadWithProgress: _loadWithProgress,
+                    onPressed: () {
+                      // Implement your logic to update the profile here
+                      print("Updated Name: ${_nameController.text}");
+                      print("Updated Email: ${_emailController.text}");
+                      // You can call a method in your cubit to update the user profile.
+                      context.read<ProfileCubit>().updateUserProfile(
+                            name: _nameController.text,
+                            email: _emailController.text,
+                            profileImageUrl: _profileImageUrl,
+                            context: context,
                           );
-                        },
-                      ),
-                    ],
+                    },
                   ),
-                ),
-                SizedBox(height: 3.h),
-                Text(
-                  "Fullname",
-                  style: AppTextStyles.bodyTextBold,
-                ),
-                SizedBox(height: 1.5.h),
-                CustomTextField(
-                  textInputType: TextInputType.text,
-                  textEditingController: _nameController,
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  "Email",
-                  style: AppTextStyles.bodyTextBold,
-                ),
-                SizedBox(height: 1.5.h),
-                CustomTextField(
-                  textInputType: TextInputType.emailAddress,
-                  textEditingController: _emailController,
-                ),
-                SizedBox(height: 4.h),
-                ButtonPress(
-                  text: state.isLoading ? "Loading..." : "Edit Profile",
-                  loadWithProgress: _loadWithProgress,
-                  onPressed: () {
-                    // Implement your logic to update the profile here
-                    print("Updated Name: ${_nameController.text}");
-                    print("Updated Email: ${_emailController.text}");
-                    // You can call a method in your cubit to update the user profile.
-                    context.read<ProfileCubit>().updateUserProfile(
-                          name: _nameController.text,
-                          email: _emailController.text,
-                          profileImageUrl: _profileImageUrl,
-                          context: context,
-                        );
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

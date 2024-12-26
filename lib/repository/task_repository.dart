@@ -108,7 +108,7 @@ class TaskRepository {
           .doc(currentUserId)
           .collection("tasks")
           .doc(task.id);
-
+      // TODO: WORK ON AWARDING POINTS ON TASK COMPLETION
 //Check if the task is completed
       bool wasCompleted = task.completed;
 

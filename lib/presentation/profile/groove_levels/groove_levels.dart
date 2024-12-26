@@ -17,10 +17,11 @@ class GrooveLevels extends StatefulWidget {
 class _GrooveLevelsState extends State<GrooveLevels> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<GrooveLevelCubit>().loadGroovelevel();
   }
+
+  // TODO: COMPLEETE THE GROOVE LEVEL SCREEN
 
   @override
   Widget build(BuildContext context) {
