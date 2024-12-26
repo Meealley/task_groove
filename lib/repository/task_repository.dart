@@ -17,13 +17,13 @@ class TaskRepository {
   // Groove level configuration
   final List<Map<String, dynamic>> grooveLevels = [
     {"level": "Trailblazer", "minPoints": 0, "maxPoints": 399},
-    {"level": "Seedling", "minPoints": 0, "maxPoints": 399},
-    {"level": "Pathfinder", "minPoints": 0, "maxPoints": 399},
-    {"level": "Craftsman", "minPoints": 0, "maxPoints": 399},
-    {"level": "Artisan", "minPoints": 0, "maxPoints": 399},
-    {"level": "Virtuoso", "minPoints": 0, "maxPoints": 399},
-    {"level": "Savant", "minPoints": 0, "maxPoints": 399},
-    {"level": "Luminary", "minPoints": 0, "maxPoints": 399},
+    {"level": "Seedling", "minPoints": 400, "maxPoints": 799},
+    {"level": "Pathfinder", "minPoints": 800, "maxPoints": 1199},
+    {"level": "Craftsman", "minPoints": 1200, "maxPoints": 1999},
+    {"level": "Artisan", "minPoints": 2000, "maxPoints": 3199},
+    {"level": "Virtuoso", "minPoints": 3200, "maxPoints": 7299},
+    {"level": "Savant", "minPoints": 7300, "maxPoints": 20999},
+    {"level": "Luminary", "minPoints": 21000, "maxPoints": 999999},
   ];
 
   // Get the user's current points
@@ -108,8 +108,18 @@ class TaskRepository {
           .doc(currentUserId)
           .collection("tasks")
           .doc(task.id);
+
+//Check if the task is completed
+      bool wasCompleted = task.completed;
+
       log("Updating task: ${task.toMap()}");
       await taskRef.update(task.toMap());
+
+      if (!wasCompleted && task.completed) {
+        await updatePoints(5);
+        log("Task completes: Points awarded");
+      }
+
       log("Task updated with priority: ${task.priority}");
     } catch (e) {
       log(e.toString());

@@ -14,6 +14,7 @@ import 'package:task_groove/cubits/daily_goals/daily_goals_cubit.dart';
 import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart';
 import 'package:task_groove/cubits/google_calendar/google_calender_cubit.dart';
+import 'package:task_groove/cubits/groove_level/groove_level_cubit.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
@@ -167,13 +168,18 @@ class MyApp extends StatelessWidget {
             dailyGoalsCubit: context.read<DailyGoalsCubit>(),
           ),
         ),
-        BlocProvider(
+        BlocProvider<DailyStreakCubit>(
           create: (context) => DailyStreakCubit(
             streakRepository: DailyStreakRepository(
               userId: auth.currentUser!.uid,
             ),
           ),
         ),
+        BlocProvider<GrooveLevelCubit>(
+          create: (context) => GrooveLevelCubit(
+            taskRepository: TaskRepository(),
+          ),
+        )
       ],
       child: Sizer(
         builder: (context, _, __) {
