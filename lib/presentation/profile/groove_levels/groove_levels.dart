@@ -21,7 +21,7 @@ class _GrooveLevelsState extends State<GrooveLevels> {
     context.read<GrooveLevelCubit>().loadGroovelevel();
   }
 
-  // TODO: COMPLEETE THE GROOVE LEVEL SCREEN
+  // TODO: COMPLETE THE GROOVE LEVEL SCREEN
 
   @override
   Widget build(BuildContext context) {
