@@ -286,26 +286,6 @@ class _InboxScreenState extends State<InboxScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     context.push(Pages.createTask);
-                    //   },
-                    //   child: Container(
-                    //     padding: const EdgeInsets.symmetric(
-                    //       vertical: 10,
-                    //       horizontal: 16,
-                    //     ),
-                    //     decoration: BoxDecoration(
-                    //       color: AppColors.backgroundDark,
-                    //       borderRadius: BorderRadius.circular(20),
-                    //     ),
-                    //     child: Text(
-                    //       "Add More Tasks",
-                    //       style: AppTextStyles.bodyText
-                    //           .copyWith(color: Colors.white),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

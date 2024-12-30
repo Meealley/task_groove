@@ -121,22 +121,12 @@ class _GrooveLevelsState extends State<GrooveLevels> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                // FaIcon(
-                //   currentLevel["icon"],
-                //   color: Colors.green,
-                //   size: 24.sp,
-                // ),
-                // SizedBox(width: 2.w),
-                Text(
-                  state.level,
-                  style: AppTextStyles.bodyText.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.sp,
-                  ),
-                ),
-              ],
+            Text(
+              state.level,
+              style: AppTextStyles.bodyText.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.sp,
+              ),
             ),
             SizedBox(height: 0.3.h),
             Text(

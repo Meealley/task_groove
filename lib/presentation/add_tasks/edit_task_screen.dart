@@ -1,6 +1,8 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:googleapis/walletobjects/v1.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
@@ -23,6 +25,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
   late int _selectedPriority;
+  DateTime? _startDateTime;
+  DateTime? _stopDateTime;
 
   // int _priority = 3;
 
@@ -33,6 +37,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _descriptionController =
         TextEditingController(text: widget.task.description);
     _selectedPriority = widget.task.priority;
+    // _startDateTime = widget.task.startDateTime;
+    // _stopDateTime = widget.task.stopDateTime;
   }
 
   @override
@@ -41,6 +47,20 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _descriptionController.dispose();
     super.dispose();
   }
+// todo: Please work on the backgroumd image
+  // Pick Date
+
+  // Future<void> _pickDateTime({
+  //   required DateTime? initialDate,
+  //   required Function(DateTime) onDateTimeSelected,
+  // }) async {
+  //   final pickedDate = await showDatePicker(
+  //     context: context,
+  //     initialDate: initialDate ?? DateTime.now(),
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime(2100),
+  //   );
+  // }
 
   void _saveTask() {
     // Implement the logic to save the edited task here
@@ -54,6 +74,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       completed: widget.task.completed,
       priority: _selectedPriority,
       createdAt: widget.task.createdAt,
+
       // userId: auth.currentUser!.uid,
     );
 

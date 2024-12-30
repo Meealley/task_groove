@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/models/overdue_task_status.dart';
@@ -65,16 +66,45 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
                 itemCount: state.tasks.length,
                 itemBuilder: (context, index) {
                   final task = state.tasks[index];
-                  return ListTile(
-                    title: Text(
-                      task.title,
-                      style: AppTextStyles.bodyText,
+                  return Dismissible(
+                    key: Key(task.id),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: const Icon(
+                        FontAwesomeIcons.trash,
+                        color: Colors.white,
+                      ),
                     ),
-                    subtitle: Text(
-                      task.stopDateTime != null
-                          ? 'Due: ${_formatDate(task.stopDateTime)}' // Display stopDateTime if available
-                          : 'Started: ${_formatDate(task.startDateTime)}', // Fallback to startDateTime if no stopDateTime
-                      style: AppTextStyles.bodyText.copyWith(color: Colors.red),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        color: task.priority == 1
+                            ? Colors.red.shade300
+                            : task.priority == 2
+                                ? const Color.fromRGBO(220, 164, 124, 57)
+                                : const Color.fromRGBO(156, 169, 134, 57),
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          task.title,
+                          style: AppTextStyles.bodyText,
+                        ),
+                        subtitle: Text(
+                          task.stopDateTime != null
+                              ? 'Due: ${_formatDate(task.stopDateTime)}' // Display stopDateTime if available
+                              : 'Started: ${_formatDate(task.startDateTime)}', // Fallback to startDateTime if no stopDateTime
+                          style: AppTextStyles.bodyText
+                              .copyWith(color: Colors.red),
+                        ),
+                      ),
                     ),
                   );
                 },
