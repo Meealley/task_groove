@@ -81,12 +81,6 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         return Scaffold(
-          // appBar: AppBar(
-          //   title: Text(
-          //     "Login",
-          //     style: AppTextStyles.headingBold,
-          //   ),
-          // ),
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Padding(
