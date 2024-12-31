@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:task_groove/cubits/overdue_task/overdue_task_cubit.dart';
 import 'package:task_groove/models/overdue_task_status.dart';
+import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 
 class OverdueTaskScreen extends StatefulWidget {
@@ -93,6 +95,10 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
                         borderRadius: BorderRadius.circular(13),
                       ),
                       child: ListTile(
+                        onTap: () {
+                          context.pushNamed(Pages.taskDescription,
+                              pathParameters: {'id': task.id}, extra: task);
+                        },
                         title: Text(
                           task.title,
                           style: AppTextStyles.bodyText,

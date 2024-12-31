@@ -36,18 +36,24 @@ class LoginCubit extends Cubit<LoginState> {
 
       log("User logged in successfully");
     } catch (e) {
+      final error = CustomError(
+        code: "LoginError",
+        message: e.toString(),
+        plugin: "flutter_error",
+      );
       emit(state.copyWith(
         loginStatus: LoginStatus.error,
-        error: CustomError(
-          code: "Error",
-          message: e.toString(),
-          plugin: "flutter_error",
-        ),
+        // error: CustomError(
+        //   code: "Error",
+        //   message: e.toString(),
+        //   plugin: "flutter_error",
+        // ),
+        error: error,
       ));
 
       // Show error message if login fails
       ToastService.sendScaffoldAlert(
-        msg: "Login Failed: ${e.toString()}",
+        msg: "Login Failed: ${error.userMessage}",
         toastStatus: "ERROR",
         context: context,
       );

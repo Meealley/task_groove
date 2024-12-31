@@ -8,25 +8,28 @@ import 'package:task_groove/utils/button.dart';
 import 'package:task_groove/utils/custom_error.dart';
 
 void errorDialog(BuildContext context, CustomError e) {
-  print('code : ${e.code}\n message : ${e.message}\n plugin : ${e.plugin}\n');
+  // Extract the message to display
+  final errorMessage = e.userMessage;
+
+  print('code: ${e.code}\nmessage: ${e.message}\nplugin: ${e.plugin}\n');
 
   if (Platform.isIOS) {
     showCupertinoDialog(
       context: context,
-      builder: (contex) {
+      builder: (context) {
         return CupertinoAlertDialog(
           title: Text(
-            e.code,
+            "Error", // Display a generic title
             style: AppTextStyles.bodyText,
           ),
           content: Text(
-            '${e.plugin}\n${e.message}',
+            errorMessage,
             style: AppTextStyles.bodySmall,
           ),
           actions: [
             CupertinoDialogAction(
               child: Text(
-                "Ok",
+                "OK",
                 style: AppTextStyles.bodySmall,
               ),
               onPressed: () => context.pop(),
@@ -37,25 +40,26 @@ void errorDialog(BuildContext context, CustomError e) {
     );
   } else {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              e.code,
-              style: AppTextStyles.bodyText,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Error", // Display a generic title
+            style: AppTextStyles.bodyText,
+          ),
+          content: Text(
+            errorMessage,
+            style: AppTextStyles.bodySmall,
+          ),
+          actions: [
+            ButtonPress(
+              loadWithProgress: false,
+              text: "OK",
+              onPressed: () => context.pop(),
             ),
-            content: Text(
-              '${e.plugin}\n${e.message}',
-              style: AppTextStyles.bodySmall,
-            ),
-            actions: [
-              ButtonPress(
-                loadWithProgress: false,
-                text: "OK",
-                onPressed: () => context.pop(),
-              )
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 }

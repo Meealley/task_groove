@@ -93,7 +93,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         errorMessage: null,
       );
 
-      emit(updatedState); // Emit updated state
+      emit(updatedState);
 
       // Save to SharedPreferences
       await saveProfileToSharedPreferences(updatedState);
