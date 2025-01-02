@@ -19,4 +19,5 @@ class Pages {
   static const editGoals = '/editGoals';
   static const recentActivity = '/recentActivity';
   static const grooveLevel = '/grooveLevel';
+  static const changePassword = '/changePassword';
 }

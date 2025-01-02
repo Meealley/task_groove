@@ -20,11 +20,10 @@ class CustomError extends Equatable {
 
   // Extract a user-friendly error message
   String get userMessage {
-    // If the `message` contains a Firebase-specific format, extract the meaningful part
-    final regex = RegExp(r'\[(.*?)\]\s(.*)'); // Match "[code] message"
+    final regex = RegExp(r'\[(.*?)\]\s(.*)');
     final match = regex.firstMatch(message);
     if (match != null && match.groupCount >= 2) {
-      return match.group(2)!; // Return only the message part
+      return match.group(2)!;
     }
     return message;
   }

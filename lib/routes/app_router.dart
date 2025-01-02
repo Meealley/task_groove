@@ -20,6 +20,7 @@ import 'package:task_groove/presentation/profile/calendar_integration/calendar_i
 import 'package:task_groove/presentation/profile/groove_levels/groove_levels.dart';
 import 'package:task_groove/presentation/profile/profile_theme/profile_theme_screen.dart';
 import 'package:task_groove/presentation/profile/recent_activity/recent_activity_screen.dart';
+import 'package:task_groove/presentation/profile/security/security_screen.dart';
 import 'package:task_groove/presentation/profile/statistics/edit_goals/edit_goals.dart';
 import 'package:task_groove/presentation/profile/statistics/productivity_page.dart';
 import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
@@ -164,6 +165,11 @@ class AppRouter {
           path: Pages.grooveLevel,
           name: Pages.grooveLevel,
           builder: (context, state) => const GrooveLevels(),
+        ),
+        GoRoute(
+          path: Pages.changePassword,
+          name: Pages.changePassword,
+          builder: (context, state) => const SecurityScreen(),
         ),
         //  GoRoute(
         //   path: Pages.notificationDescription,

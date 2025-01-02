@@ -22,8 +22,8 @@ class _ProfileListState extends State<ProfileList> {
     },
     {
       "icon": FontAwesomeIcons.line,
-      'title': "Security",
-      'route': Pages.profileStatistics,
+      'title': "Change Password",
+      'route': Pages.changePassword,
     },
     {
       "icon": FontAwesomeIcons.award,
