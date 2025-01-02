@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/constants/constants.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/presentation/bottom_navbar/widgets/bottom_nav_widgets.dart';
 import 'package:task_groove/presentation/home/home_screen.dart';
 import 'package:task_groove/presentation/notification/widget/notification_screen.dart';
@@ -51,7 +53,8 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems(int unreadCount) {
+  List<PersistentBottomNavBarItem> _navBarsItems(
+      int unreadCount, Color themeColor) {
     return [
       PersistentBottomNavBarItem(
         contentPadding: 10.h,
@@ -62,7 +65,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
             size: 17.sp,
           ),
         ),
-        activeColorPrimary: AppColors.backgroundDark,
+        activeColorPrimary: themeColor,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
@@ -73,7 +76,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
             size: 17.sp,
           ),
         ),
-        activeColorPrimary: Colors.black,
+        activeColorPrimary: themeColor,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
@@ -91,7 +94,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
             ),
           ),
         ),
-        activeColorPrimary: Colors.black,
+        activeColorPrimary: themeColor,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
@@ -102,7 +105,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
             size: 17.sp,
           ),
         ),
-        activeColorPrimary: Colors.black,
+        activeColorPrimary: themeColor,
         inactiveColorPrimary: Colors.grey,
       ),
     ];
@@ -110,14 +113,19 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<int>(
-      stream: _fetchUnreadNotificationCount(),
-      builder: (context, snapshot) {
-        int unreadCount = snapshot.data ?? 0;
-        return BottomNavWidgets(
-          controller: _controller,
-          buildScreens: _buildScreens(),
-          navBarItems: _navBarsItems(unreadCount),
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, themeState) {
+        Color themeColor = themeState.color;
+        return StreamBuilder<int>(
+          stream: _fetchUnreadNotificationCount(),
+          builder: (context, snapshot) {
+            int unreadCount = snapshot.data ?? 0;
+            return BottomNavWidgets(
+              controller: _controller,
+              buildScreens: _buildScreens(),
+              navBarItems: _navBarsItems(unreadCount, themeColor),
+            );
+          },
         );
       },
     );

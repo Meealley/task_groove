@@ -64,7 +64,7 @@ class AppTextStyles {
     textStyle: const TextStyle(
       fontSize: 14,
       color: AppColors.textWhite,
-      decoration: TextDecoration.underline,
+      // decoration: TextDecoration.underline,
     ),
   );
   static final TextStyle buttonTextWhite = GoogleFonts.manrope(

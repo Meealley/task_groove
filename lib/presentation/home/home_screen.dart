@@ -18,7 +18,7 @@ import 'package:task_groove/presentation/profile/statistics/edit_goals/goal_bott
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
-import 'package:task_groove/utils/button.dart';
+// import 'package:task_groove/utils/button.dart';
 import 'package:task_groove/utils/capitalize_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -109,6 +109,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           return Container(
                             decoration: BoxDecoration(
                                 color: state.color,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black
+                                        .withOpacity(0.15), // Lighter shadow
+                                    blurRadius: 20, // Softer blur
+                                    spreadRadius: 5, // Subtle expansion
+                                    offset: const Offset(
+                                        4, 4), // Slight offset for depth
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(
+                                        0.05), // Lighter shadow for more depth
+                                    blurRadius:
+                                        30, // Larger blur for a more diffused effect
+                                    spreadRadius:
+                                        0, // No spread, keeps the inner shadow focused
+                                    offset: const Offset(-4,
+                                        -4), // Reverse offset to simulate light from a different angle
+                                  ),
+                                ],
                                 borderRadius: BorderRadius.circular(10)),
                             child: Stack(
                               children: [
@@ -137,7 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   right: 70,
                                   child: Text(
                                     "Manage and Organise\n your tasks",
-                                    style: AppTextStyles.textWhite,
+                                    style: AppTextStyles.textWhite.copyWith(
+                                      color: state.color == Colors.yellow
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
                                   ),
                                 ),
                                 Positioned(

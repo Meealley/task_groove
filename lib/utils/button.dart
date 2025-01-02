@@ -55,7 +55,11 @@ class ButtonPress extends StatelessWidget {
                           ),
                           Text(
                             "Loading...",
-                            style: AppTextStyles.bodySmall,
+                            style: AppTextStyles.bodySmall.copyWith(
+                              color: state.color == Colors.yellow
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
                           )
                         ],
                       ),
@@ -63,7 +67,11 @@ class ButtonPress extends StatelessWidget {
                   : Center(
                       child: Text(
                         text,
-                        style: AppTextStyles.buttonTextWhite,
+                        style: AppTextStyles.buttonTextWhite.copyWith(
+                          color: state.color == Colors.yellow
+                              ? Colors.black
+                              : Colors.white,
+                        ),
                       ),
                     ),
             );
