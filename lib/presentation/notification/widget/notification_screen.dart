@@ -50,7 +50,7 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Notifications 🔔',
+          'Notifications',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
       ),

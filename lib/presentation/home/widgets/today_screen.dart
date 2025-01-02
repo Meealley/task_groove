@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/today_task/today_task_cubit.dart';
@@ -29,6 +30,13 @@ class _TodayTaskScreenState extends State<TodayTaskScreen> {
         title: Text(
           "Today's Tasks",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () => context.goNamed(Pages.bottomNavbar),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
         // backgroundColor: AppColors.backgroundDark,
       ),

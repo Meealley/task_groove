@@ -36,7 +36,7 @@ class _GrooveLevelsState extends State<GrooveLevels> {
       appBar: AppBar(
         title: Text(
           "Groove Levels",
-          style: AppTextStyles.bodyTextLg,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
       ),
       body: BlocBuilder<GrooveLevelCubit, GrooveLevelState>(

@@ -59,16 +59,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
                 context: context,
               ));
 
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text(
-      //       "Password Updated",
-      //       style: AppTextStyles.bodyText,
-      //     ),
-      //   ),
-      // );
-      // ToastService();
-
       _currentPasswordController.clear();
       _newPasswordController.clear();
       _confirmPasswordController.clear();
@@ -90,7 +80,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
       appBar: AppBar(
         title: Text(
           "Change Password",
-          style: AppTextStyles.bodyText,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
       ),
       body: Padding(

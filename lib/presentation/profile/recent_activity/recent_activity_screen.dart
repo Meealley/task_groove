@@ -28,7 +28,7 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
       appBar: AppBar(
         title: Text(
           "Recent Activity",
-          style: AppTextStyles.bodyTextLg,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
       ),
       body: BlocBuilder<RecentActivityCubit, RecentActivityState>(

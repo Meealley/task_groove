@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
@@ -22,45 +24,50 @@ class ButtonPress extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         height: 45,
-        child: Container(
-          decoration: BoxDecoration(
-              color: backgroundColor ?? AppColors.backgroundDark,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(7),
-              )),
-          child: loadWithProgress!
-              ? Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, // Centers children horizontally
-                    crossAxisAlignment: CrossAxisAlignment
-                        .center, // Centers children vertically
-                    mainAxisSize: MainAxisSize
-                        .min, // Ensures Row takes up only the necessary space
-                    children: [
-                      const SizedBox(
-                        height: 13,
-                        width: 13,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
+        child: BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return Container(
+              decoration: BoxDecoration(
+                  // color: backgroundColor ?? AppColors.backgroundDark,
+                  color: state.color,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(7),
+                  )),
+              child: loadWithProgress!
+                  ? Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .center, // Centers children horizontally
+                        crossAxisAlignment: CrossAxisAlignment
+                            .center, // Centers children vertically
+                        mainAxisSize: MainAxisSize
+                            .min, // Ensures Row takes up only the necessary space
+                        children: [
+                          const SizedBox(
+                            height: 13,
+                            width: 13,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Text(
+                            "Loading...",
+                            style: AppTextStyles.bodySmall,
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        width: 2.w,
+                    )
+                  : Center(
+                      child: Text(
+                        text,
+                        style: AppTextStyles.buttonTextWhite,
                       ),
-                      Text(
-                        "Loading...",
-                        style: AppTextStyles.bodySmall,
-                      )
-                    ],
-                  ),
-                )
-              : Center(
-                  child: Text(
-                    text,
-                    style: AppTextStyles.buttonTextWhite,
-                  ),
-                ),
+                    ),
+            );
+          },
         ),
       ),
     );

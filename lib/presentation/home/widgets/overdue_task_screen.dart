@@ -40,7 +40,13 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
           "Overdue tasks",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        // backgroundColor: AppColors.backgroundDark,
+        leading: IconButton(
+          onPressed: () => context.goNamed(Pages.bottomNavbar),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),

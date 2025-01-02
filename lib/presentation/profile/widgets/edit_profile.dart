@@ -78,16 +78,6 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
               profileImageUrl: _profileImageUrl,
               context: context,
             );
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //       // backgroundColor: state.color,
-        //       content: Text(
-        //     'Profile updated Successfully',
-        //     style: AppTextStyles.bodyText.copyWith(
-        //       color: Colors.white,
-        //     ),
-        //   )),
-        // );
       }
     } catch (e) {
       setState(() {

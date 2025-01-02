@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
@@ -55,6 +56,13 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
         title: Text(
           'Upcoming Tasks',
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () => context.goNamed(Pages.bottomNavbar),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
       ),
       body: Column(

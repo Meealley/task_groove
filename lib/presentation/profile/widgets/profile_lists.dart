@@ -21,7 +21,7 @@ class _ProfileListState extends State<ProfileList> {
       'route': Pages.profileStatistics,
     },
     {
-      "icon": FontAwesomeIcons.line,
+      "icon": FontAwesomeIcons.lock,
       'title': "Change Password",
       'route': Pages.changePassword,
     },
@@ -35,11 +35,13 @@ class _ProfileListState extends State<ProfileList> {
       'title': "Theme",
       'route': Pages.profileTheme,
     },
-    {
-      "icon": FontAwesomeIcons.intercom,
-      'title': "Calendar Integration",
-      'route': Pages.profileCalendarIntegration,
-    },
+
+    //  This will be implemented in further update
+    // {
+    //   "icon": FontAwesomeIcons.intercom,
+    //   'title': "Calendar Integration",
+    //   'route': Pages.profileCalendarIntegration,
+    // },
     {
       "icon": FontAwesomeIcons.joomla,
       'title': "Recent Activity",
