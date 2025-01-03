@@ -36,12 +36,9 @@ class ButtonPress extends StatelessWidget {
               child: loadWithProgress!
                   ? Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Centers children horizontally
-                        crossAxisAlignment: CrossAxisAlignment
-                            .center, // Centers children vertically
-                        mainAxisSize: MainAxisSize
-                            .min, // Ensures Row takes up only the necessary space
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           const SizedBox(
                             height: 13,

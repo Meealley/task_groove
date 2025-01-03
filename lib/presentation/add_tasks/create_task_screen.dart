@@ -166,7 +166,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: ListView(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               children: [
                 Form(
                   key: _formKey,
@@ -176,6 +176,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     children: [
                       // Calendar with range selection
                       TableCalendar(
+                        headerStyle: HeaderStyle(
+                          titleTextStyle: AppTextStyles.bodyText,
+                        ),
                         calendarStyle: CalendarStyle(
                           defaultTextStyle: AppTextStyles.bodyText,
                         ),
@@ -206,7 +209,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         },
                         onRangeSelected: _onRangeSelected,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 1.h),
                       Text(
                         "Task Title",
                         style: AppTextStyles.bodyText,
@@ -285,16 +288,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ],
                       ),
 
-                      // Add the reminder button below
-// SwitchListTile(
-//   title: Text("Set 30-min Reminder", style: AppTextStyles.bodyText),
-//   value: _isReminderSet,
-//   onChanged: (bool value) {
-//     setState(() {
-//       _isReminderSet = value;
-//     });
-//   },
-// ),
 // Switch for reminder
                       SwitchListTile(
                         title:
@@ -307,7 +300,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         },
                       ),
 
-                      const SizedBox(height: 20),
+                      // SizedBox(height: 1.h),
                       // Task Period (Start and End Range)
                       Text(
                         "Task Period",
@@ -350,7 +343,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: 8.h,
+                        height: 3.h,
                       ),
 
                       ButtonPress(
