@@ -87,16 +87,13 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                                 return Colors
                                     .blue[200]; // Light green for created task
                               case 'You completed a task:':
-                                return const Color.fromARGB(255, 189, 243,
-                                    191); // Light blue for updated task
+                                return const Color.fromARGB(255, 189, 243, 191);
                               case 'You deleted a task':
-                                return Colors
-                                    .red[200]; // Light red for deleted task
+                                return Colors.red[200];
                               case 'pointsIncreased':
-                                return Colors.orange[
-                                    200]; // Light orange for points increased
+                                return Colors.orange[200];
                               default:
-                                return Colors.grey; // Default background color
+                                return Colors.grey;
                             }
                           })(),
                           child: Builder(

@@ -64,9 +64,9 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
                     backgroundColor: (() {
                       switch (activity.action) {
                         case 'You created a task:':
-                          return const Color.fromARGB(255, 189, 243, 191);
-                        case 'updated':
                           return Colors.blue[200];
+                        case 'You completed a task:':
+                          return const Color.fromARGB(255, 189, 243, 191);
                         case 'You deleted a task':
                           return Colors.red[200];
                         case 'pointsIncreased':
@@ -82,10 +82,13 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
                             return const FaIcon(
                               FontAwesomeIcons.circlePlus,
                               size: 20,
+                              color: Colors.blue,
+                            );
+                          case 'You completed a task:':
+                            return const FaIcon(
+                              FontAwesomeIcons.circleCheck,
                               color: Colors.green,
                             );
-                          case 'updated':
-                            return const FaIcon(FontAwesomeIcons.pen);
                           case 'You deleted a task':
                             return const Icon(
                               Icons.delete,

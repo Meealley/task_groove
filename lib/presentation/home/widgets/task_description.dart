@@ -268,16 +268,7 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
               SizedBox(
                 height: 3.h,
               ),
-              // ButtonPress(
-              //   text: "Edit task",
-              //   loadWithProgress: false,
-              //   onPressed: () {
-              //     context.pushReplacement(
-              //       Pages.editTask,
-              //       extra: widget.task,
-              //     );
-              //   },
-              // ),
+
               SizedBox(
                 height: 45,
                 width: double.infinity,
