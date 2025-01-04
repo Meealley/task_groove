@@ -101,6 +101,34 @@ class TaskRepository {
   }
 
   // Update an existing task in the current user data collection
+//   Future<void> updateTask(TaskModel task) async {
+//     try {
+//       DocumentReference taskRef = firestore
+//           .collection("users")
+//           .doc(currentUserId)
+//           .collection("tasks")
+//           .doc(task.id);
+// //Check if the task is completed
+//       bool wasCompleted = task.completed;
+
+//       log("Updating task: ${task.toMap()}");
+//       await taskRef.update(task.toMap());
+
+//       if (!wasCompleted && task.completed) {
+//         await updatePoints(5);
+//         log("Task completes: Points awarded");
+//       }
+
+//       log("Task updated with priority: ${task.priority}");
+//     } catch (e) {
+//       log(e.toString());
+//       throw CustomError(
+//         code: "Error Updating task",
+//         message: e.toString(),
+//       );
+//     }
+//   }
+
   Future<void> updateTask(TaskModel task) async {
     try {
       DocumentReference taskRef = firestore
@@ -108,23 +136,41 @@ class TaskRepository {
           .doc(currentUserId)
           .collection("tasks")
           .doc(task.id);
-      // TODO: WORK ON AWARDING POINTS ON TASK COMPLETION
-//Check if the task is completed
-      bool wasCompleted = task.completed;
+
+      // Fetch the current task state from Firestore
+      DocumentSnapshot taskSnapshot = await taskRef.get();
+      if (!taskSnapshot.exists) {
+        throw const CustomError(
+          code: "TaskNotFound",
+          message: "Task does not exist",
+        );
+      }
+
+      Map<String, dynamic> currentData =
+          taskSnapshot.data() as Map<String, dynamic>;
+      bool wasCompleted = currentData['completed'] ?? false;
 
       log("Updating task: ${task.toMap()}");
       await taskRef.update(task.toMap());
 
+      // Check for transition from not completed to completed
       if (!wasCompleted && task.completed) {
         await updatePoints(5);
-        log("Task completes: Points awarded");
+        // Log the activity
+        await recentActivityRepository.logActivity(
+          taskID: task.id,
+          action: "You completed a task:",
+          taskTitle: task.title,
+          pointsGained: 5,
+        );
+        log("Task completed: Points awarded");
       }
 
       log("Task updated with priority: ${task.priority}");
     } catch (e) {
       log(e.toString());
       throw CustomError(
-        code: "Error Updating task",
+        code: "Error Updating Task",
         message: e.toString(),
       );
     }

@@ -28,7 +28,7 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
     if (date == null) {
       return 'No date selected';
     }
-    return DateFormat('EEEE d, yyyy').format(date);
+    return DateFormat('EEE d, MMM yyyy').format(date);
   }
 
 // TODO: PROVIDE THE BACKGROUND COLOR FOR THIS
