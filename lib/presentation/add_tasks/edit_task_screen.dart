@@ -1,8 +1,8 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:googleapis/walletobjects/v1.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
@@ -28,8 +28,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   DateTime? _startDateTime;
   DateTime? _stopDateTime;
 
-  // int _priority = 3;
-
   @override
   void initState() {
     super.initState();
@@ -37,8 +35,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _descriptionController =
         TextEditingController(text: widget.task.description);
     _selectedPriority = widget.task.priority;
-    // _startDateTime = widget.task.startDateTime;
-    // _stopDateTime = widget.task.stopDateTime;
+    _startDateTime = widget.task.startDateTime;
+    _stopDateTime = widget.task.stopDateTime;
   }
 
   @override
@@ -47,38 +45,56 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     _descriptionController.dispose();
     super.dispose();
   }
-// todo: Please work on the backgroumd image
-  // Pick Date
 
-  // Future<void> _pickDateTime({
-  //   required DateTime? initialDate,
-  //   required Function(DateTime) onDateTimeSelected,
-  // }) async {
-  //   final pickedDate = await showDatePicker(
-  //     context: context,
-  //     initialDate: initialDate ?? DateTime.now(),
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2100),
-  //   );
-  // }
+  Future<void> _pickDate({
+    required DateTime? initialDate,
+    required Function(DateTime) onDatePicked,
+  }) async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            textTheme: TextTheme(
+              bodyMedium:
+                  AppTextStyles.bodyText, // Apply your custom style here
+              bodyLarge: AppTextStyles.bodyText,
+              titleLarge: AppTextStyles.bodyText,
+              bodySmall: AppTextStyles.bodyText,
+              labelLarge: AppTextStyles.bodyText,
+              labelSmall: AppTextStyles.bodyText,
+              displaySmall: AppTextStyles.bodySmall,
+              headlineLarge: AppTextStyles.bodyTextBold.copyWith(
+                fontSize: 28,
+              ),
+              // headlineSmall: AppTextStyles.bodySmall,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      onDatePicked(pickedDate);
+    }
+  }
 
   void _saveTask() {
-    // Implement the logic to save the edited task here
-    // For example, you might want to update the task in your database
-
-    // You can access the updated values with:
     final updatedTask = TaskModel(
       id: widget.task.id,
       title: _titleController.text,
       description: _descriptionController.text,
       completed: widget.task.completed,
       priority: _selectedPriority,
+      startDateTime: _startDateTime,
+      stopDateTime: _stopDateTime,
       createdAt: widget.task.createdAt,
-
-      // userId: auth.currentUser!.uid,
     );
 
-    // Then navigate back or update your state as needed
     context.read<TaskListCubit>().updateTasks(updatedTask);
     context.goNamed(Pages.inboxtask);
   }
@@ -87,9 +103,16 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => context.goNamed(Pages.inboxtask),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
+        ),
         title: Text(
           'Edit Task',
-          style: AppTextStyles.headingBold,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -107,36 +130,38 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               children: [
                 Text(
                   "Task Title",
-                  style: AppTextStyles.bodyText,
+                  style: AppTextStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-                SizedBox(
-                  height: 1.h,
-                ),
+                SizedBox(height: 1.h),
                 CustomTextField(
-                    textInputType: TextInputType.text,
-                    textEditingController: _titleController),
+                  textInputType: TextInputType.text,
+                  textEditingController: _titleController,
+                ),
                 SizedBox(height: 2.h),
                 Text(
                   "Task Description",
-                  style: AppTextStyles.bodyText,
+                  style: AppTextStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-                SizedBox(
-                  height: 1.h,
-                ),
+                SizedBox(height: 1.h),
                 CustomDescriptionTextField(
                   textInputType: TextInputType.text,
                   textEditingController: _descriptionController,
                 ),
-                SizedBox(
-                  height: 1.5.h,
-                ),
+                SizedBox(height: 1.5.h),
                 Text(
                   "Task Priority",
-                  style: AppTextStyles.bodyText,
+                  style: AppTextStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
-                SizedBox(
-                  height: 1.h,
-                ),
+                SizedBox(height: 1.h),
                 PriorityChips(
                   initialPriority: _selectedPriority,
                   onSelected: (priority) {
@@ -144,6 +169,58 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                       _selectedPriority = priority;
                     });
                   },
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  "Start Date",
+                  style: AppTextStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                SizedBox(height: 1.h),
+                ListTile(
+                  title: Text(
+                    _startDateTime != null
+                        ? DateFormat.yMMMd().format(_startDateTime!)
+                        : "No Start Date Selected",
+                    style: AppTextStyles.bodyText,
+                  ),
+                  trailing: const Icon(Icons.calendar_today),
+                  onTap: () => _pickDate(
+                    initialDate: _startDateTime,
+                    onDatePicked: (date) {
+                      setState(() {
+                        _startDateTime = date;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(height: 1.5.h),
+                Text(
+                  "Stop Date",
+                  style: AppTextStyles.bodyText.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                SizedBox(height: 1.h),
+                ListTile(
+                  title: Text(
+                    _stopDateTime != null
+                        ? DateFormat.yMMMd().format(_stopDateTime!)
+                        : "No Stop Date Selected",
+                    style: AppTextStyles.bodyText,
+                  ),
+                  trailing: const Icon(Icons.calendar_today),
+                  onTap: () => _pickDate(
+                    initialDate: _stopDateTime,
+                    onDatePicked: (date) {
+                      setState(() {
+                        _stopDateTime = date;
+                      });
+                    },
+                  ),
                 ),
               ],
             ),

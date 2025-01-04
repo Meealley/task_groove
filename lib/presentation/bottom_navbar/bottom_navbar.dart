@@ -11,7 +11,7 @@ import 'package:task_groove/presentation/notification/widget/notification_screen
 import 'package:task_groove/presentation/profile/profile_screen.dart';
 import 'package:task_groove/presentation/search/search_screen.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
-import 'package:task_groove/theme/appcolors.dart';
+// import 'package:task_groove/theme/appcolors.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -35,7 +35,7 @@ class _BottomNavigationUserBarState extends State<BottomNavigationUserBar> {
 
   // Function to fetch unread notification count
   Stream<int> _fetchUnreadNotificationCount() {
-    final String userId = FirebaseAuth.instance.currentUser!.uid;
+    final String? userId = FirebaseAuth.instance.currentUser?.uid;
     return firestore
         .collection('notifications')
         .where('userId', isEqualTo: userId)

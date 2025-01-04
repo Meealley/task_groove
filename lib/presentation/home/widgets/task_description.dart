@@ -30,7 +30,7 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
     if (date == null) {
       return 'No date selected';
     }
-    return DateFormat('EEEE d, yyyy').format(date);
+    return DateFormat('EEE d, MMM yyyy').format(date);
   }
 
   Future<void> _showDeleteTaskDialog() async {
