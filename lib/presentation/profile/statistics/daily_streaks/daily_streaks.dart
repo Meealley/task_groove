@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +48,7 @@ class DailyStreaks extends StatelessWidget {
                 children: [
                   Text(
                     longestStreak > 0
-                        ? 'Longest: $longestStreak day${currentStreak == 1 ? "" : 's'} (${formatDate(streakStartDate)} - ${formatDate(streakEndDate)})'
+                        ? 'Longest: $longestStreak day${longestStreak == 1 ? "" : 's'} (${formatDate(streakStartDate)} - ${formatDate(streakEndDate)})'
                         : 'No Streak yet!',
                     style: AppTextStyles.bodySmall,
                   ),

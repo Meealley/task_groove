@@ -1,7 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:io'; // Import this to check the platform type
-import 'package:flutter/cupertino.dart'; // For CupertinoAlertDialog
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +12,6 @@ import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/routes/pages.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
-import 'package:task_groove/utils/button.dart';
 
 class TaskDescriptionScreen extends StatefulWidget {
   final TaskModel task;
@@ -117,7 +114,12 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          "Details",
+          style: AppTextStyles.headingBold,
+        ),
+      ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
         children: [

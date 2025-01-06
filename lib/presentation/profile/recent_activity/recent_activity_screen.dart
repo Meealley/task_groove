@@ -90,8 +90,8 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
                               color: Colors.green,
                             );
                           case 'You deleted a task':
-                            return const Icon(
-                              Icons.delete,
+                            return const FaIcon(
+                              FontAwesomeIcons.trash,
                               color: Colors.red,
                             );
                           case 'pointsIncreased':

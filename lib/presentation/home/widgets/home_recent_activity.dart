@@ -1,7 +1,4 @@
-// ignore_for_file: must_call_super
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -111,9 +108,9 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                                     color: Colors.green,
                                   );
                                 case 'You deleted a task':
-                                  return const Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
+                                  return const FaIcon(
+                                    FontAwesomeIcons.trash,
+                                    color: Colors.white,
                                   );
                                 case 'pointsIncreased':
                                   return const FaIcon(FontAwesomeIcons.arrowUp);
