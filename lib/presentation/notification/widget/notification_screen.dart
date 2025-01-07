@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/presentation/notification/widget/notification_description.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
-import 'package:task_groove/theme/appcolors.dart';
+// import 'package:task_groove/theme/appcolors.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
