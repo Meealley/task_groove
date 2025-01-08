@@ -18,6 +18,7 @@ class HomeRecentActivity extends StatefulWidget {
 
 class _HomeRecentActivityState extends State<HomeRecentActivity> {
   @override
+  // ignore: must_call_super
   void initState() {
     context.read<RecentActivityCubit>().fetchRecentActivity();
   }

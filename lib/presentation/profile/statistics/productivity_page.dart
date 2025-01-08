@@ -1,4 +1,3 @@
-// Import necessary packages
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,10 +9,10 @@ import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/cubits/total_completed_task_count/total_completed_task_count_cubit.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_streaks/daily_streaks.dart';
 import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/daily_goals.dart';
+import 'package:task_groove/presentation/profile/statistics/daily_weekly_goals.dart/weekly_goals.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
 import 'package:task_groove/theme/appcolors.dart';
 
-// Statistics Page
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
 
@@ -40,91 +39,108 @@ class StatisticsPageState extends State<StatisticsPage> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Productivity",
-          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
-        ),
-        // backgroundColor: AppColors.backgroundDark,
-      ),
-      body: BlocBuilder<CompletedTaskPerDayCubit, CompletedTaskPerDayState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.hasError) {
-            return Center(
-              child: Text(
-                state.message ?? 'An error occurred',
-                style: AppTextStyles.bodyText.copyWith(color: Colors.red),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Productivity",
+            style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+          ),
+          bottom: TabBar(
+            labelStyle: AppTextStyles.bodyText.copyWith(color: Colors.white),
+            tabs: const [
+              Tab(
+                text: 'Daily Goals',
               ),
-            );
-          } else {
-            final completedTasksPerDay = state.tasksPerDay;
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const SizedBox(height: 8),
-                    BlocBuilder<TotalCompletedTaskCountCubit,
-                        TotalCompletedTaskCountState>(
-                      builder: (context, state) {
-                        return Text(
-                          'Total completed task: ${state.totalTaskCount}',
-                          style: AppTextStyles.bodyText
-                              .copyWith(fontWeight: FontWeight.w600),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const DailyGoals(),
-                    const Divider(),
-                    SizedBox(
-                      height: 1.h,
-                    ),
-                    const DailyStreaks(),
-                    const Divider(),
-                    SizedBox(
-                      height: 450,
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            const SizedBox(height: 20),
-                            Expanded(
-                              child: BlocBuilder<ThemeCubit, ThemeState>(
-                                builder: (context, state) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        color: state.color,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 15,
-                                    ),
-                                    child: BarChart(
-                                      mainBarData(completedTasksPerDay),
-                                      duration: animDuration,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+              Tab(text: 'Weekly Goals'),
+            ],
+          ),
+        ),
+        body: BlocBuilder<CompletedTaskPerDayCubit, CompletedTaskPerDayState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.hasError) {
+              return Center(
+                child: Text(
+                  state.message ?? 'An error occurred',
+                  style: AppTextStyles.bodyText.copyWith(color: Colors.red),
+                ),
+              );
+            } else {
+              final completedTasksPerDay = state.tasksPerDay;
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: .4.h),
+                      BlocBuilder<TotalCompletedTaskCountCubit,
+                          TotalCompletedTaskCountState>(
+                        builder: (context, state) {
+                          return Text(
+                            'Total Completed Tasks: ${state.totalTaskCount}',
+                            style: AppTextStyles.bodyText
+                                .copyWith(fontWeight: FontWeight.w900),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      const SizedBox(
+                        height: 125,
+                        child: TabBarView(
+                          children: [
+                            DailyGoals(),
+                            WeeklyGoals(),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      const Divider(),
+                      const DailyStreaks(),
+                      const Divider(),
+                      SizedBox(height: 1.h),
+                      SizedBox(
+                        height: 450,
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: BlocBuilder<ThemeCubit, ThemeState>(
+                                  builder: (context, state) {
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: state.color,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 15,
+                                      ),
+                                      child: BarChart(
+                                        mainBarData(completedTasksPerDay),
+                                        duration: animDuration,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-        },
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -165,11 +181,8 @@ class StatisticsPageState extends State<StatisticsPage> {
 
     // Get tasks for the last 7 days
     List<int> tasksPerDay = List.generate(7, (index) {
-      // final day = today.subtract(Duration(days: 6 - index));
-      // final dayOnly = DateTime(day.year, day.month, day.day);
-      // return completedTasksPerDay[day] ?? 0;
       final day = DateTime(today.year, today.month, today.day - (6 - index));
-      final normalizedDay = DateTime(day.year, day.month, day.day); // Normalize
+      final normalizedDay = DateTime(day.year, day.month, day.day);
       return completedTasksPerDay[normalizedDay] ?? 0;
     });
 
@@ -233,20 +246,6 @@ class StatisticsPageState extends State<StatisticsPage> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            // getTitlesWidget: (value, meta) {
-            //   const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-            //   final day = value.toInt();
-            //   return SideTitleWidget(
-            //     axisSide: meta.axisSide,
-            //     space: 7,
-            //     child: Text(
-            //       days[day],
-            //       style: AppTextStyles.bodySmall.copyWith(
-            //         fontWeight: FontWeight.bold,
-            //       ),
-            //     ),
-            //   );
-            // },
             getTitlesWidget: (value, meta) {
               final now = DateTime.now();
               final today = DateTime(now.year, now.month, now.day);
