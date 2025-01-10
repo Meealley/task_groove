@@ -15,8 +15,6 @@ class EditWeeklyTaskGoal extends StatefulWidget {
 class _EditWeeklyTaskGoalState extends State<EditWeeklyTaskGoal> {
   final TextEditingController _weeklyTaskController = TextEditingController();
 
-// TODO: WRITE THE LOGIC FOR UPDATING THE WEEKLY GOALS
-
   @override
   void dispose() {
     _weeklyTaskController.dispose();

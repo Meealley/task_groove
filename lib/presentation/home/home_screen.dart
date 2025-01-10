@@ -90,9 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               "Welcome Back, ${capitalizeFirstLetter(state.name)}",
                               style: AppTextStyles.bodyTextBold,
                             ),
-                            Text(
-                              "Day ${state.loginStreak} 🔥",
-                              style: AppTextStyles.bodyTextBold,
+                            BlocBuilder<DailyStreakCubit, DailyStreakState>(
+                              builder: (context, state) {
+                                final currentStreak = state.currentStreak;
+                                return Text(
+                                  "Day $currentStreak🔥",
+                                  style: AppTextStyles.bodyTextBold,
+                                );
+                              },
                             ),
                           ],
                         );
