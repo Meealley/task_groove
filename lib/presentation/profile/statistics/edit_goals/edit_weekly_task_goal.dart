@@ -16,6 +16,12 @@ class _EditWeeklyTaskGoalState extends State<EditWeeklyTaskGoal> {
 // TODO: WRITE THE LOGIC FOR UPDATING THE WEEKLY GOALS
 
   @override
+  void dispose() {
+    _weeklyTaskController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -27,9 +33,9 @@ class _EditWeeklyTaskGoalState extends State<EditWeeklyTaskGoal> {
             style: AppTextStyles.bodyText,
           ),
         ),
-        const SizedBox(width: 10), // Adds spacing between text and field
+        const SizedBox(width: 10),
         SizedBox(
-          width: 100, // Fixed width for the TextField
+          width: 100,
           child: TextField(
             style: AppTextStyles.bodyText,
             keyboardType: TextInputType.number,

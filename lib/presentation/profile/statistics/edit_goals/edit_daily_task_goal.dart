@@ -33,9 +33,9 @@ class _EditDailyTaskGoalState extends State<EditDailyTaskGoal> {
             style: AppTextStyles.bodyText,
           ),
         ),
-        const SizedBox(width: 10), // Adds spacing between text and field
+        const SizedBox(width: 10),
         SizedBox(
-          width: 100, // Fixed width for the TextField
+          width: 100,
           child: BlocBuilder<DailyGoalsCubit, DailyGoalsState>(
             builder: (context, state) {
               final totalTasks = state.totalTasks;
