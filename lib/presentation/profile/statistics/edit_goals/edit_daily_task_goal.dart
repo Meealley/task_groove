@@ -47,9 +47,8 @@ class _EditDailyTaskGoalState extends State<EditDailyTaskGoal> {
                 decoration: InputDecoration(
                   hintText: "$totalTasks",
                   hintStyle: AppTextStyles.bodyText.copyWith(fontSize: 18),
-                  border: InputBorder.none, // Removes the bottom border
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 8.0), // Adjust padding
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
                 ),
                 onSubmitted: (value) {
                   final totalTasks = int.tryParse(value) ?? 0;

@@ -35,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<ProfileCubit>().fetchUserProfile(); // Load profile on init
-    context.read<ProfileCubit>().trackLogin(); // Track user login;
+    context.read<ProfileCubit>().trackLogin();
+    context.read<DailyStreakCubit>().fetchStreakData();
   }
 
   void _logout() {

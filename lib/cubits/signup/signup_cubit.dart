@@ -72,7 +72,6 @@ class SignupCubit extends Cubit<SignupState> {
       // Call signInWithGoogle from AuthRepository
       UserModel user = await authRepository.signInWithGoogle();
 
-      // Show success message
       ToastService.sendScaffoldAlert(
         msg: "Google Sign-In Successful",
         toastStatus: "SUCCESS",
@@ -86,7 +85,7 @@ class SignupCubit extends Cubit<SignupState> {
       log("User signed in with Google: ${user.name}");
 
       // Navigate to the home
-      context.go(Pages.home);
+      context.go(Pages.bottomNavbar);
     } catch (e) {
       emit(
         state.copyWith(
