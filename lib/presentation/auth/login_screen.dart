@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _email, _password;
   bool _obscureText = true;
   bool _loadWithProgress = false;
+  bool _isGoogleSignInLoading = false;
 
   @override
   void initState() {
@@ -77,6 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (state.loginStatus == LoginStatus.error) {
           errorDialog(context, state.error);
           _loadWithProgress = false;
+          _isGoogleSignInLoading = false;
         }
       },
       builder: (context, state) {
@@ -250,11 +252,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 3.h,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                context
-                                    .read<SignupCubit>()
-                                    .googleSignInMethod(context);
-                              },
+                              onTap: _isGoogleSignInLoading
+                                  ? null
+                                  : () async {
+                                      setState(() {
+                                        _isGoogleSignInLoading = true;
+                                      });
+                                      try {
+                                        await context
+                                            .read<SignupCubit>()
+                                            .googleSignInMethod(context);
+                                      } finally {
+                                        setState(() {
+                                          _isGoogleSignInLoading = false;
+                                        });
+                                      }
+                                    },
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 22.w,
@@ -277,12 +290,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     SizedBox(
                                       width: 5.w,
                                     ),
-
-                                    // TODO: WORK ON SHOWING THE LOADING STATE FOR THIS
-                                    // TODO; FIX THE ISSUE WITH THE BOTTOM NAVBAR NOT SHOWIN ON LOGIN
                                     Center(
                                       child: Text(
-                                        "Login with Google",
+                                        _isGoogleSignInLoading
+                                            ? "Signing in..."
+                                            : "Login with Google",
                                         style: AppTextStyles.bodyText,
                                       ),
                                     )

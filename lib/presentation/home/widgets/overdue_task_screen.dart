@@ -90,6 +90,17 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
                         color: Colors.white,
                       ),
                     ),
+                    onDismissed: (direction) {
+                      context.read<OverdueTaskCubit>().deleteTask(task);
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          'Task ${task.title} deleted',
+                          style: AppTextStyles.bodyText,
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ));
+                    },
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       decoration: BoxDecoration(

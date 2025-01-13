@@ -34,4 +34,24 @@ class OverdueTaskCubit extends Cubit<OverdueTaskState> {
       );
     }
   }
+
+  // Delete Specific overdue task
+  Future<void> deleteTask(TaskModel taskId) async {
+    try {
+      await taskRepository.deleteTask(taskId);
+
+      // Remove the task from the local state
+      final updatedTask =
+          state.tasks.where((task) => task.id != taskId).toList();
+
+      emit(state.copyWith(
+          tasks: updatedTask, status: OverdueTaskStatus.success));
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(
+        error: const CustomError(message: "Failed to delete task"),
+        status: OverdueTaskStatus.error,
+      ));
+    }
+  }
 }

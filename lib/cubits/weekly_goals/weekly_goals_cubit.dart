@@ -54,7 +54,3 @@ class WeeklyGoalsCubit extends Cubit<WeeklyGoalsState> {
     return super.close();
   }
 }
-
-
-// TODO: COMPLETE THE WEEKLY TASKCUBIT - YOU MIGHT NEED TO CREATE A COMPLETED TASK PER WEEK CUBIT.
-
