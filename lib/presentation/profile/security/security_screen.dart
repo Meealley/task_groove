@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/constants/constants.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
@@ -81,6 +83,13 @@ class _SecurityScreenState extends State<SecurityScreen> {
         title: Text(
           "Change Password",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
       ),
       body: Padding(

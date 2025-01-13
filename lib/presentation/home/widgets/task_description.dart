@@ -117,7 +117,14 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
       appBar: AppBar(
         title: Text(
           "Details",
-          style: AppTextStyles.headingBold,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
       ),
       body: ListView(

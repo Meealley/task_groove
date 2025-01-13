@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/presentation/profile/profile_theme/profile_theme_card.dart';
@@ -34,6 +36,13 @@ class _ProfileThemeScreenState extends State<ProfileThemeScreen> {
           "Theme",
           style: AppTextStyles.headingBold.copyWith(
             color: Colors.white,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
           ),
         ),
       ),
