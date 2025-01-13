@@ -31,7 +31,6 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
     return DateFormat('EEE d, MMM yyyy').format(date);
   }
 
-// TODO: PROVIDE THE BACKGROUND COLOR FOR THIS
   @override
   Widget build(BuildContext context) {
     return Scaffold(

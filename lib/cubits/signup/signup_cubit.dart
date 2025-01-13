@@ -41,7 +41,7 @@ class SignupCubit extends Cubit<SignupState> {
         password: password,
         profileImage: profileImage,
       )
-          .whenComplete(() {
+          .then((_) {
         ToastService.sendScaffoldAlert(
           msg: "User Created",
           toastStatus: "SUCCESS",
