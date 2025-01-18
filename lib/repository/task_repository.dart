@@ -230,26 +230,29 @@ class TaskRepository {
       // Convert the search term to lowercase
       String lowerSearchTerm = searchTerm.toLowerCase();
 
-      // Retrieve a broader set of tasks based on title and description
+      // Retrieve all tasks for the user
       QuerySnapshot snapshot = await firestore
           .collection("users")
           .doc(currentUserId)
           .collection("tasks")
-          .get(); // Get all tasks
+          .get();
 
-      // Filter the tasks locally by comparing lowercased title and description
+      // Filter the tasks locally by comparing lowercased title, description, and status
       List<TaskModel> matchedTasks = snapshot.docs.map((doc) {
         return TaskModel.fromMap(doc.data() as Map<String, dynamic>);
       }).where((task) {
         String taskTitleLower = task.title.toLowerCase();
         String taskDescriptionLower = task.description.toLowerCase();
 
-        // Check if either the title or description contains the search term
-        return taskTitleLower.contains(lowerSearchTerm) ||
+        // Ensure the task is active (not completed or deleted) and matches the search term
+        bool isActive = !task.completed;
+        bool matchesSearch = taskTitleLower.contains(lowerSearchTerm) ||
             taskDescriptionLower.contains(lowerSearchTerm);
+
+        return isActive && matchesSearch;
       }).toList();
 
-      log("Found ${matchedTasks.length} tasks for search term: $searchTerm");
+      log("Found ${matchedTasks.length} active tasks for search term: $searchTerm");
 
       return matchedTasks;
     } catch (e) {

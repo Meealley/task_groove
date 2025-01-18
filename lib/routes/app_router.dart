@@ -1,6 +1,4 @@
-// import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/models/user_model.dart';
@@ -27,19 +25,9 @@ import 'package:task_groove/presentation/profile/widgets/edit_profile.dart';
 import 'package:task_groove/routes/pages.dart';
 
 class AppRouter {
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // This method checks the auth status to set the initial location
-  // Future<String> getInitialLocation() async {
-  //   User? user = _auth.currentUser;
-  //   return user != null
-  //       ? Pages.bottomNavbar
-  //       : Pages.login; // If authenticated, go to Home, else Login
-  // }
-
   Future<String> getInitialLocation() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_uid'); // Check for stored user ID
+    final userId = prefs.getString('user_uid');
 
     // Redirect to the appropriate page based on user existence
     return userId != null ? Pages.bottomNavbar : Pages.login;
@@ -116,15 +104,6 @@ class AppRouter {
             return EditTaskScreen(task: task);
           },
         ),
-        // GoRoute(
-        //   path: Pages.profileDescription,
-        //   name: Pages.profileDescription,
-        //   builder: (context, state) {
-        //     // final task = state.extra as TaskModel;
-        //     // return EditTaskScreen(task: task);
-        //     return const ProfileDescription();
-        //   },
-        // ),
         GoRoute(
           path: Pages.profileDescription,
           name: Pages.profileDescription,
@@ -150,7 +129,6 @@ class AppRouter {
           name: Pages.profileCalendarIntegration,
           builder: ((context, state) => const CalendarIntegrationScreen()),
         ),
-
         GoRoute(
           path: Pages.editGoals,
           name: Pages.editGoals,
@@ -171,14 +149,6 @@ class AppRouter {
           name: Pages.changePassword,
           builder: (context, state) => const SecurityScreen(),
         ),
-        //  GoRoute(
-        //   path: Pages.notificationDescription,
-        //   name: Pages.notificationDescription,
-        //   builder: (context, state) {
-        //     final task = state.extra as TaskModel;
-        //     return NotificationDescriptionScreen();
-        //   },
-        // ),
       ],
     );
   }

@@ -95,7 +95,9 @@ class _OverdueTaskScreenState extends State<OverdueTaskScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           'Task ${task.title} deleted',
-                          style: AppTextStyles.bodyText,
+                          style: AppTextStyles.bodyText.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         duration: const Duration(seconds: 2),
                       ));

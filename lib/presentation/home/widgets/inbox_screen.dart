@@ -1,6 +1,3 @@
-// import 'dart:io';
-
-// import 'package:flutter/cupertino.dart';
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -31,8 +28,6 @@ class _InboxScreenState extends State<InboxScreen> {
   bool showCompletedTasks = false;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final Duration animationDuration = const Duration(milliseconds: 300);
-  // final int _completedTasksVisibleCount =
-  //     0;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
@@ -65,7 +60,6 @@ class _InboxScreenState extends State<InboxScreen> {
             return _buildCompletedTaskItem(completedTasks[i], animation);
           });
         }
-        // _completedTasksVisibleCount = 0; // Set to full count
       }
     });
   }
