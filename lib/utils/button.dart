@@ -63,7 +63,7 @@ class ButtonPress extends StatelessWidget {
                   : Center(
                       child: Text(
                         text,
-                        style: AppTextStyles.buttonTextWhite.copyWith(
+                        style: AppTextStyles.bodyText.copyWith(
                           color: state.color == Colors.yellow
                               ? Colors.black
                               : Colors.white,

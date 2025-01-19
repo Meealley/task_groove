@@ -28,6 +28,7 @@ class GoalCelebrationCubit extends Cubit<GoalCelebrationState> {
             dailyGoalsState.totalTasks > 0;
 
     if (isAlltTaskCompleted && state.isCelebrationEnabled) {
+      await Future.delayed(const Duration(seconds: 3));
       emit(state.copyWith(triggerCelebration: true));
     } else {
       emit(state.copyWith(triggerCelebration: false));

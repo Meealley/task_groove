@@ -191,8 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           center: Text(
                                             "${(state.percentCompleted * 100).toStringAsFixed(1)}%",
                                             style: GoogleFonts.montserrat(
-                                                textStyle: const TextStyle(
-                                              fontSize: 12,
+                                                textStyle: TextStyle(
+                                              fontSize: 8.sp,
                                               fontWeight: FontWeight.bold,
                                             )),
                                           ),

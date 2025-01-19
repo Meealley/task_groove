@@ -8,20 +8,20 @@ import 'package:task_groove/theme/appcolors.dart';
 
 class AppTextStyles {
   static final TextStyle headingBold = GoogleFonts.manrope(
-    textStyle: const TextStyle(
+    textStyle: TextStyle(
       color: AppColors.textSecondary,
-      fontSize: 24,
+      fontSize: 16.sp,
       fontWeight: FontWeight.bold,
     ),
   );
   static final TextStyle heading = GoogleFonts.manrope(
-    textStyle: const TextStyle(
-      fontSize: 23,
+    textStyle: TextStyle(
+      fontSize: 23.sp,
     ),
   );
   static final TextStyle bodyText = GoogleFonts.manrope(
-    textStyle: const TextStyle(
-      fontSize: 16,
+    textStyle: TextStyle(
+      fontSize: 10.3.sp,
       color: Colors.black,
     ),
   );
@@ -33,19 +33,19 @@ class AppTextStyles {
   );
   static final TextStyle bodyGrey = GoogleFonts.manrope(
     textStyle: TextStyle(
-      fontSize: 13.sp,
+      fontSize: 10.sp,
       color: const Color.fromARGB(255, 136, 134, 134),
     ),
   );
   static final TextStyle bodyTextBold = GoogleFonts.manrope(
     textStyle: TextStyle(
-      fontSize: 16.sp,
+      fontSize: 13.sp,
       fontWeight: FontWeight.bold,
     ),
   );
   static final TextStyle bodySmall = GoogleFonts.manrope(
     textStyle: TextStyle(
-      fontSize: 14.sp,
+      fontSize: 10.sp,
     ),
   );
   static final TextStyle bodyItems = GoogleFonts.manrope(
@@ -63,7 +63,7 @@ class AppTextStyles {
   );
   static final TextStyle textWhite = GoogleFonts.manrope(
     textStyle: TextStyle(
-      fontSize: 14.sp,
+      fontSize: 10.5.sp,
       color: AppColors.textWhite,
       // decoration: TextDecoration.underline,
     ),

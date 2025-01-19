@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/active_task_count/active_task_count_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/routes/pages.dart';
@@ -71,7 +72,7 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
         ),
         child: ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(0),
+          padding: EdgeInsets.all(0.sp),
           separatorBuilder: (context, index) {
             return const Padding(
               padding: EdgeInsets.only(
