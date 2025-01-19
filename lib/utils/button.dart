@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/theme/app_textstyle.dart';
-import 'package:task_groove/theme/appcolors.dart';
 
 class ButtonPress extends StatelessWidget {
   final String text;

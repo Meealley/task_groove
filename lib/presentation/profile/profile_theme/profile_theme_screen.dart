@@ -22,8 +22,8 @@ class _ProfileThemeScreenState extends State<ProfileThemeScreen> {
   Widget build(BuildContext context) {
     // List of themes for dynamic rendering
     final List<Map<String, dynamic>> themes = [
-      {'color': AppColors.backgroundDark, 'title': 'Dark Theme'},
-      {'color': Colors.black, 'title': 'Black Theme'},
+      {'color': AppColors.backgroundDark, 'title': 'Default Theme'},
+      {'color': Colors.purple, 'title': 'Purple Theme'},
       {'color': Colors.orange, 'title': 'Orange Theme'},
       {'color': Colors.green, 'title': 'Green Theme'},
       {'color': Colors.yellow, 'title': 'Yellow Theme'},

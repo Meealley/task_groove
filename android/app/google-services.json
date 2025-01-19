@@ -12,7 +12,20 @@
           "package_name": "com.example.task_groove"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "722406363702-m8s5uin4bn5c2ilnbvrohj5gejs815ok.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task_groove",
+            "certificate_hash": "16a8c553594ad6dcc6a353d92b5a97868f696b8e"
+          }
+        },
+        {
+          "client_id": "722406363702-n16or9um39m91eg0b0mjn6kvl0d5lsit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCIN3b34JXKr2j8nKJAr93vrlIZt9MIwzo"
@@ -20,7 +33,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722406363702-n16or9um39m91eg0b0mjn6kvl0d5lsit.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "722406363702-qe2kjf95saq04amfchfkgp9g1stq5tc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskGroove"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722406363702:android:4a27a110ecf2d6d0173e97",
+        "android_client_info": {
+          "package_name": "com.mujinpark.task_groove"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722406363702-k2ag7022uiui90j09ic3ibgp6h3aub39.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mujinpark.task_groove",
+            "certificate_hash": "16a8c553594ad6dcc6a353d92b5a97868f696b8e"
+          }
+        },
+        {
+          "client_id": "722406363702-n16or9um39m91eg0b0mjn6kvl0d5lsit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIN3b34JXKr2j8nKJAr93vrlIZt9MIwzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722406363702-n16or9um39m91eg0b0mjn6kvl0d5lsit.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "722406363702-qe2kjf95saq04amfchfkgp9g1stq5tc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskGroove"
+              }
+            }
+          ]
         }
       }
     }

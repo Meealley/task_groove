@@ -217,8 +217,8 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
                     loadWithProgress: _loadWithProgress,
                     onPressed: () {
                       // Implement your logic to update the profile here
-                      print("Updated Name: ${_nameController.text}");
-                      print("Updated Email: ${_emailController.text}");
+                      log("Updated Name: ${_nameController.text}");
+                      log("Updated Email: ${_emailController.text}");
                       // You can call a method in your cubit to update the user profile.
                       context.read<ProfileCubit>().updateUserProfile(
                             name: _nameController.text,

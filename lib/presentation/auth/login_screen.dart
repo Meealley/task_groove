@@ -294,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: Text(
                                         _isGoogleSignInLoading
                                             ? "Signing in..."
-                                            : "Login with Google",
+                                            : "Sign in with Google",
                                         style: AppTextStyles.bodyText,
                                       ),
                                     )
