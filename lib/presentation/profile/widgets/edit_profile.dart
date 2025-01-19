@@ -130,7 +130,7 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
       appBar: AppBar(
         title: Text(
           "Edit Profile",
-          style: AppTextStyles.heading,
+          style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
@@ -207,10 +207,40 @@ class _ProfileDescriptionState extends State<ProfileDescription> {
                     style: AppTextStyles.bodyTextBold,
                   ),
                   SizedBox(height: 1.5.h),
-                  CustomTextField(
-                    textInputType: TextInputType.emailAddress,
-                    textEditingController: _emailController,
+                  // CustomTextField(
+                  //   textInputType: TextInputType.emailAddress,
+                  //   textEditingController: _emailController,
+
+                  // ),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: Colors.grey), // Gray text
+                    enabled: false, // Disable editing
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.email,
+                          color: Colors.grey), // Optional prefix icon
+                      // labelText: "Email",
+                      labelStyle:
+                          AppTextStyles.bodyText.copyWith(color: Colors.grey),
+                      contentPadding: const EdgeInsets.only(
+                        top: 1,
+                        bottom: 0,
+                        left: 6,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade200, // Light gray background
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        borderSide:
+                            BorderSide.none, // Remove border for cleaner look
+                      ),
+                    ),
                   ),
+
                   SizedBox(height: 4.h),
                   ButtonPress(
                     text: state.isLoading ? "Loading..." : "Edit Profile",

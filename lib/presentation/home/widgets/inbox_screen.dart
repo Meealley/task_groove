@@ -121,7 +121,6 @@ class _InboxScreenState extends State<InboxScreen> {
           "Inbox",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
         ),
-        // backgroundColor: AppColors.backgroundDark,
         leading: IconButton(
           onPressed: () => context.goNamed(Pages.bottomNavbar),
           color: Colors.white,
@@ -227,27 +226,31 @@ class _InboxScreenState extends State<InboxScreen> {
                 SizedBox(
                   height: 2.h,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    context.push(Pages.createTask);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundDark,
-                      borderRadius: BorderRadius.circular(
-                        20,
+                BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () {
+                        context.push(Pages.createTask);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: state.color,
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                        ),
+                        child: Text(
+                          "Add Task",
+                          style: AppTextStyles.bodyText
+                              .copyWith(color: Colors.white),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      "Add Task",
-                      style:
-                          AppTextStyles.bodyText.copyWith(color: Colors.white),
-                    ),
-                  ),
+                    );
+                  },
                 )
               ],
             );
@@ -264,7 +267,7 @@ class _InboxScreenState extends State<InboxScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/congratulations.png', // Replace with a congratulatory image
+                      'assets/images/congratulations.png',
                       fit: BoxFit.cover,
                     ),
                     const SizedBox(height: 16),
@@ -353,7 +356,7 @@ class _InboxScreenState extends State<InboxScreen> {
               checkColor: Colors.white,
               focusColor: Colors.green,
               onChanged: (_) {
-                _onTaskCompleted(task); // Toggle task completion
+                _onTaskCompleted(task);
               },
             ),
             title: Text(task.title, style: AppTextStyles.bodyText),
@@ -414,11 +417,8 @@ class _InboxScreenState extends State<InboxScreen> {
           ),
           onDismissed: (direction) {
             setState(() {
-              activeTasks
-                  .removeWhere((t) => t.id == task.id); // Remove the task
-              context
-                  .read<TaskListCubit>()
-                  .deleteTasks(task); // Update state in Cubit
+              activeTasks.removeWhere((t) => t.id == task.id);
+              context.read<TaskListCubit>().deleteTasks(task);
             });
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

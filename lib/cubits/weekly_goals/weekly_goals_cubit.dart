@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_groove/cubits/cubit/completed_task_per_week_cubit.dart';
+import 'package:task_groove/cubits/completed_task_per_week/completed_task_per_week_cubit.dart';
 
 part 'weekly_goals_state.dart';
 

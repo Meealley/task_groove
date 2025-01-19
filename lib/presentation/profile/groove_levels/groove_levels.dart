@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_groove/cubits/groove_level/groove_level_cubit.dart';
@@ -37,6 +38,13 @@ class _GrooveLevelsState extends State<GrooveLevels> {
         title: Text(
           "Groove Levels",
           style: AppTextStyles.headingBold.copyWith(color: Colors.white),
+        ),
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          color: Colors.white,
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowLeft,
+          ),
         ),
       ),
       body: BlocBuilder<GrooveLevelCubit, GrooveLevelState>(

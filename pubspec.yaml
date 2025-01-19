@@ -76,6 +76,7 @@ dependencies:
   share_plus: ^10.0.0
   mocktail: ^1.0.4
   bloc_test: ^9.1.7
+  showcaseview: ^4.0.0
 
 dev_dependencies:
   flutter_test:

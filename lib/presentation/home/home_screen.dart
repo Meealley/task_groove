@@ -11,7 +11,6 @@ import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart'
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
 import 'package:task_groove/cubits/task_progress/task_progress_cubit.dart';
-import 'package:task_groove/cubits/signup/signup_cubit.dart';
 import 'package:task_groove/presentation/home/widgets/home_lists_widget.dart';
 import 'package:task_groove/presentation/home/widgets/home_recent_activity.dart';
 import 'package:task_groove/presentation/profile/statistics/edit_goals/goal_bottom_sheet.dart';
@@ -29,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _loadwithProgress = false;
+  // bool _loadwithProgress = false;
 
   @override
   void initState() {
@@ -37,16 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<ProfileCubit>().fetchUserProfile(); // Load profile on init
     context.read<ProfileCubit>().trackLogin();
     context.read<DailyStreakCubit>().fetchStreakData();
-  }
-
-  void _logout() {
-    setState(() {
-      _loadwithProgress = !_loadwithProgress;
-      Future.delayed(const Duration(seconds: 3), () {
-        context.read<SignupCubit>().signOut(context);
-        context.read<DailyStreakCubit>().reset();
-      });
-    });
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 // import 'package:task_groove/theme/app_textstyle.dart'; // For date formatting
 
 class CalendarWithDateIcon extends StatelessWidget {
@@ -25,8 +26,8 @@ class CalendarWithDateIcon extends StatelessWidget {
           child: Text(
             todayDate,
             style: GoogleFonts.manrope(
-              textStyle: const TextStyle(
-                fontSize: 13,
+              textStyle: TextStyle(
+                fontSize: 8.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.green,
               ),

@@ -107,14 +107,24 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     });
   }
 
-  void _submit() {
-    _autovalidateMode = AutovalidateMode.always;
+  void _submit() async {
+    setState(() {
+      _autovalidateMode = AutovalidateMode.always;
+      _loadWithProgress = true;
+    });
     final form = _formKey.currentState;
 
-    if (form == null || !form.validate()) return;
+    // if (form == null || !form.validate()) return;
+    if (form == null || !form.validate()) {
+      setState(() {
+        _loadWithProgress = false; // Stop loading if validation fails
+      });
+      return;
+    }
+
     form.save();
 
-    _loadWithProgress = !_loadWithProgress;
+    // _loadWithProgress = !_loadWithProgress;
     DateTime? reminderDateTime;
     if (_isReminderSet) {
       // Set reminder for stop date if available, otherwise set for same day
@@ -141,7 +151,18 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       // userId: auth.currentUser!.uid,
     );
 
-    context.read<TaskListCubit>().addTasks(task);
+    // context.read<TaskListCubit>().addTasks(task);
+    try {
+      await context.read<TaskListCubit>().addTasks(task);
+      setState(() {
+        _loadWithProgress = false;
+      });
+    } catch (e) {
+      setState(() {
+        _loadWithProgress = false;
+      });
+      // errorDialog(context, e.toString());
+    }
   }
 
   @override
@@ -349,7 +370,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ButtonPress(
                         loadWithProgress: _loadWithProgress,
                         text: "Add Task",
-                        onPressed: _submit,
+                        onPressed: _loadWithProgress ? null : _submit,
                       )
                     ],
                   ),
@@ -361,12 +382,4 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
     );
   }
-}
-
-// Function to format the date
-String _formatDate(DateTime? date) {
-  if (date == null) {
-    return 'No date selected';
-  }
-  return DateFormat('EEEE d, yyyy').format(date);
 }

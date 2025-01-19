@@ -69,6 +69,9 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
         children: [
           // Calendar Widget
           TableCalendar(
+            headerStyle: HeaderStyle(
+              titleTextStyle: AppTextStyles.bodyText,
+            ),
             calendarStyle: CalendarStyle(
               defaultTextStyle: AppTextStyles.bodyText,
             ),
@@ -87,7 +90,7 @@ class _UpcomingTaskScreenState extends State<UpcomingTaskScreen> {
                 this.selectedDay = selectedDay;
               });
             },
-            headerStyle: const HeaderStyle(formatButtonVisible: false),
+            // headerStyle: const HeaderStyle(formatButtonVisible: false),
           ),
 
           // Display Day Label (Today, Tomorrow, Next Tomorrow)

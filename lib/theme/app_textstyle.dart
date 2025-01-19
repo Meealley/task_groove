@@ -26,8 +26,8 @@ class AppTextStyles {
     ),
   );
   static final TextStyle bodyTextLg = GoogleFonts.manrope(
-    textStyle: const TextStyle(
-      fontSize: 22,
+    textStyle: TextStyle(
+      fontSize: 12.sp,
       color: Colors.black,
     ),
   );
@@ -56,7 +56,7 @@ class AppTextStyles {
   );
   static final TextStyle bodySmallUnderline = GoogleFonts.manrope(
     textStyle: TextStyle(
-      fontSize: 14.sp,
+      fontSize: 10.sp,
       color: AppColors.primary,
       decoration: TextDecoration.underline,
     ),
