@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 import Firebase
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
     override func application(
         _ application: UIApplication,
@@ -10,9 +10,9 @@ import Firebase
     ) -> Bool {
         FirebaseApp.configure()
 
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self
-        }
+        // if #available(iOS 10.0, *) {
+        //     UNUserNotificationCenter.current().delegate = self
+        // }
         
         application.registerForRemoteNotifications()
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
