@@ -72,6 +72,6 @@ class AppTextStyles {
     textStyle: TextStyle(fontSize: 16.sp, color: AppColors.textWhite),
   );
   static final TextStyle errorTextMessage = GoogleFonts.manrope(
-    textStyle: TextStyle(fontSize: 13.sp, color: AppColors.errorText),
+    textStyle: TextStyle(fontSize: 9.sp, color: AppColors.errorText),
   );
 }

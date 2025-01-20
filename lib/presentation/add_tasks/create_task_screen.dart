@@ -66,6 +66,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           data: Theme.of(context).copyWith(
             textTheme: TextTheme(
               bodyMedium: AppTextStyles.bodyText,
+              bodySmall: AppTextStyles.bodySmall.copyWith(color: Colors.black),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                textStyle: AppTextStyles.bodyText,
+              ),
             ),
             timePickerTheme: TimePickerThemeData(
               hourMinuteTextStyle: AppTextStyles.bodyText,
@@ -187,7 +193,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
               children: [
                 Form(
                   key: _formKey,
