@@ -27,7 +27,7 @@
 ![App Screenshot](assets/screenshots/Cropped1.png)
 
 ### Productivity Page
-![App Screenshot](assets/screenshots/productivity.png.png)
+![App Screenshot](assets/screenshots/productivity.png)
 
 
 ---
@@ -44,7 +44,7 @@
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/task_groove.git
+   git clone https://github.com/Meealley/task_groove.git
    ```
 
 2. Navigate to the project folder:
