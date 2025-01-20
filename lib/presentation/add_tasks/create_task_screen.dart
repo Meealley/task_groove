@@ -315,7 +315,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         ],
                       ),
 
-// Switch for reminder
+                      // Switch for reminder
                       SwitchListTile(
                         title:
                             Text("Set Reminder", style: AppTextStyles.bodyText),
