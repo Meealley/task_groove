@@ -66,7 +66,9 @@ class _HomeRecentActivityState extends State<HomeRecentActivity> {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(0),
                   separatorBuilder: (context, index) {
-                    return const Divider();
+                    return const Divider(
+                      color: Colors.grey,
+                    );
                   },
                   shrinkWrap: true,
                   itemCount: state.recentAcitvities.length.clamp(0, 4),

@@ -57,7 +57,9 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
           return ListView.separated(
             padding: const EdgeInsets.all(0),
             separatorBuilder: (context, index) {
-              return const Divider();
+              return const Divider(
+                color: Colors.grey,
+              );
             },
             itemCount: state.recentAcitvities.length,
             itemBuilder: (context, index) {

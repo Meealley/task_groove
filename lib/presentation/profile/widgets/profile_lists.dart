@@ -17,7 +17,7 @@ class _ProfileListState extends State<ProfileList> {
   List<Map<String, dynamic>> profileLists = [
     {
       "icon": FontAwesomeIcons.chartArea,
-      'title': "Statistics",
+      'title': "Productivity",
       'route': Pages.profileStatistics,
     },
     {

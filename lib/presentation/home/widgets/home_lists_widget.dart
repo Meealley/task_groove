@@ -78,7 +78,9 @@ class _HomeListWidgetsState extends State<HomeListWidgets> {
               padding: EdgeInsets.only(
                 left: 50,
               ),
-              child: Divider(),
+              child: Divider(
+                color: Colors.grey,
+              ),
             );
           },
           shrinkWrap: true,
