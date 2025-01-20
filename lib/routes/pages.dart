@@ -20,4 +20,5 @@ class Pages {
   static const recentActivity = '/recentActivity';
   static const grooveLevel = '/grooveLevel';
   static const changePassword = '/changePassword';
+  static const rateUs = '/rateUs';
 }

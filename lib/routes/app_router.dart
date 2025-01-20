@@ -17,6 +17,7 @@ import 'package:task_groove/presentation/home/widgets/upcoming_task_screen.dart'
 import 'package:task_groove/presentation/profile/calendar_integration/calendar_integration_screen.dart';
 import 'package:task_groove/presentation/profile/groove_levels/groove_levels.dart';
 import 'package:task_groove/presentation/profile/profile_theme/profile_theme_screen.dart';
+import 'package:task_groove/presentation/profile/rate_us/rate_us.dart';
 import 'package:task_groove/presentation/profile/recent_activity/recent_activity_screen.dart';
 import 'package:task_groove/presentation/profile/security/security_screen.dart';
 import 'package:task_groove/presentation/profile/statistics/edit_goals/edit_goals.dart';
@@ -149,6 +150,11 @@ class AppRouter {
           name: Pages.changePassword,
           builder: (context, state) => const SecurityScreen(),
         ),
+        GoRoute(
+          path: Pages.rateUs,
+          name: Pages.rateUs,
+          builder: (context, state) => const RateUsScreen(),
+        )
       ],
     );
   }

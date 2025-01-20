@@ -100,35 +100,7 @@ class TaskRepository {
     }
   }
 
-  // Update an existing task in the current user data collection
-//   Future<void> updateTask(TaskModel task) async {
-//     try {
-//       DocumentReference taskRef = firestore
-//           .collection("users")
-//           .doc(currentUserId)
-//           .collection("tasks")
-//           .doc(task.id);
-// //Check if the task is completed
-//       bool wasCompleted = task.completed;
-
-//       log("Updating task: ${task.toMap()}");
-//       await taskRef.update(task.toMap());
-
-//       if (!wasCompleted && task.completed) {
-//         await updatePoints(5);
-//         log("Task completes: Points awarded");
-//       }
-
-//       log("Task updated with priority: ${task.priority}");
-//     } catch (e) {
-//       log(e.toString());
-//       throw CustomError(
-//         code: "Error Updating task",
-//         message: e.toString(),
-//       );
-//     }
-//   }
-
+  // Update Task
   Future<void> updateTask(TaskModel task) async {
     try {
       DocumentReference taskRef = firestore

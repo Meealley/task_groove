@@ -47,6 +47,11 @@ class _ProfileListState extends State<ProfileList> {
       'title': "Recent Activity",
       'route': Pages.recentActivity,
     },
+    {
+      "icon": FontAwesomeIcons.star,
+      'title': "Rate Us",
+      'route': Pages.rateUs,
+    },
   ];
 
   @override

@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_groove/cubits/app_theme/theme_cubit.dart';
 import 'package:task_groove/cubits/task_list/task_list_cubit.dart';
 import 'package:task_groove/models/task_model.dart';
 import 'package:task_groove/routes/pages.dart';
@@ -131,7 +132,7 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
         padding: EdgeInsets.symmetric(horizontal: 3.w),
         children: [
           SizedBox(
-            height: 6.h,
+            height: 4.h,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -279,57 +280,65 @@ class _TaskDescriptionScreenState extends State<TaskDescriptionScreen> {
               ),
 
               SizedBox(
-                height: 45,
+                height: 5.2.h,
                 width: double.infinity,
-                child: TextButton.icon(
-                  style: TextButton.styleFrom(
-                      backgroundColor: AppColors.backgroundDark,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      )),
-                  onPressed: () {
-                    context.pushReplacement(
-                      Pages.editTask,
-                      extra: widget.task,
+                child: BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, state) {
+                    return TextButton.icon(
+                      style: TextButton.styleFrom(
+                          backgroundColor: state.color,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          )),
+                      onPressed: () {
+                        context.pushReplacement(
+                          Pages.editTask,
+                          extra: widget.task,
+                        );
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.penToSquare,
+                        color: Colors.white,
+                        size: 17,
+                      ),
+                      label: Text(
+                        "Edit task",
+                        style: AppTextStyles.textWhite,
+                      ),
                     );
                   },
-                  icon: const FaIcon(
-                    FontAwesomeIcons.penToSquare,
-                    color: Colors.white,
-                    size: 17,
-                  ),
-                  label: Text(
-                    "Edit task",
-                    style: AppTextStyles.textWhite,
-                  ),
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 2.5.h,
               ),
 
               // Delete task Button
               SizedBox(
-                height: 45,
+                height: 5.2.h,
                 width: double.infinity,
-                child: TextButton.icon(
-                  style: TextButton.styleFrom(
-                      backgroundColor: AppColors.backgroundDark,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      )),
-                  onPressed: () async {
-                    await _showDeleteTaskDialog(); // Use the platform-specific dialog here
+                child: BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, state) {
+                    return TextButton.icon(
+                      style: TextButton.styleFrom(
+                          backgroundColor: state.color,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          )),
+                      onPressed: () async {
+                        await _showDeleteTaskDialog(); // Use the platform-specific dialog here
+                      },
+                      icon: const FaIcon(
+                        FontAwesomeIcons.trash,
+                        color: Colors.red,
+                        size: 17,
+                      ),
+                      label: Text(
+                        "Delete task",
+                        style: AppTextStyles.textWhite,
+                      ),
+                    );
                   },
-                  icon: const FaIcon(
-                    FontAwesomeIcons.trash,
-                    color: Colors.red,
-                    size: 17,
-                  ),
-                  label: Text(
-                    "Delete task",
-                    style: AppTextStyles.textWhite,
-                  ),
                 ),
               ),
             ],
