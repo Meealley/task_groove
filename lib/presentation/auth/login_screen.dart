@@ -271,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 22.w,
-                                  vertical: 10,
+                                  vertical: 1.3.h,
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
@@ -285,7 +285,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     Image.asset(
                                       "assets/images/google_sign_in.png",
                                       fit: BoxFit.contain,
-                                      height: 29,
+                                      height: 2.5.h,
                                     ),
                                     SizedBox(
                                       width: 5.w,

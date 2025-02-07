@@ -10,6 +10,7 @@ import 'package:task_groove/cubits/daily_streak/daily_streak_cubit.dart';
 import 'package:task_groove/cubits/goal_celebration/goal_celebration_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_cubit.dart';
 import 'package:task_groove/cubits/profile/profile_state.dart';
+import 'package:task_groove/cubits/recent_activity/recent_activity_cubit.dart';
 import 'package:task_groove/cubits/task_progress/task_progress_cubit.dart';
 import 'package:task_groove/presentation/home/widgets/home_lists_widget.dart';
 import 'package:task_groove/presentation/home/widgets/home_recent_activity.dart';
@@ -77,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Welcome Back, ${capitalizeFirstLetter(state.name)}",
+                              "Welcome Back, ${capitalizeFirstLetter(state.name.split(" ")[0])}",
                               style: AppTextStyles.bodyTextBold,
                             ),
                             BlocBuilder<DailyStreakCubit, DailyStreakState>(
@@ -208,7 +209,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 1.5.h,
                     ),
-                    const HomeRecentActivity(),
+                    BlocBuilder<RecentActivityCubit, RecentActivityState>(
+                      builder: (context, state) {
+                        final recentActivities = state.recentAcitvities;
+                        return Column(
+                          children: [
+                            SizedBox(height: 2.h),
+                            const HomeRecentActivity(),
+                          ],
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: 8.h,
                     ),
